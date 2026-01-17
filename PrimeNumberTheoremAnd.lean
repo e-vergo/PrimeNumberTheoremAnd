@@ -4,6 +4,7 @@ import PrimeNumberTheoremAnd.BorelCaratheodory
 import PrimeNumberTheoremAnd.BrunTitchmarsh
 import PrimeNumberTheoremAnd.Consequences
 import PrimeNumberTheoremAnd.DerivativeBound
+import PrimeNumberTheoremAnd.Dusart
 import PrimeNumberTheoremAnd.Erdos392
 import PrimeNumberTheoremAnd.FKS2
 import PrimeNumberTheoremAnd.FioriKadiriSwidinsky
@@ -31,6 +32,7 @@ import PrimeNumberTheoremAnd.PrimaryDefinitions
 import PrimeNumberTheoremAnd.PrimarySummary
 import PrimeNumberTheoremAnd.Rectangle
 import PrimeNumberTheoremAnd.ResidueCalcOnRectangles
+import PrimeNumberTheoremAnd.RosserSchoenfeldPrime
 import PrimeNumberTheoremAnd.RosserSchoenfeldZeta
 import PrimeNumberTheoremAnd.SecondaryDefinitions
 import PrimeNumberTheoremAnd.SecondarySummary

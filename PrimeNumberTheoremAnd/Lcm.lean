@@ -668,7 +668,8 @@ blueprint_comment /--
 
   Finally, the contribution of all other primes is at least \(1\).
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (discussion := 664)]
 theorem Criterion.σnorm_M_ge_σnorm_L'_mul (c : Criterion) :
     σnorm c.M ≥
       σnorm c.L' * (∏ i, (1 + 1 / (c.p i * (c.p i + 1 : ℝ)))) * (1 + 3 / (8 * c.n)) := by
@@ -755,11 +756,10 @@ inequality.  Here we will rely on the prime number theorem of Dusart \cite{Dusar
   and \(p_1 < p_2 < p_3\).
   Moreover, \(\sqrt{n} < p_1\)
   -/)
-  (proof := /-- Apply Theorem~\ref{thm:Dusart} successively with
+  (proof := /-- Apply Proposition~\ref{Dusart_prop_5_4} successively with
   \(x, x(1+1/\log^3 x), x(1+1/\log^3 x)^2\), keeping track of the resulting primes and bounds.
   For \(n\) large and \(x = \sqrt{n}\), we have \(\sqrt{n} < p_1\) as soon as the first interval
   lies strictly above \(\sqrt{n}\); this can be enforced by taking \(n\) large enough. -/)
-  (proofUses := ["thm:Dusart"])
   (latexEnv := "lemma")]
 theorem exists_p_primes {n : ℕ} (hn : n ≥ X₀ ^ 2) :
     ∃ p : Fin 3 → ℕ, (∀ i, Nat.Prime (p i)) ∧ StrictMono p ∧
@@ -984,26 +984,7 @@ theorem prod_q_ge {n : ℕ} (hn : n ≥ X₀ ^ 2) :
       ∏ i : Fin 3, (1 + (1 + 1 / (log √(n : ℝ)) ^ 3) ^ ((i : ℕ) + 1 : ℝ) / n) := by
   rw [show ∏ i : Fin 3, (1 + (1 + 1 / (log √(n : ℝ)) ^ 3) ^ ((i : ℕ) + 1 : ℝ) / n) =
       ∏ i : Fin 3, (1 + (1 + 1 / (log √(n : ℝ)) ^ 3) ^ ((3 : ℝ) - (i : ℕ)) / n) by
-    rw [Fin.prod_univ_three, Fin.prod_univ_three]
-    conv =>
-      enter [1, 1, 1, 2, 1, 2]
-      equals 1 => simp
-    conv =>
-      enter [1, 1, 2, 2, 1, 2]
-      equals 2 => norm_cast
-    conv =>
-      enter [2, 1, 1, 2, 1, 2]
-      equals 3 => norm_cast
-    conv =>
-      enter [1, 2, 2, 1, 2]
-      equals 3 => norm_cast
-    conv =>
-      enter [2, 2, 2, 1, 2]
-      equals 1 => norm_cast
-    conv =>
-      enter [2, 1, 2, 2, 1, 2]
-      equals 2 => norm_cast
-    ring]
+    simp only [Fin.prod_univ_three, Fin.val_zero, Fin.val_one, Fin.val_two]; ring_nf]
   apply Finset.prod_le_prod (fun _ _ ↦ by positivity)
   intro i _
   suffices h : (1 : ℝ) / (exists_q_primes hn).choose i ≤
