@@ -1,4 +1,5 @@
 name = "PrimeNumberTheoremAnd"
+version = "0.1.0"
 defaultTargets = ["PrimeNumberTheoremAnd"]
 
 [leanOptions]
@@ -13,21 +14,24 @@ linter.style.emptyLine = false
 linter.flexible = true
 
 [[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.27.0-rc1"
+
+[[require]]
 name = "LeanArchitect"
 git = "https://github.com/e-vergo/LeanArchitect.git"
 rev = "main"
 
 [[require]]
-name = "mathlib"
-git = "https://github.com/leanprover-community/mathlib4.git"
-
-[[require]]
 name = "checkdecls"
 git = "https://github.com/PatrickMassot/checkdecls.git"
+rev = "main"
 
 [[require]]
 name = "doc-gen4"
 scope = "leanprover"
+rev = "v4.27.0-rc1"
 
 [[lean_lib]]
 name = "PrimeNumberTheoremAnd"
