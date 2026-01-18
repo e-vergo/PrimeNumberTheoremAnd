@@ -25,5 +25,9 @@ git = "https://github.com/leanprover-community/mathlib4.git"
 name = "checkdecls"
 git = "https://github.com/PatrickMassot/checkdecls.git"
 
+[[require]]
+name = "doc-gen4"
+scope = "leanprover"
+
 [[lean_lib]]
 name = "PrimeNumberTheoremAnd"
