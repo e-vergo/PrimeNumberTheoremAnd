@@ -15,8 +15,7 @@ linter.flexible = true
 
 [[require]]
 name = "mathlib"
-scope = "leanprover-community"
-rev = "v4.27.0-rc1"
+git = "https://github.com/leanprover-community/mathlib4.git"
 
 [[require]]
 name = "LeanArchitect"
@@ -31,7 +30,6 @@ rev = "main"
 [[require]]
 name = "doc-gen4"
 scope = "leanprover"
-rev = "v4.27.0-rc1"
 
 [[lean_lib]]
 name = "PrimeNumberTheoremAnd"
