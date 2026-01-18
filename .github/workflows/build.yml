@@ -71,10 +71,14 @@ jobs:
       - name: Build docs
         run: lake -Kdoc=on build PrimeNumberTheoremAnd:docs
 
+      - name: Build homepage with Jekyll
+        run: |
+          cd home_page
+          bundle install
+          bundle exec jekyll build -d ../_site
+
       - name: Assemble site
         run: |
-          mkdir -p _site
-          cp -r home_page/* _site/ 2>/dev/null || true
           cp -r .lake/build/doc _site/docs
           cp -r blueprint/web _site/blueprint
 
