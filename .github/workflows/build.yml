@@ -11,8 +11,6 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  issues: write
-  pull-requests: write
 
 # Allow only one concurrent deployment
 concurrency:
@@ -35,24 +33,11 @@ jobs:
           swap-storage: false
 
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Install elan
         run: |
           curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
           echo "$HOME/.elan/bin" >> $GITHUB_PATH
-
-      - name: Cache .lake
-        uses: actions/cache@v4
-        with:
-          path: .lake
-          key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
-          restore-keys: |
-            lake-${{ runner.os }}-
-
-      - name: Update dependencies
-        run: lake update
 
       - name: Get Mathlib cache
         run: lake exe cache get
@@ -60,39 +45,24 @@ jobs:
       - name: Build project
         run: lake build
 
-      - name: Build blueprint data
-        # Use :blueprintPlain to skip highlighting (SubVerso panics on some code patterns)
-        run: lake build :blueprintPlain
-
-      - name: Generate upstreaming dashboard
-        run: python3 scripts/upstreaming_dashboard.py
-
       - name: Install blueprint dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgraphviz-dev graphviz
+          sudo apt-get install -y texlive-xetex texlive-latex-extra texlive-fonts-extra libgraphviz-dev graphviz latexmk
           pip install git+https://github.com/e-vergo/leanblueprint.git
 
       - name: Build blueprint
-        run: cd blueprint && leanblueprint web
+        run: |
+          lake build :blueprintPlain
+          cd blueprint && leanblueprint web
 
       - name: Build docs
         run: lake -Kdoc=on build PrimeNumberTheoremAnd:docs
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'
-          bundler-cache: true
-          working-directory: home_page
-
-      - name: Build homepage with Jekyll
-        run: |
-          cd home_page
-          bundle exec jekyll build -d ../_site
-
       - name: Assemble site
         run: |
+          mkdir -p _site
+          cp docs/index.html _site/
           cp -r .lake/build/doc _site/docs
           cp -r blueprint/web _site/blueprint
 
