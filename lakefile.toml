@@ -25,7 +25,6 @@ rev = "main"
 [[require]]
 name = "checkdecls"
 git = "https://github.com/PatrickMassot/checkdecls.git"
-rev = "main"
 
 [[require]]
 name = "doc-gen4"
