@@ -1,64 +1,94 @@
-name: Build Project
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
-  workflow_dispatch: # Allow manual triggering of the workflow from the GitHub Actions interface
+  workflow_dispatch:
 
-# Cancel previous runs if a new commit is pushed to the same PR or branch
-concurrency:
-  group: ${{ github.ref }}  # Group runs by the ref (branch or PR)
-  cancel-in-progress: true  # Cancel any ongoing runs in the same group
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Sets permissions for GitHub Pages deployment
 permissions:
-  contents: read          # Read access to repository contents
-  pages: write            # Write access to GitHub Pages
-  id-token: write         # Write access to ID tokens
-  issues: write           # Write access to issues
-  pull-requests: write    # Write access to pull requests
-  actions: write          # Write access to GitHub Actions
+  contents: read
+  pages: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  build_project:
+  build:
     runs-on: ubuntu-latest
-    name: Build project
     steps:
       - name: Cleanup to free disk space
         uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
-          android: true # saves approximately 12 GB
+          android: true
           dotnet: false
           haskell: false
           large-packages: false
           docker-images: false
           swap-storage: false
 
-      - name: Checkout project
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetch all history for all branches and tags
+          fetch-depth: 0
 
-      - name: Build the project
-        uses: leanprover/lean-action@c544e89643240c6b398f14a431bcdc6309e36b3e # v1.4.0
-        with:
-          use-github-cache: false
-          # Use :blueprintPlain to skip highlighting (SubVerso panics on some code patterns)
-          build-args: :blueprintPlain
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Get Mathlib cache
+        run: lake exe cache get
+
+      - name: Build project
+        run: lake build
+
+      - name: Build blueprint data
+        # Use :blueprintPlain to skip highlighting (SubVerso panics on some code patterns)
+        run: lake build :blueprintPlain
 
       - name: Generate upstreaming dashboard
         run: python3 scripts/upstreaming_dashboard.py
 
-      - name: Install leanblueprint fork (for side-by-side Lean code display)
-        run: pip install git+https://github.com/e-vergo/leanblueprint.git
+      - name: Install blueprint dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgraphviz-dev graphviz
+          pip install git+https://github.com/e-vergo/leanblueprint.git
 
-      - name: Compile blueprint and documentation
-        uses: leanprover-community/docgen-action@deed0cdc44dd8e5de07a300773eb751d33e32fc8 # 2025-10-26
+      - name: Build blueprint
+        run: cd blueprint && leanblueprint web
+
+      - name: Build docs
+        run: lake -Kdoc=on build PrimeNumberTheoremAnd:docs
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp -r home_page/* _site/ 2>/dev/null || true
+          cp -r .lake/build/doc _site/docs
+          cp -r blueprint/web _site/blueprint
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          blueprint: true
-          homepage: home_page
+          path: _site
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
