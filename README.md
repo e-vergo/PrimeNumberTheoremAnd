@@ -24,5 +24,13 @@ Simply visit: <https://gitpod.io/new/#https://github.com/AlexKontorovich/PrimeNu
 All the required dependencies will be loaded (this takes a few minutes), after which you will be brought to a web-based
 vscode window, where you can edit the code, and submit PR's.
 
+## Blueprint with Side-by-Side Display
+
+This project uses an enhanced blueprint system that displays LaTeX mathematics alongside the corresponding Lean code. When viewing theorem statements and proofs in the [blueprint](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/blueprint), you can see both the mathematical formulation and its formalization side-by-side.
+
+This feature is powered by:
+- [LeanArchitect](https://github.com/e-vergo/LeanArchitect) - Extracts Lean code for blueprint integration
+- [leanblueprint fork](https://github.com/e-vergo/leanblueprint) - Renders side-by-side LaTeX/Lean display
+
 ## License
-This project is licensed under the Apache 2.0 License. ee the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE) file for details.
