@@ -64,14 +64,10 @@ jobs:
           lake build :blueprintPlain
           cd blueprint && leanblueprint web
 
-      - name: Build docs
-        run: lake -Kdoc=on build PrimeNumberTheoremAnd:docs
-
       - name: Assemble site
         run: |
           mkdir -p _site
           cp docs/index.html _site/
-          cp -r .lake/build/doc _site/docs
           cp -r blueprint/web _site/blueprint
 
       - name: Upload Pages artifact
