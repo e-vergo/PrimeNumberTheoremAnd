@@ -61,6 +61,7 @@ jobs:
 
       - name: Build blueprint
         run: |
+          rm -rf .lake/build/blueprint
           lake build :blueprintSafe
           cd blueprint && leanblueprint web
 
