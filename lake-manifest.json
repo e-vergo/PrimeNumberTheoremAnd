@@ -8,7 +8,7 @@
    "rev": "05bb84181739ecc0897184a3e2906241267bcdfd",
    "name": "«doc-gen4»",
    "manifestFile": "lake-manifest.json",
-   "inputRev": null,
+   "inputRev": "v4.27.0-rc1",
    "inherited": false,
    "configFile": "lakefile.lean"},
   {"url": "https://github.com/e-vergo/LeanArchitect.git",
