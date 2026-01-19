@@ -61,7 +61,7 @@ jobs:
 
       - name: Build blueprint
         run: |
-          lake build :blueprintPlain
+          lake build :blueprintSafe
           cd blueprint && leanblueprint web
 
       - name: Assemble site

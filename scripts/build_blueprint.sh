@@ -31,24 +31,20 @@ check_dependency() {
 check_dependency "lake" "Please install Lean 4 and Lake."
 check_dependency "leanblueprint" "Install with: pipx install git+https://github.com/e-vergo/leanblueprint.git"
 
-echo "=== Step 1: Updating dependencies ==="
-lake update
-
-echo ""
-echo "=== Step 2: Fetching mathlib cache ==="
+echo "=== Step 1: Fetching mathlib cache ==="
 lake exe cache get || echo "Cache fetch completed (some files may have been skipped)"
 
 echo ""
-echo "=== Step 3: Building Lean project ==="
+echo "=== Step 2: Building Lean project ==="
 lake build
 
 echo ""
-echo "=== Step 4: Building blueprint data ==="
-# Use :blueprintPlain to skip highlighting (SubVerso panics on some PNT code patterns)
-lake build :blueprintPlain
+echo "=== Step 3: Building blueprint data ==="
+# Use :blueprintSafe for SubVerso highlighting with per-module fallback
+lake build :blueprintSafe
 
 echo ""
-echo "=== Step 5: Building blueprint (web only) ==="
+echo "=== Step 4: Building blueprint (web only) ==="
 cd blueprint
 # Skip PDF for now - \leanposition not yet defined for LaTeX
 leanblueprint web
