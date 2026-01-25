@@ -7,21 +7,19 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch: # Allow manual triggering of the workflow from the GitHub Actions interface
+  workflow_dispatch:
 
-# Cancel previous runs if a new commit is pushed to the same PR or branch
 concurrency:
-  group: ${{ github.ref }}  # Group runs by the ref (branch or PR)
-  cancel-in-progress: true  # Cancel any ongoing runs in the same group
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read          # Read access to repository contents
-  pages: write            # Write access to GitHub Pages
-  id-token: write         # Write access to ID tokens
-  issues: write           # Write access to issues
-  pull-requests: write    # Write access to pull requests
-  actions: write          # Write access to GitHub Actions
+  contents: read
+  pages: write
+  id-token: write
+  issues: write
+  pull-requests: write
+  actions: write
 
 jobs:
   build_project:
@@ -32,7 +30,7 @@ jobs:
         uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
-          android: true # saves approximately 12 GB
+          android: true
           dotnet: false
           haskell: false
           large-packages: false
@@ -42,16 +40,7 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          fetch-depth: 0 # Fetch all history for all branches and tags
-
-      - name: Build the project
-        uses: leanprover/lean-action@c544e89643240c6b398f14a431bcdc6309e36b3e # v1.4.0
-        with:
-          use-github-cache: false
-          build-args: :blueprint
-
-      - name: Generate upstreaming dashboard
-        run: python3 scripts/upstreaming_dashboard.py
+          fetch-depth: 0
 
       - name: Clear Dress artifacts
         run: |
@@ -67,6 +56,9 @@ jobs:
           build-web: true
           use-mathlib-cache: true
           deploy-pages: false
+
+      - name: Generate upstreaming dashboard
+        run: python3 scripts/upstreaming_dashboard.py
 
       - name: Build Jekyll homepage
         uses: actions/jekyll-build-pages@v1
