@@ -1,4 +1,4 @@
-import Architect
+import Dress
 import Batteries.Tactic.Lemma
 import Mathlib.MeasureTheory.Function.Floor
 import Mathlib.MeasureTheory.Order.Group.Lattice

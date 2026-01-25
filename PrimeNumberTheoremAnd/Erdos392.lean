@@ -1,4 +1,4 @@
-import Architect
+import Dress
 import Mathlib.Analysis.SpecialFunctions.Stirling
 import Mathlib.NumberTheory.Bertrand
 import PrimeNumberTheoremAnd.Consequences

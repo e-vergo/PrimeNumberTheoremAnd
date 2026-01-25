@@ -53,8 +53,33 @@ jobs:
       - name: Generate upstreaming dashboard
         run: python3 scripts/upstreaming_dashboard.py
 
-      - name: Compile blueprint and documentation
-        uses: leanprover-community/docgen-action@deed0cdc44dd8e5de07a300773eb751d33e32fc8 # 2025-10-26
+      - name: Clear Dress artifacts
+        run: |
+          rm -rf .lake/packages/Dress .lake/packages/subverso .lake/build/dressed
+          rm -rf .lake/build/lib/PrimeNumberTheoremAnd .lake/build/ir/PrimeNumberTheoremAnd
+          find .lake -name '*.trace' -path '*blueprint*' -delete
+
+      - name: Build blueprint with Dress
+        uses: e-vergo/dress-blueprint-action@main
         with:
-          blueprint: true
-          homepage: home_page
+          build-dressed: true
+          build-pdf: true
+          build-web: true
+          use-mathlib-cache: true
+          deploy-pages: false
+
+      - name: Build Jekyll homepage
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: home_page
+          destination: _site
+
+      - name: Copy blueprint into site
+        run: |
+          cp -r blueprint/web _site/blueprint
+          cp blueprint/print/print.pdf _site/blueprint.pdf
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site

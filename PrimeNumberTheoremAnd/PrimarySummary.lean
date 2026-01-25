@@ -1,4 +1,4 @@
-import Architect
+import Dress
 import PrimeNumberTheoremAnd.PrimaryDefinitions
 import PrimeNumberTheoremAnd.FioriKadiriSwidinsky
 import PrimeNumberTheoremAnd.Buthe

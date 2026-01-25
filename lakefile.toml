@@ -13,9 +13,9 @@ linter.style.emptyLine = false
 linter.flexible = true
 
 [[require]]
-name = "LeanArchitect"
-git = "https://github.com/hanwenzhu/LeanArchitect.git"
-rev = "v4.27.0"
+name = "Dress"
+git = "https://github.com/e-vergo/Dress"
+rev = "main"
 
 [[require]]
 name = "mathlib"
