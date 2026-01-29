@@ -3787,6 +3787,7 @@ set_option maxHeartbeats 400000 in
 /-- *** Prime Number Theorem (Medium Strength) *** The `ChebyshevPsi` function is asymptotic to `x`. -/
 @[blueprint
   (title := "MediumPNT")
+  (keyTheorem := true)
   (statement := /--
     We have
   $$ \sum_{n \leq x} \Lambda(n) = x + O(x \exp(-c(\log x)^{1/10})).$$
