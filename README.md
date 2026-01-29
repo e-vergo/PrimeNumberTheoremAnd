@@ -5,6 +5,8 @@
 [![Blueprint: Website](https://img.shields.io/badge/Blueprint-Website-blue.svg?logo=github&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/blueprint)
 [![Docs: Website](https://img.shields.io/badge/Docs-Website-blue.svg?logo=readthedocs&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/docs)
 
+> **Side-by-Side Blueprint Example Project** — This formalization demonstrates the [Side-by-Side Blueprint](https://github.com/e-vergo/Dress) toolchain for interactive proof documentation.
+
 The objective of this project is to formalize in Lean the Prime Number Theorem (with classical error term), as well as related results such as the Prime Number Theorem in Arithmetic Progressions.  A stretch goal would be to obtain the Chebotarev density theorem.  We are also hosting the [Integrated Explicit Analytic Number Theory network](https://www.ipam.ucla.edu/news-research/special-projects/integrated-explicit-analytic-number-theory-network/).  A persona log describing the latter project may be [found here](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/wiki/Terence-Tao's-personal-log).
 
 ## Zulip
@@ -24,5 +26,19 @@ Simply visit: <https://gitpod.io/new/#https://github.com/AlexKontorovich/PrimeNu
 All the required dependencies will be loaded (this takes a few minutes), after which you will be brought to a web-based
 vscode window, where you can edit the code, and submit PR's.
 
+## Toolchain
+
+This project uses the **Side-by-Side Blueprint** toolchain for generating interactive documentation that displays formal Lean proofs alongside LaTeX theorem statements.
+
+**Components:**
+- [Dress](https://github.com/e-vergo/Dress) — Artifact generation, dependency graph construction, and validation
+- [LeanArchitect](https://github.com/e-vergo/LeanArchitect) — `@[blueprint]` attribute for annotating declarations
+- [Runway](https://github.com/e-vergo/Runway) — Site generator, dashboard, and paper/PDF generation
+
+**CI/CD:**
+- [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action) — GitHub Action for automated deployment
+
+This formalization includes 530 `@[blueprint]` annotations across 33 files, demonstrating large-scale integration with the toolchain.
+
 ## License
-This project is licensed under the Apache 2.0 License. ee the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE) file for details.
