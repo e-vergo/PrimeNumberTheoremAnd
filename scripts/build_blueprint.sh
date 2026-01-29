@@ -102,7 +102,7 @@ echo "Updating Dress dependencies..."
 echo "Updating Runway dependencies..."
 (cd "$RUNWAY_PATH" && lake update Dress 2>/dev/null || true)
 
-# Update GCR's Dress dependency
+# Update PNT's Dress dependency
 echo "Updating project dependencies..."
 (cd "$PROJECT_ROOT" && lake update Dress 2>/dev/null || true)
 
@@ -119,7 +119,7 @@ for repo_path in "$LEAN_ARCHITECT_PATH" "$DRESS_PATH" "$RUNWAY_PATH"; do
     cd "$PROJECT_ROOT"
 done
 
-# Commit and push GCR manifest if changed
+# Commit and push PNT manifest if changed
 if [[ -n $(git status --porcelain lake-manifest.json 2>/dev/null) ]]; then
     echo "  Committing manifest update in project..."
     git add lake-manifest.json

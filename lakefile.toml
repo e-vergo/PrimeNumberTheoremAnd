@@ -2,6 +2,9 @@ name = "PrimeNumberTheoremAnd"
 version = "0.1.0"
 defaultTargets = ["PrimeNumberTheoremAnd"]
 
+[[lean_lib]]
+name = "PrimeNumberTheoremAnd"
+
 [[require]]
 name = "Dress"
 git = "https://github.com/e-vergo/Dress"
