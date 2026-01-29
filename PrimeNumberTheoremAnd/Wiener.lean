@@ -2431,7 +2431,7 @@ blueprint_comment /--
 
 @[blueprint
   (title := "WeakPNT")
-  (keyTheorem := true)
+  (keyDeclaration := true)
   (statement := /--
     We have
   $$ \sum_{n \leq x} \Lambda(n) = x + o(x).$$
@@ -4004,7 +4004,7 @@ lemma summable_vonMangoldt_div_rpow {s : ℝ} (hs : 1 < s) : Summable (fun n ↦
 
 @[blueprint "WeakPNT-AP"
   (title := "WeakPNT-AP")
-  (keyTheorem := true)
+  (keyDeclaration := true)
   (statement := /--
   If $q ≥ 1$ and $a$ is coprime to $q$, we have
   $$ \sum_{n \leq x: n = a\ (q)} \Lambda(n) = \frac{x}{\varphi(q)} + o(x).$$
