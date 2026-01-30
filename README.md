@@ -1,10 +1,15 @@
 # Prime Number Theorem And...
 
+![Lean](https://img.shields.io/badge/Lean-v4.27.0-blue)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-lightblue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Blueprint: Website](https://img.shields.io/badge/Blueprint-Website-blue.svg?logo=github&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/blueprint)
 [![Docs: Website](https://img.shields.io/badge/Docs-Website-blue.svg?logo=readthedocs&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/docs)
 
-> **Side-by-Side Blueprint Integration** — This formalization serves as the large-scale stress test for the [Side-by-Side Blueprint](https://github.com/e-vergo/Dress) toolchain, demonstrating that it scales to real-world research projects.
+> **Side-by-Side Blueprint Integration**: This fork demonstrates the SBS toolchain
+> on a large-scale formalization (530 `@[blueprint]` annotations across 33 files).
+> Zero changes to Lean proof code were required.
+>
+> Original project: [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd)
 
 ## Project Overview
 
@@ -103,9 +108,18 @@ VS Code window, where you can edit the code and submit PRs.
 
 ## Related Projects
 
-- [SBS-Test](https://github.com/e-vergo/SBS-Test) — Minimal test project (11 nodes, all features)
+### Original Project
+- [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd) — Original PNT formalization
+
+### SBS Toolchain
+- [Dress](https://github.com/e-vergo/Dress) — Artifact generation, dependency graph, validation
+- [LeanArchitect](https://github.com/e-vergo/LeanArchitect) — `@[blueprint]` attribute for annotations
+- [Runway](https://github.com/e-vergo/Runway) — Site generator, dashboard, paper/PDF
+- [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action) — GitHub Action for CI/CD
+
+### Other SBS Projects
+- [SBS-Test](https://github.com/e-vergo/SBS-Test) — Minimal test project (16 nodes, all 6 status colors)
 - [General Crystallographic Restriction](https://github.com/e-vergo/General_Crystallographic_Restriction) — Production example with paper generation
-- [Side-by-Side Blueprint](https://github.com/e-vergo/Dress) — Toolchain documentation
 
 ## Prior Art
 
