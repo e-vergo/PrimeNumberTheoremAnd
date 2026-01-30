@@ -72,21 +72,18 @@ The 530+ node dependency graph required optimization in the toolchain:
 - Sugiyama layout algorithm handles the full graph
 - Edge routing uses visibility graph + Dijkstra + Bezier curves
 
-## Building Locally
+## Building
+
+### Lean Project
 
 ```bash
-./scripts/build_blueprint.sh
+lake exe cache get  # Fetch mathlib cache
+lake build
 ```
 
-This script:
-1. Builds the toolchain (SubVerso -> LeanArchitect -> Dress -> Runway)
-2. Fetches mathlib cache
-3. Builds the project with `BLUEPRINT_DRESS=1`
-4. Generates the dependency graph
-5. Generates the site with Runway
-6. Starts a local server at `localhost:8000`
+### Blueprint Site
 
-Output is written to `.lake/build/runway/`.
+The blueprint site is built via GitHub Actions using [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action). Output is written to `.lake/build/runway/`.
 
 ## Zulip
 
