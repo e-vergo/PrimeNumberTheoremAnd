@@ -9,20 +9,45 @@
 
 ## Side-by-Side Blueprint Fork
 
-This is a fork of [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd) that integrates the [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) documentation toolchain.
+This is a fork of [AlexKontorovich/PrimeNumberTheoremAnd](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) that integrates the [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) documentation toolchain.
 
-**Scale**: 530 `@[blueprint]` annotations across 33 Lean source files.
+**Original project**: [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd)
 
-**Integration approach**: Zero changes to Lean proof code. All annotations were added non-invasively to the existing formalization.
+### Scale
 
-### Toolchain Features Demonstrated
+This project serves as a large-scale integration test for the SBS toolchain:
+
+| Metric | Value |
+|--------|-------|
+| Blueprint annotations | 591 `@[blueprint]` attributes |
+| Annotated files | 33 Lean source files |
+| Total source files | 50 Lean files |
+
+This scale exercises graph layout algorithms, performance optimizations, and module reference features that smaller test projects do not stress.
+
+### Integration Approach
+
+All annotations were added non-invasively. Zero changes to the original Lean proof code were required.
+
+### Features Demonstrated
 
 | Feature | Description |
 |---------|-------------|
-| Large-scale dependency graph | 530+ nodes with Sugiyama hierarchical layout |
-| Module reference support | `\inputleanmodule{PrimeNumberTheoremAnd.Wiener}` organizes chapters by topic |
-| O(n^3) optimization bypass | Transitive reduction skipped for graphs >100 nodes |
-| Visibility graph edge routing | Dijkstra shortest path with Bezier curve fitting |
+| Large-scale dependency graph | 591 nodes with Sugiyama hierarchical layout |
+| Module reference support | `\inputleanmodule{PrimeNumberTheoremAnd.Wiener}` organizes chapters by mathematical topic |
+| >100 node optimizations | Transitive reduction and visibility graph routing bypassed for performance |
+| Multi-chapter organization | 10 chapters spanning three approaches to PNT |
+
+### Toolchain Dependencies
+
+This fork adds [Dress](https://github.com/e-vergo/Dress) as a dependency, which transitively provides:
+
+| Repository | Purpose |
+|------------|---------|
+| [SubVerso](https://github.com/e-vergo/subverso) | Syntax highlighting with O(1) indexed lookups |
+| [LeanArchitect](https://github.com/e-vergo/LeanArchitect) | `@[blueprint]` attribute with 8 metadata + 3 status options |
+| [Dress](https://github.com/e-vergo/Dress) | Artifact generation, dependency graph layout, validation |
+| [Runway](https://github.com/e-vergo/Runway) | Site generator, dashboard, paper/PDF |
 
 ### Building the Blueprint
 
@@ -33,24 +58,25 @@ lake exe cache get
 # Build with artifact generation
 BLUEPRINT_DRESS=1 lake build
 
-# Generate dependency graph and manifest
+# Generate Lake facets
 lake build :blueprint
+
+# Generate dependency graph and manifest
 lake exe extract_blueprint graph PrimeNumberTheoremAnd
 
 # Generate site
 lake exe runway build runway.json
 ```
 
-The generated site is written to `.lake/build/runway/`.
+Output is written to `.lake/build/runway/`.
 
-### Toolchain Components
+### CI/CD
 
-| Repository | Purpose |
-|------------|---------|
-| [Dress](https://github.com/e-vergo/Dress) | Artifact generation, dependency graph, validation |
-| [LeanArchitect](https://github.com/e-vergo/LeanArchitect) | `@[blueprint]` attribute with 8 metadata + 3 status options |
-| [Runway](https://github.com/e-vergo/Runway) | Site generator, dashboard, paper/PDF |
-| [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action) | GitHub Action for CI/CD |
+GitHub Actions workflow uses [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action):
+
+```yaml
+- uses: e-vergo/dress-blueprint-action@main
+```
 
 ---
 
@@ -64,11 +90,11 @@ We are also hosting the [Integrated Explicit Analytic Number Theory network](htt
 
 The formalization pursues three parallel approaches to PNT:
 
-1. **Wiener-Ikehara Tauberian theorem** — Following Michael Stoll's "Euler Products" project, which has a proof of PNT missing only the Wiener-Ikehara theorem.
+1. **Wiener-Ikehara Tauberian theorem** - Following Michael Stoll's "Euler Products" project, which has a proof of PNT missing only the Wiener-Ikehara theorem.
 
-2. **Complex analysis approach** — Develops residue calculus on rectangles, the argument principle, and Mellin transforms to derive PNT with an error term stronger than any power of log savings.
+2. **Complex analysis approach** - Develops residue calculus on rectangles, the argument principle, and Mellin transforms to derive PNT with an error term stronger than any power of log savings.
 
-3. **Full treatment via Hadamard factorization** — The most general approach: residue calculus, Hadamard factorization theorem, zero-free region for zeta via Hoffstein-Lockhart+Goldfeld-Hoffstein-Liemann, leading to PNT with exp-root-log savings.
+3. **Full treatment via Hadamard factorization** - The most general approach: residue calculus, Hadamard factorization theorem, zero-free region for zeta via Hoffstein-Lockhart+Goldfeld-Hoffstein-Liemann, leading to PNT with exp-root-log savings.
 
 ### Key Results
 
@@ -125,17 +151,19 @@ VS Code window, where you can edit the code and submit PRs.
 ## Related Projects
 
 ### Original Project
-- [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd) — Original PNT formalization
+- [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd) - Original PNT formalization
+- [AlexKontorovich/PrimeNumberTheoremAnd](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) - Active development repository
 
 ### SBS Toolchain
-- [Dress](https://github.com/e-vergo/Dress) — Artifact generation, dependency graph, validation
-- [LeanArchitect](https://github.com/e-vergo/LeanArchitect) — `@[blueprint]` attribute for annotations
-- [Runway](https://github.com/e-vergo/Runway) — Site generator, dashboard, paper/PDF
-- [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action) — GitHub Action for CI/CD
+- [SubVerso](https://github.com/e-vergo/subverso) - Syntax highlighting extraction with O(1) indexed lookups
+- [LeanArchitect](https://github.com/e-vergo/LeanArchitect) - `@[blueprint]` attribute for annotations
+- [Dress](https://github.com/e-vergo/Dress) - Artifact generation, dependency graph, validation
+- [Runway](https://github.com/e-vergo/Runway) - Site generator, dashboard, paper/PDF
+- [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action) - GitHub Action for CI/CD
 
 ### Other SBS Projects
-- [SBS-Test](https://github.com/e-vergo/SBS-Test) — Minimal test project (25 nodes, all 6 status colors)
-- [General Crystallographic Restriction](https://github.com/e-vergo/General_Crystallographic_Restriction) — Production example with paper generation
+- [SBS-Test](https://github.com/e-vergo/SBS-Test) - Minimal test project (33 nodes, all 6 status colors)
+- [General Crystallographic Restriction](https://github.com/e-vergo/General_Crystallographic_Restriction) - Production example with paper generation (57 nodes)
 
 ## Prior Art
 
