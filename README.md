@@ -5,11 +5,54 @@
 [![Blueprint: Website](https://img.shields.io/badge/Blueprint-Website-blue.svg?logo=github&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/blueprint)
 [![Docs: Website](https://img.shields.io/badge/Docs-Website-blue.svg?logo=readthedocs&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/docs)
 
-> **Side-by-Side Blueprint Integration**: This fork demonstrates the SBS toolchain
-> on a large-scale formalization (530 `@[blueprint]` annotations across 33 files).
-> Zero changes to Lean proof code were required.
->
-> Original project: [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd)
+---
+
+## Side-by-Side Blueprint Fork
+
+This is a fork of [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd) that integrates the [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) documentation toolchain.
+
+**Scale**: 530 `@[blueprint]` annotations across 33 Lean source files.
+
+**Integration approach**: Zero changes to Lean proof code. All annotations were added non-invasively to the existing formalization.
+
+### Toolchain Features Demonstrated
+
+| Feature | Description |
+|---------|-------------|
+| Large-scale dependency graph | 530+ nodes with Sugiyama hierarchical layout |
+| Module reference support | `\inputleanmodule{PrimeNumberTheoremAnd.Wiener}` organizes chapters by topic |
+| O(n^3) optimization bypass | Transitive reduction skipped for graphs >100 nodes |
+| Visibility graph edge routing | Dijkstra shortest path with Bezier curve fitting |
+
+### Building the Blueprint
+
+```bash
+# Fetch mathlib cache
+lake exe cache get
+
+# Build with artifact generation
+BLUEPRINT_DRESS=1 lake build
+
+# Generate dependency graph and manifest
+lake build :blueprint
+lake exe extract_blueprint graph PrimeNumberTheoremAnd
+
+# Generate site
+lake exe runway build runway.json
+```
+
+The generated site is written to `.lake/build/runway/`.
+
+### Toolchain Components
+
+| Repository | Purpose |
+|------------|---------|
+| [Dress](https://github.com/e-vergo/Dress) | Artifact generation, dependency graph, validation |
+| [LeanArchitect](https://github.com/e-vergo/LeanArchitect) | `@[blueprint]` attribute with 8 metadata + 3 status options |
+| [Runway](https://github.com/e-vergo/Runway) | Site generator, dashboard, paper/PDF |
+| [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action) | GitHub Action for CI/CD |
+
+---
 
 ## Project Overview
 
@@ -33,24 +76,7 @@ The formalization pursues three parallel approaches to PNT:
 - **MediumPNT**: PNT with improved error term via contour integration
 - **WeakPNT_AP**: Prime Number Theorem in Arithmetic Progressions
 
-## Side-by-Side Blueprint Integration
-
-This project is the **largest integration test** for the Side-by-Side Blueprint toolchain:
-
-| Metric | Value |
-|--------|-------|
-| Blueprint annotations | 530+ |
-| Lean source files | 33 |
-| Graph nodes | 530+ |
-
-### Toolchain Components
-
-- [Dress](https://github.com/e-vergo/Dress) — Artifact generation, dependency graph construction, and validation
-- [LeanArchitect](https://github.com/e-vergo/LeanArchitect) — `@[blueprint]` attribute for annotating declarations
-- [Runway](https://github.com/e-vergo/Runway) — Site generator, dashboard, and paper/PDF generation
-- [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action) — GitHub Action for automated deployment
-
-### Blueprint Organization
+## Blueprint Organization
 
 The blueprint uses `\inputleanmodule{}` commands to organize chapters by mathematical topic:
 
@@ -64,13 +90,6 @@ The blueprint uses `\inputleanmodule{}` commands to organize chapters by mathema
 \inputleanmodule{PrimeNumberTheoremAnd.PerronFormula}
 ...
 ```
-
-### Performance Notes
-
-The 530+ node dependency graph required optimization in the toolchain:
-- O(n^3) transitive reduction is skipped for graphs with >100 nodes
-- Sugiyama layout algorithm handles the full graph
-- Edge routing uses visibility graph + Dijkstra + Bezier curves
 
 ## Building
 
@@ -115,7 +134,7 @@ VS Code window, where you can edit the code and submit PRs.
 - [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action) — GitHub Action for CI/CD
 
 ### Other SBS Projects
-- [SBS-Test](https://github.com/e-vergo/SBS-Test) — Minimal test project (16 nodes, all 6 status colors)
+- [SBS-Test](https://github.com/e-vergo/SBS-Test) — Minimal test project (25 nodes, all 6 status colors)
 - [General Crystallographic Restriction](https://github.com/e-vergo/General_Crystallographic_Restriction) — Production example with paper generation
 
 ## Prior Art
