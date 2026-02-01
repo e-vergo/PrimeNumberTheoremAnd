@@ -1,4 +1,4 @@
-> **This is a fork of the original [PNT+](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) project with [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) integration.** The original project is maintained by Alex Kontorovich and Terence Tao at [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd). All original Lean proof code is preserved unchanged; only `@[blueprint]` annotations were added.
+> **This is a fork of the original [PNT+](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) project with [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) integration.** The original project is maintained by Alex Kontorovich and Terence Tao at [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd). All original Lean proof code is preserved unchanged; only `@[blueprint]` annotations were added for documentation generation.
 
 # Prime Number Theorem And...
 
@@ -8,6 +8,13 @@
 [![Original Docs](https://img.shields.io/badge/Original_Docs-Website-blue.svg?logo=readthedocs&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/docs)
 
 A collaborative formalization of the Prime Number Theorem and related results in Lean 4, organized by Alex Kontorovich and Terence Tao with contributions from the [Lean Zulip community](https://leanprover.zulipchat.com/#narrow/channel/423402-PrimeNumberTheorem.2B).
+
+## Quick Links
+
+- **Build & Run**: `../../dev/build-pnt.sh` (one-click)
+- **Live Site**: `.lake/build/runway/index.html` (after building)
+- **Dependency Graph**: `.lake/build/runway/dep_graph.html`
+- **SBS Toolchain**: [Side-by-Side Blueprint monorepo](https://github.com/e-vergo/Side-By-Side-Blueprint)
 
 ## Project Overview
 
@@ -28,16 +35,33 @@ The project also hosts the [Integrated Explicit Analytic Number Theory network](
 
 ## Building
 
-### Lean Project
+### Quick Start (Recommended)
 
 ```bash
-lake exe cache get  # Fetch mathlib cache (~5GB)
-lake build
+# One-click build, launch, and archive
+../../dev/build-pnt.sh
 ```
 
-### Blueprint Site (SBS Integration)
+This script:
+1. Builds the Lean project with `BLUEPRINT_DRESS=1`
+2. Generates all artifacts (blueprint, dependency graph, site)
+3. Captures screenshots for visual validation
+4. Starts a local server at `http://localhost:8000`
+5. Archives build metrics and screenshots to `../../dev/storage/PNT/`
+
+Options:
+- `--dry-run` - Show what would happen without building
+- `--skip-cache` - Rebuild without using cached artifacts
+- `--verbose` - Show detailed build output
+
+### Manual Build
+
+If you prefer step-by-step control:
 
 ```bash
+# Fetch mathlib cache (~5GB)
+lake exe cache get
+
 # Build with artifact generation
 BLUEPRINT_DRESS=1 lake build
 
@@ -59,6 +83,8 @@ GitHub Actions workflow uses [dress-blueprint-action](https://github.com/e-vergo
 
 ```yaml
 - uses: e-vergo/dress-blueprint-action@main
+  with:
+    project-directory: .
 ```
 
 ## Side-by-Side Blueprint Integration
@@ -120,6 +146,44 @@ The blueprint uses `\inputleanmodule{}` commands to organize chapters by mathema
 ...
 ```
 
+## Visual Testing & Archive System
+
+The build script automatically captures screenshots and metrics for visual validation and historical tracking.
+
+### Screenshots
+
+Screenshots are stored in `/Users/eric/GitHub/Side-By-Side-Blueprint/dev/storage/PNT/`:
+
+```
+storage/PNT/
+  latest/                # Current build (overwritten each run)
+    capture.json         # Metadata: timestamp, commit, pages
+    dashboard.png
+    dep_graph.png
+    chapter-*.png
+    *_interactive.png    # Interactive state captures
+  archive/{timestamp}/    # Historical snapshots
+```
+
+### Visual Compliance
+
+After building, validate visual correctness:
+
+```bash
+cd ../../dev/scripts
+python3 -m sbs compliance --project PNT --interactive
+```
+
+This checks:
+- Dashboard layout and stats
+- Dependency graph rendering
+- Side-by-side theorem displays
+- Dark/light theme rendering
+- Status color accuracy
+- Rainbow bracket highlighting
+
+For comprehensive details on the archive system, CLI tooling, and validation workflows, see [`dev/storage/README.md`](../../dev/storage/README.md).
+
 ## Attribution
 
 ### Original PNT+ Project
@@ -163,10 +227,15 @@ To contribute without local installation, use Gitpod:
 
 ## Related Projects
 
-| Project | Scale | Purpose |
-|---------|-------|---------|
-| [SBS-Test](../SBS-Test/) | 33 nodes | Minimal test project (all 6 status colors) |
-| [General Crystallographic Restriction](../General_Crystallographic_Restriction/) | 57 nodes | Production example with paper generation |
+This fork is part of the [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) monorepo. Related showcase projects:
+
+| Project | Location | Scale | Purpose |
+|---------|----------|-------|---------|
+| **SBS-Test** | `toolchain/SBS-Test/` | 33 nodes | Minimal test project demonstrating all 6 status colors, XSS prevention, rainbow bracket depths (1-10), module references, validation testing |
+| **General Crystallographic Restriction** | `showcase/General_Crystallographic_Restriction/` | 57 nodes | Complete formalization with LaTeX paper generation (ar5iv style) |
+| **PrimeNumberTheoremAnd** (this project) | `showcase/PrimeNumberTheoremAnd/` | 591 nodes | **Large-scale integration** demonstrating >100 node optimizations, where dependency graph validation caught a logical error (Tao incident) |
+
+For toolchain architecture and development documentation, see the monorepo's [ARCHITECTURE.md](../../ARCHITECTURE.md) and [CLAUDE.md](../../CLAUDE.md).
 
 ## License
 
