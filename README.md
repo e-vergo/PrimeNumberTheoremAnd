@@ -1,4 +1,4 @@
-> **Fork Notice**: This is a fork of [AlexKontorovich/PrimeNumberTheoremAnd](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) with [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) integration for large-scale toolchain testing. The original project is maintained at [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd). All original proof code is preserved unchanged.
+> **Fork Notice**: This is a fork of the original [PNT+ project](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) with [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) integration. The original project is maintained at [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd). All original proof code is preserved unchanged.
 
 # Prime Number Theorem And...
 
@@ -7,13 +7,25 @@
 [![Original Blueprint](https://img.shields.io/badge/Original_Blueprint-Website-blue.svg?logo=github&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/blueprint)
 [![Original Docs](https://img.shields.io/badge/Original_Docs-Website-blue.svg?logo=readthedocs&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/docs)
 
-The largest integration of the Side-by-Side Blueprint toolchain, with 591 `@[blueprint]` annotations across 33 Lean source files.
+A formalization of the Prime Number Theorem and related results in Lean 4. This fork serves as the largest integration of the [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) toolchain, demonstrating capabilities at scale with 591 `@[blueprint]` annotations across 33 Lean source files.
 
 ---
 
-## Purpose of This Fork
+## Project Overview
 
-This fork demonstrates SBS toolchain capabilities at scale. It serves as:
+The objective of this formalization is to prove the Prime Number Theorem with classical error term, along with related results such as the Prime Number Theorem in Arithmetic Progressions. A stretch goal is the Chebotarev density theorem.
+
+The project pursues three parallel approaches to PNT:
+
+1. **Wiener-Ikehara Tauberian theorem** - Following Michael Stoll's "Euler Products" project
+2. **Complex analysis approach** - Residue calculus, argument principle, and Mellin transforms
+3. **Hadamard factorization** - The most general approach with exp-root-log savings
+
+---
+
+## Side-by-Side Blueprint Integration
+
+This fork demonstrates SBS toolchain capabilities at scale:
 
 1. **Large-scale integration test**: Exercises graph layout algorithms, performance optimizations, and validation checks that smaller test projects cannot stress
 2. **Connectivity validation showcase**: Where the "Tao incident" proved the value of dependency graph analysis
@@ -55,27 +67,13 @@ This scale triggers >100 node optimizations in the graph layout algorithm:
 
 ---
 
-## Original Project
-
-The objective of this project is to formalize in Lean the Prime Number Theorem (with classical error term), as well as related results such as the Prime Number Theorem in Arithmetic Progressions. A stretch goal would be to obtain the Chebotarev density theorem.
-
-The project also hosts the [Integrated Explicit Analytic Number Theory network](https://www.ipam.ucla.edu/news-research/special-projects/integrated-explicit-analytic-number-theory-network/). A personal log describing the latter project may be [found here](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/wiki/Terence-Tao's-personal-log).
-
-### Mathematical Content
-
-The formalization pursues three parallel approaches to PNT:
-
-1. **Wiener-Ikehara Tauberian theorem** - Following Michael Stoll's "Euler Products" project, which has a proof of PNT missing only the Wiener-Ikehara theorem.
-
-2. **Complex analysis approach** - Develops residue calculus on rectangles, the argument principle, and Mellin transforms to derive PNT with an error term stronger than any power of log savings.
-
-3. **Full treatment via Hadamard factorization** - The most general approach: residue calculus, Hadamard factorization theorem, zero-free region for zeta via Hoffstein-Lockhart+Goldfeld-Hoffstein-Liemann, leading to PNT with exp-root-log savings.
-
-### Key Results
+## Key Results
 
 - **WeakPNT**: Prime Number Theorem via Wiener-Ikehara
 - **MediumPNT**: PNT with improved error term via contour integration
 - **WeakPNT_AP**: Prime Number Theorem in Arithmetic Progressions
+
+The project also hosts the [Integrated Explicit Analytic Number Theory network](https://www.ipam.ucla.edu/news-research/special-projects/integrated-explicit-analytic-number-theory-network/). A personal log describing the latter project may be [found here](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/wiki/Terence-Tao's-personal-log).
 
 ---
 
@@ -175,6 +173,10 @@ To contribute to the original project without local installation, use Gitpod:
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/new/#https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/)
 
 ---
+
+## Tooling
+
+For build commands, screenshot capture, compliance validation, archive management, and custom rubrics, see the [Archive & Tooling Hub](../archive/README.md).
 
 ## Related Projects
 
