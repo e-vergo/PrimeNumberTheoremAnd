@@ -1,82 +1,11 @@
+> **Fork Notice**: This is a fork of [AlexKontorovich/PrimeNumberTheoremAnd](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) with [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) integration for toolchain testing. The original project is maintained at [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd). All original proof code is preserved unchanged.
+
 # Prime Number Theorem And...
 
 ![Lean](https://img.shields.io/badge/Lean-v4.27.0-blue)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-lightblue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Blueprint: Website](https://img.shields.io/badge/Blueprint-Website-blue.svg?logo=github&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/blueprint)
-[![Docs: Website](https://img.shields.io/badge/Docs-Website-blue.svg?logo=readthedocs&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/docs)
-
----
-
-## Side-by-Side Blueprint Fork
-
-This is a fork of [AlexKontorovich/PrimeNumberTheoremAnd](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) that integrates the [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) documentation toolchain.
-
-**Original project**: [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd)
-
-### Scale
-
-This project serves as a large-scale integration test for the SBS toolchain:
-
-| Metric | Value |
-|--------|-------|
-| Blueprint annotations | 591 `@[blueprint]` attributes |
-| Annotated files | 33 Lean source files |
-| Total source files | 50 Lean files |
-
-This scale exercises graph layout algorithms, performance optimizations, and module reference features that smaller test projects do not stress.
-
-### Integration Approach
-
-All annotations were added non-invasively. Zero changes to the original Lean proof code were required.
-
-### Features Demonstrated
-
-| Feature | Description |
-|---------|-------------|
-| Large-scale dependency graph | 591 nodes with Sugiyama hierarchical layout |
-| Module reference support | `\inputleanmodule{PrimeNumberTheoremAnd.Wiener}` organizes chapters by mathematical topic |
-| >100 node optimizations | Transitive reduction and visibility graph routing bypassed for performance |
-| Multi-chapter organization | 10 chapters spanning three approaches to PNT |
-
-### Toolchain Dependencies
-
-This fork adds [Dress](https://github.com/e-vergo/Dress) as a dependency, which transitively provides:
-
-| Repository | Purpose |
-|------------|---------|
-| [SubVerso](https://github.com/e-vergo/subverso) | Syntax highlighting with O(1) indexed lookups |
-| [LeanArchitect](https://github.com/e-vergo/LeanArchitect) | `@[blueprint]` attribute with 8 metadata + 3 status options |
-| [Dress](https://github.com/e-vergo/Dress) | Artifact generation, dependency graph layout, validation |
-| [Runway](https://github.com/e-vergo/Runway) | Site generator, dashboard, paper/PDF |
-
-### Building the Blueprint
-
-```bash
-# Fetch mathlib cache
-lake exe cache get
-
-# Build with artifact generation
-BLUEPRINT_DRESS=1 lake build
-
-# Generate Lake facets
-lake build :blueprint
-
-# Generate dependency graph and manifest
-lake exe extract_blueprint graph PrimeNumberTheoremAnd
-
-# Generate site
-lake exe runway build runway.json
-```
-
-Output is written to `.lake/build/runway/`.
-
-### CI/CD
-
-GitHub Actions workflow uses [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action):
-
-```yaml
-- uses: e-vergo/dress-blueprint-action@main
-```
+[![Original Blueprint](https://img.shields.io/badge/Original_Blueprint-Website-blue.svg?logo=github&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/blueprint)
+[![Original Docs](https://img.shields.io/badge/Original_Docs-Website-blue.svg?logo=readthedocs&logoColor=white)](https://AlexKontorovich.github.io/PrimeNumberTheoremAnd/docs)
 
 ---
 
@@ -102,6 +31,50 @@ The formalization pursues three parallel approaches to PNT:
 - **MediumPNT**: PNT with improved error term via contour integration
 - **WeakPNT_AP**: Prime Number Theorem in Arithmetic Progressions
 
+---
+
+## Side-by-Side Blueprint Integration
+
+This fork serves as the largest integration test for the SBS toolchain and showcases its dependency graph validation capabilities.
+
+### The Tao Incident (January 2026)
+
+This project is where dependency graph validation proved its value. From the [Zulip discussion](https://leanprover.zulipchat.com/#narrow/channel/423402-PrimeNumberTheorem.2B/topic/Fixing.20a.20sign.20error.20in.20Erdos.20392):
+
+> "When reviewing the blueprint graph I noticed an oddity in the Erdos 392 project: the final theorems (erdos-sol-1, erdos-sol-2) were mysteriously disconnected from the rest of the Erdos 392 lemmas; and the (AI-provided) proofs were suspiciously short. After some inspection I realized the problem: I had asked to prove the (trivial) statements that n! can be factored into **at least** n-n/log n + o(n/log n) factors of size <= n, when in fact the Erdos problem asks to factor into **at most** n-n/log n + o(n/log n) factors..."
+>
+> "Another cautionary tale not to blindly trust AI auto-formalization, even when it typechecks..."
+>
+> -- Terence Tao
+
+The disconnected dependency graph made the logical error visible. This incident led directly to automated connectivity validation in the SBS toolchain.
+
+### Scale
+
+| Metric | Value |
+|--------|-------|
+| Blueprint annotations | 591 `@[blueprint]` attributes |
+| Annotated files | 33 Lean source files |
+| Total source files | 50 Lean files |
+
+This scale exercises graph layout algorithms, performance optimizations, and validation checks that smaller test projects do not stress.
+
+### Features Demonstrated
+
+| Feature | Description |
+|---------|-------------|
+| Large-scale dependency graph | 591 nodes with Sugiyama hierarchical layout |
+| Connectivity validation | Detects disconnected subgraphs (the Tao check) |
+| Module reference support | `\inputleanmodule{PrimeNumberTheoremAnd.Wiener}` organizes chapters by mathematical topic |
+| >100 node optimizations | Transitive reduction and visibility graph routing bypassed for performance |
+| Multi-chapter organization | 10 chapters spanning three approaches to PNT |
+
+### Integration Approach
+
+All 591 annotations were added non-invasively. Zero changes to the original Lean proof code were required.
+
+---
+
 ## Blueprint Organization
 
 The blueprint uses `\inputleanmodule{}` commands to organize chapters by mathematical topic:
@@ -117,6 +90,8 @@ The blueprint uses `\inputleanmodule{}` commands to organize chapters by mathema
 ...
 ```
 
+---
+
 ## Building
 
 ### Lean Project
@@ -128,7 +103,44 @@ lake build
 
 ### Blueprint Site
 
-The blueprint site is built via GitHub Actions using [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action). Output is written to `.lake/build/runway/`.
+```bash
+# Build with artifact generation
+BLUEPRINT_DRESS=1 lake build
+
+# Generate Lake facets
+lake build :blueprint
+
+# Generate dependency graph and manifest
+lake exe extract_blueprint graph PrimeNumberTheoremAnd
+
+# Generate site
+lake exe runway build runway.json
+```
+
+Output is written to `.lake/build/runway/`.
+
+### CI/CD
+
+GitHub Actions workflow uses [dress-blueprint-action](https://github.com/e-vergo/dress-blueprint-action):
+
+```yaml
+- uses: e-vergo/dress-blueprint-action@main
+```
+
+---
+
+## Toolchain Dependencies
+
+This fork adds [Dress](https://github.com/e-vergo/Dress) as a dependency, which transitively provides:
+
+| Repository | Purpose |
+|------------|---------|
+| [SubVerso](https://github.com/e-vergo/subverso) | Syntax highlighting with O(1) indexed lookups |
+| [LeanArchitect](https://github.com/e-vergo/LeanArchitect) | `@[blueprint]` attribute with 8 metadata + 3 status options |
+| [Dress](https://github.com/e-vergo/Dress) | Artifact generation, dependency graph layout, validation |
+| [Runway](https://github.com/e-vergo/Runway) | Site generator, dashboard, paper/PDF |
+
+---
 
 ## Zulip
 
@@ -138,15 +150,15 @@ The project is coordinated via a [Lean Zulip channel](https://leanprover.zulipch
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for instructions on how to claim issues, submit PRs, and participate in the project.
 
-### Quick contributions via Gitpod
+### Quick Contributions via Gitpod
 
-If you want to quickly contribute to the project without installing your own copy of Lean, you can do so using Gitpod.
-Simply visit: <https://gitpod.io/new/#https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/>, or click the button below:
+To contribute to the original project without local installation, use Gitpod (links to upstream repository):
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/new/#https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/)
 
-All the required dependencies will be loaded (this takes a few minutes), after which you will be brought to a web-based
-VS Code window, where you can edit the code and submit PRs.
+Dependencies load automatically, providing a web-based VS Code environment for editing and submitting PRs.
+
+---
 
 ## Related Projects
 
@@ -164,6 +176,8 @@ VS Code window, where you can edit the code and submit PRs.
 ### Other SBS Projects
 - [SBS-Test](https://github.com/e-vergo/SBS-Test) - Minimal test project (33 nodes, all 6 status colors)
 - [General Crystallographic Restriction](https://github.com/e-vergo/General_Crystallographic_Restriction) - Production example with paper generation (57 nodes)
+
+---
 
 ## Prior Art
 
