@@ -1,4 +1,4 @@
-> **This is a fork of the original [PNT+](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) project with [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) integration.** The original project is maintained by Alex Kontorovich and Terence Tao at [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd). All original Lean proof code is preserved unchanged; only `@[blueprint]` annotations were added for documentation generation.
+> **This is a fork of the original [PNT+](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) project with [Side-by-Side Blueprint](https://github.com/e-vergo/SLS-Strange-Loop-Station) integration.** The original project is maintained by Alex Kontorovich and Terence Tao at [leanprover-community/PrimeNumberTheoremAnd](https://github.com/leanprover-community/PrimeNumberTheoremAnd). All original Lean proof code is preserved unchanged; only `@[blueprint]` annotations were added for documentation generation.
 
 # Prime Number Theorem And...
 
@@ -14,7 +14,7 @@ A collaborative formalization of the Prime Number Theorem and related results in
 - **Build & Run**: `../../dev/build-pnt.sh` (one-click)
 - **Live Site**: `.lake/build/runway/index.html` (after building)
 - **Dependency Graph**: `.lake/build/runway/dep_graph.html`
-- **SBS Toolchain**: [Side-by-Side Blueprint monorepo](https://github.com/e-vergo/Side-By-Side-Blueprint)
+- **SBS Toolchain**: [Side-by-Side Blueprint monorepo](https://github.com/e-vergo/SLS-Strange-Loop-Station)
 
 ## Project Overview
 
@@ -89,7 +89,7 @@ GitHub Actions workflow uses [dress-blueprint-action](https://github.com/e-vergo
 
 ## Side-by-Side Blueprint Integration
 
-This fork serves as the **large-scale integration example** for the [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) toolchain, demonstrating capabilities at production scale.
+This fork serves as the **large-scale integration example** for the [Side-by-Side Blueprint](https://github.com/e-vergo/SLS-Strange-Loop-Station) toolchain, demonstrating capabilities at production scale.
 
 ### Scale
 
@@ -227,7 +227,7 @@ To contribute without local installation, use Gitpod:
 
 ## Related Projects
 
-This fork is part of the [Side-by-Side Blueprint](https://github.com/e-vergo/Side-By-Side-Blueprint) monorepo. Related showcase projects:
+This fork is part of the [Side-by-Side Blueprint](https://github.com/e-vergo/SLS-Strange-Loop-Station) monorepo. Related showcase projects:
 
 | Project | Location | Scale | Purpose |
 |---------|----------|-------|---------|
