@@ -27,76 +27,94 @@ noncomputable def Inputs.default : Inputs := {
   ZDB := FKS.corollary_2_9_merged -- stronger than the Kadiri-Lumley-Ng input used here
 }
 
+/-%%
+Let $x \geq e^{1000}$ and $T$ satisfies $50 < T \leq x$. Then
+  $$ \frac{\psi(x) - x}{x} = \sum_{|\gamma| < T} \frac{x^{\rho - 1}}{\rho} + \mathcal{O}^*\left(\frac{2(\log x)^2}{T}\right) $$ where $A = \mathcal{O}^*(B)$ means $|A| \leq B$.
+%%-/
 @[blueprint
   "bklnw-eq_A_7"
   (title := "Equation (A.7)")
-  (statement := /-- Let $x \geq e^{1000}$ and $T$ satisfies $50 < T \leq x$. Then
-  $$ \frac{\psi(x) - x}{x} = \sum_{|\gamma| < T} \frac{x^{\rho - 1}}{\rho} + \mathcal{O}^*\left(\frac{2(\log x)^2}{T}\right) $$ where $A = \mathcal{O}^*(B)$ means $|A| \leq B$. -/)
   (proof := /-- See \cite[Theorem 1.3]{Dudek}. -/)
   (latexEnv := "sublemma")]
 theorem bklnw_eq_A_7 (x T : ℝ) (hx : x ≥ exp 1000) (hT1 : 50 < T) (hT2 : T ≤ x) : ∃ E, ((ψ x - x) / x = riemannZeta.zeroes_sum (Set.Icc 0 1) (Set.Ioo (-T) T) (fun ρ ↦ x^(ρ-1) / ρ) + E ∧ ‖E‖ ≤ 2 * (log x)^2 / T) := by sorry
 
+/-%%
+We denote
+  $$ s_0(b, T) = \frac{2b^2}{T}. $$
+%%-/
 @[blueprint
   "bklnw-eq_A_8"
-  (title := "Equation (A.8)")
-  (statement := /-- We denote
-  $$ s_0(b, T) = \frac{2b^2}{T}. $$ -/)]
+  (title := "Equation (A.8)")]
 noncomputable def bklnw_eq_A_8 (b T : ℝ) : ℝ := 2 * b^2 / T
 
+/-%%
+We denote $$ \Sigma_1 := \sum_{|\gamma| \leq T; \beta < 1 - \delta} \frac{x^{\rho - 1}}{\rho} $$
+%%-/
 @[blueprint
   "bklnw-sigma_1_def"
-  (title := "Definition of Sigma 1")
-  (statement := /-- We denote $$ \Sigma_1 := \sum_{|\gamma| \leq T; \beta < 1 - \delta} \frac{x^{\rho - 1}}{\rho} $$ -/)]
+  (title := "Definition of Sigma 1")]
 noncomputable def Sigma₁ (x T δ : ℝ) : ℂ := riemannZeta.zeroes_sum (Set.Ico 0 (1 - δ)) (Set.Ioo (-T) T) (fun ρ ↦ x^(ρ-1) / ρ)
 
+/-%%
+We denote $$ \Sigma_2 := \sum_{|\gamma| \leq T; \beta \geq 1 - \delta} \frac{x^{\rho - 1}}{\rho} $$
+%%-/
 @[blueprint
   "bklnw-sigma_2_def"
-  (title := "Definition of Sigma 2")
-  (statement := /-- We denote $$ \Sigma_2 := \sum_{|\gamma| \leq T; \beta \geq 1 - \delta} \frac{x^{\rho - 1}}{\rho} $$ -/)]
+  (title := "Definition of Sigma 2")]
 noncomputable def Sigma₂ (x T δ : ℝ) : ℂ := riemannZeta.zeroes_sum (Set.Ioc (1 - δ) 1) (Set.Ioo (-T) T) (fun ρ ↦ x^(ρ-1) / ρ)
 
+/-%%
+We have
+  $$ \sum_{|\gamma| < T} \frac{x^{\rho-1}}{\rho} = \Sigma_1 + \Sigma_2 $$
+%%-/
 @[blueprint
   "bklnw-eq_A_9"
   (title := "Equation (A.9)")
-  (statement := /-- We have
-  $$ \sum_{|\gamma| < T} \frac{x^{\rho-1}}{\rho} = \Sigma_1 + \Sigma_2 $$ -/)
   (proof := /-- Follows directly from the definitions of Σ₁ and Σ₂. -/)
   (latexEnv := "sublemma")
   (discussion := 750)]
 theorem bklnw_eq_A_9 (x T δ : ℝ) : riemannZeta.zeroes_sum (Set.Icc 0 1) (Set.Ioo (-T) T) (fun ρ ↦ x^(ρ-1) / ρ) = Sigma₁ x T δ + Sigma₂ x T δ := by sorry
 
+/-%%
+We have
+  $$ |\Sigma_1| \leq x^{-\delta} \left(\frac{1}{2\pi}(\log(T/2\pi))^2 + 1.8642\right). $$
+%%-/
 @[blueprint
   "bklnw-eq_A_10"
   (title := "Equation (A.10)")
-  (statement := /-- We have
-  $$ |\Sigma_1| \leq x^{-\delta} \left(\frac{1}{2\pi}(\log(T/2\pi))^2 + 1.8642\right). $$ -/)
   (proof := /-- See \cite[Lemma 2.10]{STD2015}. -/)
   (latexEnv := "sublemma")]
 theorem bklnw_eq_A_10 (x T δ : ℝ) (hδ : 0.001 ≤ δ) : ‖Sigma₁ x T δ‖ ≤ exp (-δ * log x) * (1 / (2 * π) * (log (T / (2 * π)))^2 + 1.8642) := by sorry
 
+/-%%
+We denote
+  $$ s_1(b, \delta, T) = e^{-\delta b} \left(\frac{1}{2\pi}(\log(T/2\pi))^2 + 1.8642\right). $$
+%%-/
 @[blueprint
   "bklnw-eq_A_11"
-  (title := "Equation (A.11)")
-  (statement := /-- We denote
-  $$ s_1(b, \delta, T) = e^{-\delta b} \left(\frac{1}{2\pi}(\log(T/2\pi))^2 + 1.8642\right). $$ -/)]
+  (title := "Equation (A.11)")]
 noncomputable def s₁ (b δ T : ℝ) : ℝ := exp (-δ * b) * (1 / (2 * π) * (log (T / (2 * π)))^2 + 1.8642)
 
+/-%%
+We have
+  $$ |\Sigma_2| \leq 2 \sum_{k=0}^{K-1} \frac{\lambda^{k+1} x^{-\frac{1}{R \log(T/\lambda^k)}}}{T} N\left(1 - \delta, \frac{T}{\lambda^k}\right). $$
+%%-/
 @[blueprint
   "bklnw-eq_A_12"
   (title := "Equation (A.12)")
-  (statement := /-- We have
-  $$ |\Sigma_2| \leq 2 \sum_{k=0}^{K-1} \frac{\lambda^{k+1} x^{-\frac{1}{R \log(T/\lambda^k)}}}{T} N\left(1 - \delta, \frac{T}{\lambda^k}\right). $$ -/)
   (proof := /-- An argument of Pintz \cite[Pintz1980] is employed.  The interval $[0,T]$ is split into subintervals $[T/\lambda^{k+1}, T/\lambda^k]$ where $\lambda > 1$, $0 \leq k \leq K-1$, and $K = \lfloor \frac{\log T/H}{\log \lambda} \rfloor + 1$.  Then use the zero-free region to bound $\Re \rho$. -/)
   (latexEnv := "sublemma")]
 theorem bklnw_eq_A_12 (I : Inputs) (x T δ lambda : ℝ) (hlambda : 1 < lambda) :
   let K := ⌊ log (T / I.H) / log lambda ⌋₊ + 1
   ‖Sigma₂ x T δ‖ ≤ 2 * ∑ k ∈ Finset.range K, (lambda^(k+1) * x^(- (1 / I.R * log (T / lambda^k))) / T) * I.ZDB.N (1 - δ) (T / lambda^k) := by sorry
 
+/-%%
+We have
+  $$ |\Sigma_2| \leq \frac{2\lambda}{T} \sum_{k=0}^{K-1} \lambda^k x^{-\frac{1}{R \log(T/\lambda^k)}} \left(c_1 \left(\frac{T}{\lambda^k}\right)^{\frac{8\delta}{3}} (\log(T/\lambda^k))^{3+2\delta} + c_2 (\log(T/\lambda^k))^2\right). $$
+%%-/
 @[blueprint
   "bklnw-eq_A_13"
   (title := "Equation (A.13)")
-  (statement := /-- We have
-  $$ |\Sigma_2| \leq \frac{2\lambda}{T} \sum_{k=0}^{K-1} \lambda^k x^{-\frac{1}{R \log(T/\lambda^k)}} \left(c_1 \left(\frac{T}{\lambda^k}\right)^{\frac{8\delta}{3}} (\log(T/\lambda^k))^{3+2\delta} + c_2 (\log(T/\lambda^k))^2\right). $$ -/)
   (proof := /-- Inserting (A.6) into the result of (A.12). -/)
   (latexEnv := "sublemma")
   (discussion := 751)]
@@ -107,25 +125,29 @@ theorem bklnw_eq_A_13 (I : Inputs) (x T δ lambda : ℝ) (hlambda : 1 < lambda) 
       exp (k * log lambda - (log x) / (I.R * (log T - k * log lambda))) *
       ((I.ZDB.c₁ (1-δ)) * (T / lambda^k)^(8 * δ / 3) * (log (T / lambda^k))^(3 + 2 * δ) + (I.ZDB.c₂ (1-δ)) * (log (T / lambda^k))^2) := by sorry
 
-@[blueprint
-  "bklnw-eq_A_14"
-  (title := "Equation (A.14)")
-  (statement := /-- We denote
+/-%%
+We denote
   \begin{align}
   s_2(b, \lambda, K, T) &= \frac{2\lambda}{T} \sum_{k=0}^{K-1} \exp\left(k \log \lambda - \frac{b}{R(\log T - k \log \lambda)}\right) \\
   &\quad \times \left(c_1 \left(\frac{T}{\lambda^k}\right)^{\frac{8\delta}{3}} (\log(T/\lambda^k))^{3+2\delta} + c_2 (\log(T/\lambda^k))^2\right). \notag
-  \end{align} -/)]
+  \end{align}
+%%-/
+@[blueprint
+  "bklnw-eq_A_14"
+  (title := "Equation (A.14)")]
 noncomputable def Inputs.s₂ (I : Inputs) (δ b : ℝ) (K : ℕ) (lambda T : ℝ) : ℝ :=
   (2 * lambda / T) *
     ∑ k ∈ Finset.range K,
       exp (k * log lambda - b / (I.R * (log T - k * log lambda))) *
       ((I.ZDB.c₁ (1-δ)) * (T / lambda^k)^(8 * δ / 3) * (log (T / lambda^k))^(3 + 2 * δ) + (I.ZDB.c₂ (1-δ)) * (log (T / lambda^k))^2)
 
+/-%%
+Let $b_1, b_2$ satisfy $1000 \leq b_1 < b_2$. Let $0.001 \leq \delta \leq 0.025$, $\lambda > 1$, $H < T < e^{b_1}$, and $K = \left\lfloor \frac{\log \frac{T}{H}}{\log \lambda} \right\rfloor + 1$. Then for all $x \in [e^{b_1}, e^{b_2}]$
+  $$ \left|\frac{\psi(x) - x}{x}\right| \leq s_0(b_2, T) + s_1(b_1, \delta, T) + s_2(b_1, \delta, \lambda, K, T), $$ where $s_0, s_1, s_2$ are respectively defined in Definitions \ref{bklnw-eq_A_8}, \ref{bklnw-eq_A_11}, and \ref{bklnw-eq_A_14}
+%%-/
 @[blueprint
   "bklnw-thm-13"
   (title := "Theorem 13")
-  (statement := /-- Let $b_1, b_2$ satisfy $1000 \leq b_1 < b_2$. Let $0.001 \leq \delta \leq 0.025$, $\lambda > 1$, $H < T < e^{b_1}$, and $K = \left\lfloor \frac{\log \frac{T}{H}}{\log \lambda} \right\rfloor + 1$. Then for all $x \in [e^{b_1}, e^{b_2}]$
-  $$ \left|\frac{\psi(x) - x}{x}\right| \leq s_0(b_2, T) + s_1(b_1, \delta, T) + s_2(b_1, \delta, \lambda, K, T), $$ where $s_0, s_1, s_2$ are respectively defined in Definitions \ref{bklnw-eq_A_8}, \ref{bklnw-eq_A_11}, and \ref{bklnw-eq_A_14} -/)
   (proof := /-- Follows from combining Sublemmas \ref{bklnw_eq_A_7}, \ref{bklnw_eq_A_9}, \ref{bklnw_eq_A_10}, and \ref{bklnw_eq_A_13}. -/)
   (latexEnv := "theorem")
   (discussion := 752)]
@@ -135,70 +157,78 @@ theorem bklnw_thm_15 (I : Inputs) (b₁ b₂ δ lambda T x : ℝ) (hb : 1000 ≤
   ‖(ψ x - x) / x‖ ≤ bklnw_eq_A_8 b₂ T + s₁ b₁ δ T + I.s₂ δ b₁ K lambda T := by sorry
 
 
+/-%%
+We define
+  $$ k(\sigma, x_0) = \left( \exp\left(\frac{10 - 16 \sigma}{3} \left( \frac{\log x_0}{R} \right)^{1/2} \right) \left( \frac{\log x_0}{R} \right)^{5 - 2 \sigma} \right)^{-1}. $$
+%%-/
 @[blueprint
   "bklnw-eq_A_16"
-  (title := "Equation (A.16)")
-  (statement := /-- We define
-  $$ k(\sigma, x_0) = \left( \exp\left(\frac{10 - 16 \sigma}{3} \left( \frac{\log x_0}{R} \right)^{1/2} \right) \left( \frac{\log x_0}{R} \right)^{5 - 2 \sigma} \right)^{-1}. $$
-  -/)]
+  (title := "Equation (A.16)")]
 noncomputable def Inputs.k (I : Inputs) (σ x₀ : ℝ) : ℝ := (exp ((10 - 16 * σ) / 3 * (log x₀ / I.R)^(1/2)) * (log x₀ / I.R)^(5 - 2 * σ))^(-1:ℝ)
 
+/-%%
+We define
+  $$ c_3(\sigma, x_0) = 2 \exp\left( -2 \left( \frac{\log x_0}{R} \right)^{1/2} \right) (\log x_0)^2 k(\sigma, x_0). $$
+%%-/
 @[blueprint
   "bklnw-eq_A_17"
-  (title := "Equation (A.17)")
-  (statement := /-- We define
-  $$ c_3(\sigma, x_0) = 2 \exp\left( -2 \left( \frac{\log x_0}{R} \right)^{1/2} \right) (\log x_0)^2 k(\sigma, x_0). $$
-  -/)]
+  (title := "Equation (A.17)")]
 noncomputable def Inputs.c3 (I : Inputs) (σ x₀ : ℝ) : ℝ :=
   2 * exp (-2 * (log x₀ / I.R)^(1/2)) * (log x₀)^2 * I.k σ x₀
 
+/-%%
+We define
+  $$ c_4(\sigma, x_0) = x_0^{\sigma - 1} \left( \frac{2 \log x_0}{\pi R} + 1.8642 \right) k(\sigma, x_0). $$
+%%-/
 @[blueprint
   "bklnw-eq_A_18"
-  (title := "Equation (A.18)")
-  (statement := /-- We define
-  $$ c_4(\sigma, x_0) = x_0^{\sigma - 1} \left( \frac{2 \log x_0}{\pi R} + 1.8642 \right) k(\sigma, x_0). $$
-  -/)]
+  (title := "Equation (A.18)")]
 noncomputable def Inputs.c4 (I : Inputs) (σ x₀ : ℝ) : ℝ :=
   x₀^(σ - 1:ℝ) * (2 * log x₀ / π / I.R + 1.8642) * I.k σ x₀
 
+/-%%
+We define
+  $$ c_5(\sigma, x_0) = 8.01 \cdot c_2(\sigma) \exp\left( -2 \left( \frac{\log x_0}{R} \right)^{1/2} \right) \frac{\log x_0}{R} k(\sigma, x_0). $$
+%%-/
 @[blueprint
   "bklnw-eq_A_19"
-  (title := "Equation (A.19)")
-  (statement := /-- We define
-  $$ c_5(\sigma, x_0) = 8.01 \cdot c_2(\sigma) \exp\left( -2 \left( \frac{\log x_0}{R} \right)^{1/2} \right) \frac{\log x_0}{R} k(\sigma, x_0). $$
-  -/)]
+  (title := "Equation (A.19)")]
 noncomputable def Inputs.c5 (I : Inputs) (σ x₀ : ℝ) : ℝ :=
   8.01 * I.ZDB.c₂ σ * exp (-2 * (log x₀ / I.R)^(1/2)) * (log x₀ / I.R) * I.k σ x₀
 
+/-%%
+We define
+  $$ A(\sigma, x_0) = 2.0025 \cdot 25^{-2 \sigma} \cdot c_1(\sigma) + c_3(\sigma, x_0) + c_4(\sigma, x_0) + c_5(\sigma, x_0). $$
+%%-/
 @[blueprint
   "bklnw-eq_A_20"
-  (title := "Equation (A.20)")
-  (statement := /-- We define
-  $$ A(\sigma, x_0) = 2.0025 \cdot 25^{-2 \sigma} \cdot c_1(\sigma) + c_3(\sigma, x_0) + c_4(\sigma, x_0) + c_5(\sigma, x_0). $$
-  -/)]
+  (title := "Equation (A.20)")]
 noncomputable def Inputs.A (I : Inputs) (σ x₀ : ℝ) : ℝ :=
   2.0025 * 25^(-2 * σ) * I.ZDB.c₁ σ + I.c3 σ x₀ + I.c4 σ x₀ + I.c5 σ x₀
 
-@[blueprint
-  "bklnw-eq_A_21"
-  (title := "Equation (A.21)")
-  (statement := /-- We define
+/-%%
+We define
   $$ B = 5/2 - \sigma, $$
   and
   $$ C = 16 \sigma/3 - \frac{10}{3}. $$
-  -/)]
+%%-/
+@[blueprint
+  "bklnw-eq_A_21"
+  (title := "Equation (A.21)")]
 noncomputable def Inputs.B (_ : Inputs) (σ : ℝ) : ℝ := 5/2 - σ
 
 @[blueprint
   "bklnw-eq_A_21"]
 noncomputable def Inputs.C (_ : Inputs) (σ : ℝ) : ℝ := 16 * σ / 3 - 10 / 3
 
+/-%%
+Let $x_0 \geq 1000$ and let $\sigma \in [0.75, 1)$. For all $x \geq e^{x_0}$,
+  $$ \frac{|\psi(x) - x|}{x} \leq A \left( \frac{\log x}{R} \right)^B \exp\left( -C \left( \frac{\log x}{R} \right)^{1/2} \right) $$
+  where $A$, $B$, and $C$ are defined in Definitions \ref{bklnw-eq_A_20}, \ref{bklnw-eq_A_21}.
+%%-/
 @[blueprint
   "bklnw-thm-14"
   (title := "Theorem 14")
-  (statement := /-- Let $x_0 \geq 1000$ and let $\sigma \in [0.75, 1)$. For all $x \geq e^{x_0}$,
-  $$ \frac{|\psi(x) - x|}{x} \leq A \left( \frac{\log x}{R} \right)^B \exp\left( -C \left( \frac{\log x}{R} \right)^{1/2} \right) $$
-  where $A$, $B$, and $C$ are defined in Definitions \ref{bklnw-eq_A_20}, \ref{bklnw-eq_A_21}. -/)
   (proof := /-- This is proven by Platt and Trudgian \cite{PT2021} -/)]
 theorem thm_14 (I : Inputs) {x₀ σ x : ℝ} (hx₀ : x₀ ≥ 1000) (hσ : 0.75 ≤ σ ∧ σ < 1) (hx : x ≥ exp x₀) :
   Eψ x ≤ I.A σ x₀ * (log x / I.R)^(I.B σ) * exp (-I.C σ * (log x / I.R)^(1/2:ℝ)) := by sorry
@@ -211,8 +241,6 @@ theorem thm_14 (I : Inputs) {x₀ σ x : ℝ} (hx₀ : x₀ ≥ 1000) (hσ : 0.7
   (proof := /-- This follows from Theorem \ref{buthe-theorem-2a}. TODO: create a primary Buthe section to place this result -/)]
 theorem bklnw_eq_A_26 (x : ℝ) (hx1 : 100 ≤ x) (hx2 : x ≤ 1e19) :
   Eψ x ≤ 0.94 / sqrt x := by sorry
-
-
 @[blueprint
   "bklnw-lemma_15"
   (title := "Lemma 15")
@@ -242,12 +270,14 @@ theorem bklnw_lemma_15 (c B₀ B : ℝ)
   (hb : exp b ∈ Set.Ioc B₀ B) :
   ∀ x ≥ exp b, Eψ x ≤ max (c / exp (b / 2)) (ε (log B)) := by sorry
 
+/-%%
+Let $b$ be a positive constant such that $\log 11 < b \leq 19 \log(10)$. Then we have
+  $$ \left|\frac{\psi(x) - x}{x}\right| \leq \max\left\{\frac{0.94}{e^{\frac{b}{2}}}, \varepsilon(19 \log 10)\right\} \quad \text{for all } x \geq e^b. $$
+  Note that by Table 8, we have $\varepsilon(19 \log 10) = 1.93378 \cdot 10^{-8}$.
+%%-/
 @[blueprint
  "bklnw-cor_15_1"
   (title := "Corollary 15.1")
-  (statement := /-- Let $b$ be a positive constant such that $\log 11 < b \leq 19 \log(10)$. Then we have
-  $$ \left|\frac{\psi(x) - x}{x}\right| \leq \max\left\{\frac{0.94}{e^{\frac{b}{2}}}, \varepsilon(19 \log 10)\right\} \quad \text{for all } x \geq e^b. $$
-  Note that by Table 8, we have $\varepsilon(19 \log 10) = 1.93378 \cdot 10^{-8}$. -/)
   (proof := /-- By \cite[(1.5)]{Buthe}, (A.27) holds with $B_0 = 11$, $B = 10^{19}$, and $c = 0.94$. Thus we may apply Lemma \ref{bklnw-lemma_15} with $B_0 = 11$, $B = 10^{19}$, and $c = 0.94$ from \cite[(1.5)]{Buthe} to obtain the claim. -/)
   (latexEnv := "corollary")]
 theorem bklnw_cor_15_1 (b : ℝ) (hb1 : log 11 < b) (hb2 : b ≤ 19 * log 10)
@@ -255,11 +285,13 @@ theorem bklnw_cor_15_1 (b : ℝ) (hb1 : log 11 < b) (hb2 : b ≤ 19 * log 10)
   (hε : ∀ b₀ > 0, ∀ x ≥ exp b₀, Eψ x ≤ ε b₀) :
   ∀ x ≥ exp b, Eψ x ≤ max (0.94 / exp (b / 2)) (ε (19 * log 10)) := by sorry
 
+/-%%
+We define Logan's function
+  $$ \ell_{c,\varepsilon}(\xi) = \frac{c}{\sinh c} \frac{\sin(\sqrt{(\xi\varepsilon)^2 - c^2})}{\sqrt{(\xi\varepsilon)^2 - c^2}}. $$
+%%-/
 @[blueprint
   "logan-function"
   (title := "Logan's function")
-  (statement := /-- We define Logan's function
-  $$ \ell_{c,\varepsilon}(\xi) = \frac{c}{\sinh c} \frac{\sin(\sqrt{(\xi\varepsilon)^2 - c^2})}{\sqrt{(\xi\varepsilon)^2 - c^2}}. $$ -/)
   (latexEnv := "definition")]
 noncomputable def ℓ (c ε ξ : ℝ) : ℝ := (c / sinh c) * (sin (sqrt ((ξ * ε)^2 - c^2))) / (sqrt ((ξ * ε)^2 - c^2))
 
@@ -362,21 +394,24 @@ noncomputable def table_8_ε (b : ℝ) : ℝ :=
   else if b < 25000 then 1.07022e-48
   else 7.57240e-50
 
+/-%%
+If $b>0$ then $|\psi(x) - x| \leq \varepsilon(b) x$ for all $x \geq \exp(b)$, where $\varepsilon$ is as in \cite[Table 8]{BKLNW}.
+%%-/
 @[blueprint
   "bknlw-theorem-2"
   (title := "Theorem 2")
-  (statement := /-- If $b>0$ then $|\psi(x) - x| \leq \varepsilon(b) x$ for all $x \geq \exp(b)$, where $\varepsilon$ is as in \cite[Table 8]{BKLNW}. -/)
   (latexEnv := "theorem")
   (proof := /-- Values for $20 \leq b \leq 2000$ are computed using Theorem \ref{bklnw-thm-16}, and values for $2500 \leq b \leq 25000$ are computed as using Theorem \ref{bklnw-thm-13}.  For $b > 25000$ we use Theorem \ref{bklnw-thm-14}. -/)]
 theorem theorem_2 : ∀ b ≥ 0, ∀ x ≥ exp b,
     |ψ x - x| ≤ table_8_ε b * x := by sorry
 
+/-%%
+Let $b$ be a positive constant such that $\log 11 < b \leq 19 \log(10)$. Then we have
+  $$ \left|\frac{\psi(x) - x}{x}\right| \leq \max\left\{\frac{0.94}{e^{\frac{b}{2}}}, 1.93378 \cdot 10^{-8}\right\} \quad \text{for all } x \geq e^b. $$
+%%-/
 @[blueprint
  "bklnw-cor_15_1_alt"
   (title := "Corollary 15.1, alternative version")
-  (statement := /-- Let $b$ be a positive constant such that $\log 11 < b \leq 19 \log(10)$. Then we have
-  $$ \left|\frac{\psi(x) - x}{x}\right| \leq \max\left\{\frac{0.94}{e^{\frac{b}{2}}}, 1.93378 \cdot 10^{-8}\right\} \quad \text{for all } x \geq e^b. $$
-   -/)
   (proof := /-- From Table 8 we have $\varepsilon(19 \log 10) = 1.93378 \cdot 10^{-8}$.
   Now apply Corollary \ref{bklnw-cor_15_1} and Theorem \ref{bklnw-theorem-2}. -/)
   (latexEnv := "corollary")]

@@ -8,24 +8,24 @@ import Dress
 import Mathlib.Analysis.Complex.AbsMax
 import Mathlib.Analysis.Complex.RemovableSingularity
 
-@[blueprint
-  (statement := /--
-    Given a complex function $f$, we define the function
+/-%%
+Given a complex function $f$, we define the function
     $$g(z):=\begin{cases}
     \frac{f(z)}{z}, & z\neq 0;\\
     f'(0), & z=0.
     \end{cases}$$
-  -/)]
+%%-/
+@[blueprint]
 noncomputable abbrev divRemovable_zero (f : ℂ → ℂ) : ℂ → ℂ :=
   Function.update (fun z ↦ (f z) / z) 0 ((deriv f) 0)
 
 -- Away from zero divRemovable_zero f z is equal to f z / z
-@[blueprint
-  (statement := /--
-    Let $f$ be a complex function and let $z\neq 0$. Then, with $g$ defined as in
+/-%%
+Let $f$ be a complex function and let $z\neq 0$. Then, with $g$ defined as in
     Definition~\ref{divRemovable_zero},
     $$g(z)=\frac{f(z)}{z}.$$
-  -/)
+%%-/
+@[blueprint
   (proof := /-- This follows directly from the definition of $g$. -/)
   (latexEnv := "lemma")]
 lemma divRemovable_zero_of_ne_zero {z : ℂ} (f : ℂ → ℂ) (z_ne_0 : z ≠ 0) :
@@ -34,11 +34,11 @@ lemma divRemovable_zero_of_ne_zero {z : ℂ} (f : ℂ → ℂ) (z_ne_0 : z ≠ 0
 
 -- If f is analytic on an open set and f 0 = 0 then f z / z is also
 -- analytic on the same open set.
-@[blueprint
-  (statement := /--
-    Let $f$ be a complex function analytic on an open set $s$ containing $0$ such that $f(0)=0$.
+/-%%
+Let $f$ be a complex function analytic on an open set $s$ containing $0$ such that $f(0)=0$.
     Then, with $g$ defined as in Definition~\ref{divRemovable_zero}, $g$ is analytic on $s$.
-  -/)
+%%-/
+@[blueprint
   (proof := /--
     We need to show that $g$ is complex differentiable at every point in $s$.
     For $z\neq 0$, this follows directly from the definition of $g$ and the fact that $f$ is
@@ -79,12 +79,12 @@ lemma AnalyticOn_divRemovable_zero {f : ℂ → ℂ} {s : Set ℂ}
 -- The proof of the Lemma below is cumbersome, a proper way would be to
 -- show that if f is analytic on a closed set C, then it is analytic on an
 -- open set O containing the closed set C and apply the previous lemma.
-@[blueprint
-  (statement := /--
-    Let $f$ be a complex function analytic on the closed ball $|z|\leq R$ such that $f(0)=0$.
+/-%%
+Let $f$ be a complex function analytic on the closed ball $|z|\leq R$ such that $f(0)=0$.
     Then, with $g$ defined as in Definition~\ref{divRemovable_zero}, $g$ is analytic on
     $|z|\leq R$.
-  -/)
+%%-/
+@[blueprint
   (proof := /--
     The proof is similar to that of Lemma~\ref{AnalyticOn_divRemovable_zero}, but we need to
     consider two cases: when $x$ is on the boundary of the closed ball and when it is in the
@@ -164,23 +164,23 @@ lemma AnalyticOn_divRemovable_zero_closedBall {f : ℂ → ℂ} {R : ℝ}
         · apply Metric.isOpen_ball
         · apply AnalyticOn.mono analytic Metric.ball_subset_closedBall
 
-@[blueprint
-  (statement := /--
-    Given a complex function $f$ and a real number $M$, we define the function
+/-%%
+Given a complex function $f$ and a real number $M$, we define the function
     $$f_{M}(z):=\frac{g(z)}{2M - f(z)},$$
     where $g$ is defined as in Definition~\ref{divRemovable_zero}.
-  -/)]
+%%-/
+@[blueprint]
 noncomputable abbrev schwartzQuotient (f : ℂ → ℂ) (M : ℝ) : ℂ → ℂ :=
   fun z ↦ (divRemovable_zero f z) / (2 * M - f z)
 
 -- AnalyticOn.schwartzQuotient establishes that f_{M}(z) is analytic.
-@[blueprint
-  (statement := /--
-    Let $M>0$. Let $f$ be analytic on the closed ball $|z|\leq R$ such that $f(0)=0$
+/-%%
+Let $M>0$. Let $f$ be analytic on the closed ball $|z|\leq R$ such that $f(0)=0$
     and suppose that $2M - f(z)\neq 0$ for all $|z|\leq R$.
     Then, with $f_{M}$ defined as in Definition~\ref{schwartzQuotient}, $f_{M}$ is analytic on
     $|z|\leq R$.
-  -/)
+%%-/
+@[blueprint
   (proof := /--
     This follows directly from Lemma~\ref{AnalyticOn_divRemovable_zero_closedBall} and the fact
     that the difference of two analytic functions is analytic.
@@ -197,11 +197,11 @@ lemma AnalyticOn.schwartzQuotient {f : ℂ → ℂ} {R : ℝ} (M : ℝ)
 
 -- If Re x ≤ M then |x| ≤ |2 * M - x|, this simple inequality is used
 -- in the proof of borelCaratheodory_closedBall.
-@[blueprint
-  (statement := /--
-    Let $M>0$ and let $x$ be a complex number such that $\Re x\leq M$.
+/-%%
+Let $M>0$ and let $x$ be a complex number such that $\Re x\leq M$.
     Then, $|x|\leq|2M - x|$.
-  -/)
+%%-/
+@[blueprint
   (proof := /--
     We square both sides and simplify to obtain the equivalent inequality
     $$0\leq 4M^2 -4M\Re x,$$
@@ -238,13 +238,13 @@ lemma AnalyticOn.norm_le_of_norm_le_on_sphere {f : ℂ → ℂ} {C R r : ℝ}
 -- We can now prove Borel-Caratheodory for closed balls
 
 
-@[blueprint "borelCaratheodory-closedBall"
-  (title := "borelCaratheodory-closedBall")
-  (statement := /--
-    Let $R,\,M>0$. Let $f$ be analytic on $|z|\leq R$ such that $f(0)=0$ and suppose
+/-%%
+Let $R,\,M>0$. Let $f$ be analytic on $|z|\leq R$ such that $f(0)=0$ and suppose
     $\Re f(z)\leq M$ for all $|z|\leq R$. Then for any $0 < r < R$,
     $$\sup_{|z|\leq r}|f(z)|\leq\frac{2Mr}{R-r}.$$
-  -/)
+%%-/
+@[blueprint "borelCaratheodory-closedBall"
+  (title := "borelCaratheodory-closedBall")
   (proof := /--
     Let
     $$f_M(z)=\frac{f(z)/z}{2M-f(z)}.$$

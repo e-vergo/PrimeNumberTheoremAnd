@@ -52,15 +52,15 @@ blueprint_comment /--
 Let $\nu$ be a bumpfunction.
 -/
 
-@[blueprint
-  (title := "SmoothExistence")
-  (statement := /--
-  There exists a smooth (once differentiable would be enough), nonnegative ``bumpfunction'' $\nu$,
+/-%%
+There exists a smooth (once differentiable would be enough), nonnegative ``bumpfunction'' $\nu$,
    supported in $[1/2,2]$ with total mass one:
   $$
   \int_0^\infty \nu(x)\frac{dx}{x} = 1.
   $$
-  -/)
+%%-/
+@[blueprint
+  (title := "SmoothExistence")
   (proof := /-- Same idea as Urysohn-type argument. -/)]
 lemma SmoothExistence : ∃ (ν : ℝ → ℝ), (ContDiff ℝ ∞ ν) ∧ (∀ x, 0 ≤ ν x) ∧
     ν.support ⊆ Icc (1 / 2) 2 ∧ ∫ x in Ici 0, ν x / x = 1 := by

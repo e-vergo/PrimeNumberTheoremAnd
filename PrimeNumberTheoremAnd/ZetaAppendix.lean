@@ -54,10 +54,12 @@ open Real Complex MeasureTheory Finset Filter Topology Set Summable
 
 -- may want to move this to a more globally accessible location
 
+/-%%
+We recall that $e(\alpha) = e^{2\pi i \alpha}$.
+%%-/
 @[blueprint
   "e-def"
-  (title := "e")
-  (statement := /-- We recall that $e(\alpha) = e^{2\pi i \alpha}$. -/)]
+  (title := "e")]
 noncomputable def e (α : ℝ) : ℂ := exp (2 * π * I * α)
 
 blueprint_comment /--
@@ -69,10 +71,7 @@ integers}. In general, for real arguments, the Fourier transform of a discontinu
 function such as $t^{-s} \mathbb{1}_{[a,b]}$ does not have quadratic decay.
 -/
 
-@[blueprint
-  "lem:aachIBP"
-  (title := "Fourier transform of a truncated power law")
-  (statement := /--
+/-%%
 Let $s = \sigma + i \tau$, $\sigma\geq 0$, $\tau\in \mathbb{R}$.
 Let $\nu\in \mathbb{R}\setminus \{0\}$, $b>a>\frac{|\tau|}{2\pi |\nu|}$.
 Then
@@ -83,7 +82,10 @@ Then
  e(\varphi_\nu(t)) dt,
 \end{equation}
 where $\varphi_\nu(t) = \nu t - \frac{\tau}{2\pi} \log t$.
--/)
+%%-/
+@[blueprint
+  "lem:aachIBP"
+  (title := "Fourier transform of a truncated power law")
   (proof := /--
 We write $t^{-s} e(\nu t) = t^{-\sigma} e(\varphi_\nu(t))$ and integrate by parts with
 $u = t^{-\sigma}/(2\pi i \varphi_\nu'(t))$, $v = e(\varphi_\nu(t))$.
@@ -110,13 +112,13 @@ theorem lemma_aachIBP (s : ℂ) (hsigma : 0 ≤ s.re) (ν : ℝ) (hν : ν ≠ 0
         (2 * π * I * (deriv φ t) ^ 2) * e (φ t) := by
   sorry
 
+/-%%
+Let $g:[a,b]\to \mathbb{R}$ be continuous, with $|g(t)|$ non-increasing. Then
+$g$ is monotone, and $\|g\|_{\mathrm{TV}} = |g(a)|-|g(b)|$.
+%%-/
 @[blueprint
   "lem:aachra"
   (title := "Total variation of a function with monotone absolute value")
-  (statement := /--
-Let $g:[a,b]\to \mathbb{R}$ be continuous, with $|g(t)|$ non-increasing. Then
-$g$ is monotone, and $\|g\|_{\mathrm{TV}} = |g(a)|-|g(b)|$.
--/)
   (proof := /--
 Suppose $g$ changed sign: $g(a')>0>g(b')$ or $g(a') <0 < g(b')$ for some
 $a\leq a'< b'\leq b$. By IVT, there would be an $r\in [a',b']$ such that $g(r)=0$.
@@ -678,15 +680,15 @@ theorem lemma_IBP_bound_abs_antitone {a b : ℝ} (hab : a < b) (g : ℝ → ℝ)
     rw [abs_of_nonpos (hsign b <| right_mem_Icc.mpr hab.le), abs_of_nonpos (hsign a <| left_mem_Icc.mpr hab.le)]
     ring
 
-@[blueprint
-  "lem:aachmonophase"
-  (title := "Non-stationary phase estimate")
-  (statement := /--
+/-%%
 Let $\varphi:[a,b]\to \mathbb{R}$ be $C^1$ with $\varphi'(t)\ne 0$ for all $t\in [a,b]$.
 Let $h:[a,b]\to \mathbb{R}$ be such that $g(t) = h(t)/\varphi'(t)$ is continuous and
 $|g(t)|$ is non-increasing. Then
 \[\left|\int_a^b h(t) e(\varphi(t)) dt\right|\leq \frac{|g(a)|}{\pi}.\]
--/)
+%%-/
+@[blueprint
+  "lem:aachmonophase"
+  (title := "Non-stationary phase estimate")
   (proof := /--
 Since $\varphi$ is $C^1$, $e(\varphi(t))$ is $C^1$, and
 $h(t) e(\varphi(t)) = \frac{h(t)}{2\pi i \varphi'(t)} \frac{d}{dt} e(\varphi(t))$ everywhere.
@@ -741,14 +743,14 @@ theorem lemma_aachmonophase {a b : ℝ} (ha : a < b) (φ : ℝ → ℝ) (hφ_C1 
     simp [mul_inv_cancel_left₀ (ofReal_ne_zero.mpr (hφ'_ne0 x (Set.Ioo_subset_Icc_self hx)))]
   exact h_integral_subst ▸ h_integral_bound.trans (by rw [h_norm_F]; ring_nf; norm_num [pi_pos.ne'])
 
-@[blueprint
-  "lem:aachdecre"
-  (title := "A decreasing function")
-  (statement := /--
+/-%%
 Let $\sigma\geq 0$, $\tau\in \mathbb{R}$, $\nu \in \mathbb{R}\setminus \{0\}$.
 Let $b>a>\frac{|\tau|}{2\pi |\nu|}$. Then, for any $k\geq 1$,
 $f(t) = t^{-\sigma-k} |2\pi \nu-\tau/t|^{-k-1}$ is decreasing on $[a,b]$.
--/)
+%%-/
+@[blueprint
+  "lem:aachdecre"
+  (title := "A decreasing function")
   (proof := /--
 Let $a\leq t\leq b$. Since $\left|\frac{\tau}{t \nu}\right| < 2\pi$, we see that
 $2\pi-\frac{\tau}{\nu t} >0$, and so
@@ -844,10 +846,7 @@ theorem lemma_aachdecre (σ : ℝ) (hσ : 0 ≤ σ) (τ : ℝ) (ν : ℝ) (hν :
   refine fun x hx y hy hxy ↦ by cases eq_or_lt_of_le hxy <;> simp_all only [Set.mem_Icc, and_imp, le_refl]
 
 
-@[blueprint
-  "lem:aachfour"
-  (title := "Estimating an integral")
-  (statement := /--
+/-%%
 Let $s = \sigma + i \tau$, $\sigma\geq 0$, $\tau\in \mathbb{R}$.
 Let $\nu \in \mathbb{R}\setminus \{0\}$, $b>a>\frac{|\tau|}{2\pi |\nu|}$.
 Then
@@ -858,7 +857,10 @@ Then
 \]
 where $\varphi_\nu(t) = \nu t - \frac{\tau}{2\pi} \log t$ and
 $\vartheta = \frac{\tau}{2\pi a}$.
--/)
+%%-/
+@[blueprint
+  "lem:aachfour"
+  (title := "Estimating an integral")
   (proof := /--
 Apply Lemma~\ref{lem:aachIBP}. Since $\varphi_\nu'(t) = \nu - \tau/(2\pi t)$, we know by
 Lemma \ref{lem:aachdecre} (with $k=1$) that
@@ -949,10 +951,7 @@ lemma lemma_aachcanc_pointwise (s : ℂ) {n : ℤ} (hn : n ≠ 0)
     simp_all [mul_comm, div_eq_mul_inv]
     grind
 
-@[blueprint
-  "lem:aachcanc"
-  (title := "Estimating an sum")
-  (statement := /--
+/-%%
 Let $s = \sigma + i \tau$, $\sigma,\tau \in \mathbb{R}$.
 Let $n\in \mathbb{Z}_{>0}$. Let $a,b\in \mathbb{Z} + \frac{1}{2}$,
 $b>a>\frac{|\tau|}{2\pi n}$.
@@ -963,7 +962,10 @@ Then
   \left. \frac{(-1)^n t^{-s} \cdot \frac{\tau}{2\pi t}}
   {2\pi i \left(n^2 - \left(\frac{\tau}{2\pi t}\right)^2\right)}\right|_a^b.
 \]
--/)
+%%-/
+@[blueprint
+  "lem:aachcanc"
+  (title := "Estimating an sum")
   (proof := /--
 Since $e(\varphi_\nu(t)) = e(\nu t) t^{-i \tau} = (-1)^{\nu} t^{-i \tau}$ for any
 half-integer $t$ and any integer $\nu$,
@@ -1018,10 +1020,7 @@ It is this easy step that gives us quadratic decay on $n$. It is just as
 in the proof of van der Corput's Process B in, say, \cite[I.6.3, Thm.~4]{zbMATH06471876}.
 -/
 
-@[blueprint
-  "prop:applem"
-  (title := "Estimating a Fourier cosine integral")
-  (statement := /--
+/-%%
 Let $s = \sigma + i \tau$, $\sigma\geq 0$, $\tau\in \mathbb{R}$.
 Let $a,b\in \mathbb{Z} + \frac{1}{2}$, $b>a>\frac{|\tau|}{2\pi}$.
 Write $\vartheta = \frac{\tau}{2\pi a}$. Then, for any integer $n\geq 1$,
@@ -1032,7 +1031,10 @@ $$\begin{aligned}\int_a^b t^{-s} \cos 2\pi n t\, dt &=
   + \frac{\sigma}{(n+\vartheta)^2}
   + \frac{|\vartheta|}{|n-\vartheta|^3}
   + \frac{|\vartheta|}{|n+\vartheta|^3}\right).\end{aligned}$$
--/)
+%%-/
+@[blueprint
+  "prop:applem"
+  (title := "Estimating a Fourier cosine integral")
   (proof := /--
 Write $\cos 2\pi n t = \frac{1}{2} (e(n t) + e(-n t))$. Since $n\geq 1$ and
 $a>\frac{|\tau|}{2\pi}$, we know that $a>\frac{|\tau|}{2 \pi n}$, and so we can apply
@@ -1096,17 +1098,17 @@ blueprint_comment /--
 We start with an application of Euler-Maclaurin.
 -/
 
-@[blueprint
-  "lem:abadeulmac'"
-  (title := "Identity for a partial sum of zeta(s) for integer b")
-  (statement := /--
+/-%%
 Let $b>0$, $b\in \mathbb{Z}$.
 Then, for all $s\in \mathbb{C}\setminus \{1\}$ with $\Re s > 0$,
 \begin{equation}\label{eq:abak1'}
   \sum_{n \leq b} \frac{1}{n^s} = \zeta(s) + \frac{b^{1-s}}{1-s} + \frac{b^{-s}}{2}
   + s \int_b^\infty \left(\{y\}-\frac{1}{2}\right) \frac{dy}{y^{s+1}}.
 \end{equation}
--/)
+%%-/
+@[blueprint
+  "lem:abadeulmac'"
+  (title := "Identity for a partial sum of zeta(s) for integer b")
   (proof := /--
 Assume first that $\Re s > 1$. By first-order Euler-Maclaurin,
 \[\sum_{n > b}\frac{1}{n^s} = \int_b^\infty \frac{dy}{y^s} + \int_b^\infty
@@ -1166,17 +1168,17 @@ theorem lemma_abadeulmac' {b : ℕ} (hb : 0 < b) {s : ℂ}
   ring_nf
 
 
-@[blueprint
-  "lem:abadeulmac"
-  (title := "Identity for a partial sum of zeta(s)")
-  (statement := /--
+/-%%
 Let $b>0$, $b\in \mathbb{Z} + \frac{1}{2}$.
 Then, for all $s\in \mathbb{C}\setminus \{1\}$ with $\Re s > 0$,
 \begin{equation}\label{eq:abak1}
   \sum_{n\leq b} \frac{1}{n^s} = \zeta(s) + \frac{b^{1-s}}{1-s}
   + s \int_b^\infty \left(\{y\}-\frac{1}{2}\right) \frac{dy}{y^{s+1}}.
 \end{equation}
--/)
+%%-/
+@[blueprint
+  "lem:abadeulmac"
+  (title := "Identity for a partial sum of zeta(s)")
   (proof := /--
 Assume first that $\Re s > 1$. By first-order Euler-Maclaurin and
 $b\in \mathbb{Z}+\frac{1}{2}$,
@@ -1261,15 +1263,15 @@ theorem lemma_abadeulmac {b : ℝ} (hb : 0 < b) (hb' : b.IsHalfInteger) {s : ℂ
     · simp only [add_re, neg_re, one_re, ne_eq]
       linarith
 
-@[blueprint
-  "lem:abadtoabsum"
-  (title := "Estimate for a partial sum of $\\zeta(s)$")
-  (statement := /--
+/-%%
 Let $b>a>0$, $b\in \mathbb{Z} + \frac{1}{2}$.
 Then, for all $s\in \mathbb{C}\setminus \{1\}$ with $\sigma = \Re s > 0$,
 $$\sum_{n\leq a} \frac{1}{n^s} = -\sum_{a < n\leq b} \frac{1}{n^s} + \zeta(s)
   + \frac{b^{1-s}}{1-s} + O^*\left(\frac{|s|}{2 \sigma b^\sigma}\right).$$
--/)
+%%-/
+@[blueprint
+  "lem:abadtoabsum"
+  (title := "Estimate for a partial sum of $\\zeta(s)$")
   (proof := /--
 By Lemma \ref{lem:abadeulmac}, $\sum_{n\leq a} = \sum_{n\leq b} - \sum_{a < n\leq b}$,
 $\left|\{y\}-\frac{1}{2}\right| \leq \frac{1}{2}$ and
@@ -1330,15 +1332,15 @@ theorem lemma_abadtoabsum {a b : ℝ} (ha : 0 < a) (hb' : b.IsHalfInteger) (hab 
       _ ≤ ‖s‖ * ((1 / 2) * (1 / (s.re * b ^ s.re))) := mul_le_mul_of_nonneg_left h_integral_bound (norm_nonneg _)
       _ = ‖s‖ / (2 * s.re * b ^ s.re) := by ring
 
-@[blueprint
-  "lem:abadusepoisson"
-  (title := "Poisson summation for a partial sum of $\\zeta(s)$")
-  (statement := /--
+/-%%
 Let $a,b\in \mathbb{R}\setminus \mathbb{Z}$, $b>a>0$. Let $s\in \mathbb{C}\setminus \{1\}$.
 Define $f:\mathbb{R}\to\mathbb{C}$ by $f(y) = 1_{[a,b]}(y)/y^s$. Then
 $$\sum_{a < n\leq b} \frac{1}{n^s} = \frac{b^{1-s} - a^{1-s}}{1-s}
   + \lim_{N\to \infty} \sum_{n=1}^N (\widehat{f}(n) + \widehat{f}(-n)).$$
--/)
+%%-/
+@[blueprint
+  "lem:abadusepoisson"
+  (title := "Poisson summation for a partial sum of $\\zeta(s)$")
   (proof := /--
 Since $a\notin \mathbb{Z}$, $\sum_{a < n\leq b} \frac{1}{n^s} = \sum_{n\in \mathbb{Z}} f(n)$.
 By Poisson summation (as in \cite[Thm.~D.3]{MR2378655})
@@ -1444,15 +1446,15 @@ blueprint_comment /--
 We could prove these equations starting from Euler's product for $\sin \pi z$.
 -/
 
-@[blueprint
-  "lem:abadeuleulmit1"
-  (title := "Euler/Mittag-Leffler expansion for cosec")
-  (statement := /--
+/-%%
 Let $z\in \mathbb{C}$, $z\notin \mathbb{Z}$. Then
 \[\frac{\pi}{\sin \pi z} = \frac{1}{z} +
  \sum_{n > 0} (-1)^n\left(\frac{1}{z - n} + \frac{1}{z + n}\right).
 \]
--/)
+%%-/
+@[blueprint
+  "lem:abadeuleulmit1"
+  (title := "Euler/Mittag-Leffler expansion for cosec")
   (proof := /--
 Let us start from the Mittag-Leffler expansion
 $\pi \cot \pi s = \frac{1}{s} + \sum_n \left(\frac{1}{s-n} + \frac{1}{s+n}\right)$.
@@ -1554,13 +1556,13 @@ theorem lemma_abadeuleulmit1 {z : ℂ} (hz : z ∈ integerComplement) :
       · simpa using asummable hz
       · convert asummable'' hz <;> aesop
 
+/-%%
+Let $z\in \mathbb{C}$, $z\notin \mathbb{Z}$. Then
+\[\frac{\pi^2}{\sin^2 \pi z} = \sum_{n=-\infty}^\infty \frac{1}{(z-n)^2}.\]
+%%-/
 @[blueprint
   "lem:abadeulmit2"
   (title := "Euler/Mittag-Leffler expansion for cosec squared")
-  (statement := /--
-Let $z\in \mathbb{C}$, $z\notin \mathbb{Z}$. Then
-\[\frac{\pi^2}{\sin^2 \pi z} = \sum_{n=-\infty}^\infty \frac{1}{(z-n)^2}.\]
--/)
   (proof := /--
 Differentiate the expansion of $\pi \cot \pi z$ term-by-term because it converges
 uniformly on compact subsets of $\mathbb{C}\setminus \mathbb{Z}$.
@@ -1573,14 +1575,14 @@ theorem lemma_abadeulmit2 {z : ℂ} (hz : ¬∃ n : ℤ, z = n) :
     (π ^ 2 / (sin (π * z) ^ 2 : ℂ)) = ∑' (n : {m : ℤ // m > 0}), (1 / ((z - n) ^ 2 : ℂ)) := by
   sorry
 
-@[blueprint
-  "lem:abadimpseri"
-  (title := "Estimate for an inverse cubic series")
-  (statement := /--
+/-%%
 For $\vartheta\in \mathbb{R}$ with $0\leq |\vartheta|< 1$,
 \[\sum_n\left(\frac{1}{(n-\vartheta)^3} + \frac{1}{(n+\vartheta)^3}\right)
 \leq \frac{1}{(1-|\vartheta|)^3} + 2\zeta(3)-1.\]
--/)
+%%-/
+@[blueprint
+  "lem:abadimpseri"
+  (title := "Estimate for an inverse cubic series")
   (proof := /--
 Since $\frac{1}{(n-\vartheta)^3} + \frac{1}{(n+\vartheta)^3}$ is even,
 we may replace $\vartheta$ by $|\vartheta|$. Then we rearrange the sum:
@@ -1705,10 +1707,7 @@ lemma lemma_abadimpseri (ϑ : ℝ) (hϑ : |ϑ| < 1) :
           (show (n : ℝ) + 1 + |ϑ| ≥ n + 1 by linarith [abs_nonneg ϑ]) 3))
             (summable_nat_add_iff 1 |>.2 <| summable_one_div_nat_pow.2 <| by omega)
 
-@[blueprint
-  "lem:abadsumas"
-  (title := "Estimate for a Fourier sum")
-  (statement := /--
+/-%%
 Let $s = \sigma + i \tau$, $\sigma\geq 0$, $\tau \in \mathbb{R}$, with $s\ne 1$.
 Let $b>a>0$, $a, b\in \mathbb{Z} + \frac{1}{2}$, with $a>\frac{|\tau|}{2\pi}$.
 Define $f:\mathbb{R}\to\mathbb{C}$ by $f(y) = 1_{[a,b]}(y)/y^s$.
@@ -1723,7 +1722,10 @@ where $g(t) = \frac{1}{\sin \pi t} - \frac{1}{\pi t}$ for $t\ne 0$, $g(0)=0$, an
   + \frac{|\vartheta|}{2\pi^2} \left(\frac{1}{(1-|\vartheta|)^3} + 2\zeta(3)-1\right)
   & \text{for $\vartheta\ne 0$,}\\
   \sigma/6 & \text{for $\vartheta = 0$.}\end{cases}\end{equation}
--/)
+%%-/
+@[blueprint
+  "lem:abadsumas"
+  (title := "Estimate for a Fourier sum")
   (proof := /--
 By Proposition~\ref{prop:applem}, multiplying by $2$
 (since $e(-n t)+e(n t) = 2 \cos 2\pi n t$),
@@ -1769,10 +1771,7 @@ theorem lemma_abadsumas {s : ℂ} (hs1 : s ≠ 1) (hsigma : 0 ≤ s.re) {a b : �
       ‖E‖ ≤ C := by
   sorry
 
-@[blueprint
-  "prop:dadaro"
-  (title := "Approximation of zeta(s) by a partial sum")
-  (statement := /--
+/-%%
 Let $s = \sigma + i \tau$, $\sigma\geq 0$, $\tau\in \mathbb{R}$, with $s\ne 1$.
 Let $a\in \mathbb{Z} + \frac{1}{2}$ with $a>\frac{|\tau|}{2\pi}$. Then
 \begin{equation}\label{eq:abadlondie}
@@ -1782,7 +1781,10 @@ Let $a\in \mathbb{Z} + \frac{1}{2}$ with $a>\frac{|\tau|}{2\pi}$. Then
 where $\vartheta = \frac{\tau}{2\pi a}$,
 $c_\vartheta = \frac{i}{2} \left(\frac{1}{\sin \pi \vartheta} - \frac{1}{\pi \vartheta}\right)$
 for $\vartheta\ne 0$, $c_0 =0$, and $C_{\sigma,\vartheta}$ is as in \eqref{eq:defcsigth}.
--/)
+%%-/
+@[blueprint
+  "prop:dadaro"
+  (title := "Approximation of zeta(s) by a partial sum")
   (proof := /--
 Assume first that $\sigma>0$. Let $b\in \mathbb{Z}+\frac{1}{2}$ with $b>a$, and define
 $f(y) = \frac{1_{[a,b]}(y)}{y^s}$.

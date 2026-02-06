@@ -28,13 +28,13 @@ lemma VIntegral_symm : VIntegral f x y₁ y₂ = - VIntegral f x y₂ y₁ := by
 
 /-- A `RectangleIntegral` of a function `f` is one over a rectangle determined by
   `z` and `w` in `ℂ`. -/
-@[blueprint
-  (title := "RectangleIntegral")
-  (statement := /--
-  A RectangleIntegral of a function $f$ is one over a rectangle determined by $z$ and $w$ in $\C$.
+/-%%
+A RectangleIntegral of a function $f$ is one over a rectangle determined by $z$ and $w$ in $\C$.
   We will sometimes denote it by $\int_{z}^{w} f$. (There is also a primed version, which is
   $1/(2\pi i)$ times the original.)
-  -/)]
+%%-/
+@[blueprint
+  (title := "RectangleIntegral")]
 noncomputable def RectangleIntegral (f : ℂ → E) (z w : ℂ) : E := HIntegral f z.re w.re z.im -
     HIntegral f z.re w.re w.im + VIntegral f w.re z.im w.im - VIntegral f z.re z.im w.im
 
@@ -44,34 +44,35 @@ noncomputable abbrev RectangleIntegral' (f : ℂ → E) (z w : ℂ) : E :=
     (1 / (2 * π * I)) • RectangleIntegral f z w
 
 /- An UpperUIntegral is the integral of a function over a |\_| shape. -/
+/-%%
+An UpperUIntegral of a function $f$ comes from $\sigma+i\infty$ down to $\sigma+iT$, over to
+  $\sigma'+iT$, and back up to $\sigma'+i\infty$.
+%%-/
 @[blueprint
-  (title := "UpperUIntegral")
-  (statement := /--
-  An UpperUIntegral of a function $f$ comes from $\sigma+i\infty$ down to $\sigma+iT$, over to
-  $\sigma'+iT$, and back up to $\sigma'+i\infty$. -/)]
+  (title := "UpperUIntegral")]
 noncomputable def UpperUIntegral (f : ℂ → E) (σ σ' T : ℝ) : E := HIntegral f σ σ' T +
     I • (∫ y : ℝ in Ici T, f (σ' + y * I)) - I • (∫ y : ℝ in Ici T, f (σ + y * I))
 
 /- A LowerUIntegral is the integral of a function over a |-| shape. -/
-@[blueprint
-  (title := "LowerUIntegral")
-  (statement := /--
-  A LowerUIntegral of a function $f$ comes from $\sigma-i\infty$ up to $\sigma-iT$, over to
+/-%%
+A LowerUIntegral of a function $f$ comes from $\sigma-i\infty$ up to $\sigma-iT$, over to
   $\sigma'-iT$, and back down to $\sigma'-i\infty$.
-  -/)]
+%%-/
+@[blueprint
+  (title := "LowerUIntegral")]
 noncomputable def LowerUIntegral (f : ℂ → E) (σ σ' T : ℝ) : E := HIntegral f σ σ' (-T) -
     I • (∫ y : ℝ in Iic (-T), f (σ' + y * I)) + I • (∫ y : ℝ in Iic (-T), f (σ + y * I))
 
 blueprint_comment /--
 It is very convenient to define integrals along vertical lines in the complex plane, as follows.
 -/
-@[blueprint
-  (title := "VerticalIntegral")
-  (statement := /--
-  Let $f$ be a function from $\mathbb{C}$ to $\mathbb{C}$, and let $\sigma$ be a real number.
+/-%%
+Let $f$ be a function from $\mathbb{C}$ to $\mathbb{C}$, and let $\sigma$ be a real number.
   Then we define
   $$\int_{(\sigma)}f(s)ds = \int_{\sigma-i\infty}^{\sigma+i\infty}f(s)ds.$$
-  -/)]
+%%-/
+@[blueprint
+  (title := "VerticalIntegral")]
 noncomputable def VerticalIntegral (f : ℂ → E) (σ : ℝ) : E := I • ∫ t : ℝ, f (σ + t * I)
 
 blueprint_comment /-- We also have a version with a factor of $1/(2\pi i)$. -/
@@ -88,12 +89,12 @@ lemma verticalIntegral_split_three (a b : ℝ) (hf : Integrable (fun t : ℝ ↦
 
 -- set_option trace.Meta.Tactic.simp.rewrite true
 
+/-%%
+The difference of two vertical integrals and a rectangle is the difference of an upper and a
+  lower U integrals.
+%%-/
 @[blueprint
   (title := "DiffVertRect-eq-UpperLowerUs")
-  (statement := /--
-  The difference of two vertical integrals and a rectangle is the difference of an upper and a
-  lower U integrals.
-  -/)
   (proof := /-- Follows directly from the definitions. -/)
   (proofUses := ["UpperUIntegral", "LowerUIntegral"])
   (latexEnv := "lemma")]
@@ -115,13 +116,13 @@ lemma DiffVertRect_eq_UpperLowerUs {σ σ' T : ℝ}
 /-- A function is `HolomorphicOn` a set if it is complex differentiable on that set. -/
 abbrev HolomorphicOn (f : ℂ → E) (s : Set ℂ) : Prop := DifferentiableOn ℂ f s
 
-@[blueprint
-  (title := "existsDifferentiableOn-of-bddAbove")
-  (statement := /--
-  If $f$ is differentiable on a set $s$ except at $c\in s$, and $f$ is bounded above on
+/-%%
+If $f$ is differentiable on a set $s$ except at $c\in s$, and $f$ is bounded above on
   $s\setminus\{c\}$, then there exists a differentiable function $g$ on $s$ such that $f$ and $g$
   agree on $s\setminus\{c\}$.
-  -/)
+%%-/
+@[blueprint
+  (title := "existsDifferentiableOn-of-bddAbove")
   (proof := /--
   This is the Riemann Removable Singularity Theorem, slightly rephrased from what's in Mathlib.
   (We don't care what the function $g$ is, just that it's holomorphic.)
@@ -133,12 +134,12 @@ theorem existsDifferentiableOn_of_bddAbove [CompleteSpace E] {s : Set ℂ} {c : 
     differentiableOn_update_limUnder_of_bddAbove hc hd hb,
     fun z hz ↦ if h : z = c then (hz.2 h).elim else by simp [h]⟩
 
+/-%%
+If $f$ is holomorphic on a rectangle $z$ and $w$, then the integral of $f$ over the rectangle
+  with corners $z$ and $w$ is $0$.
+%%-/
 @[blueprint
   (title := "HolomorphicOn.vanishesOnRectangle")
-  (statement := /--
-  If $f$ is holomorphic on a rectangle $z$ and $w$, then the integral of $f$ over the rectangle
-  with corners $z$ and $w$ is $0$.
-  -/)
   (proof := /-- This is in a Mathlib PR. -/)]
 theorem HolomorphicOn.vanishesOnRectangle [CompleteSpace E] {U : Set ℂ}
     (f_holo : HolomorphicOn f U) (hU : Rectangle z w ⊆ U) :
@@ -335,13 +336,13 @@ The next lemma allows to zoom a big rectangle down to a small square, centered a
 /-- Given `f` holomorphic on a rectangle `z` and `w` except at a point `p`, the integral of `f` over
 the rectangle with corners `z` and `w` is the same as the integral of `f` over a small square
 centered at `p`. -/
-@[blueprint
-  (title := "RectanglePullToNhdOfPole")
-  (statement := /--
-  If $f$ is holomorphic on a rectangle $z$ and $w$ except at a point $p$, then the integral of $f$
+/-%%
+If $f$ is holomorphic on a rectangle $z$ and $w$ except at a point $p$, then the integral of $f$
   over the rectangle with corners $z$ and $w$ is the same as the integral of $f$ over a small square
   centered at $p$.
-  -/)
+%%-/
+@[blueprint
+  (title := "RectanglePullToNhdOfPole")
   (proof := /--
   Chop the big rectangle with two vertical cuts and two horizontal cuts into smaller rectangles,
   the middle one being the desired square. The integral over each of the outer rectangles
@@ -487,12 +488,12 @@ theorem ResidueTheoremInRectangle (zRe_le_wRe : z.re ≤ w.re) (zIm_le_wIm : z.i
   have : 1 / (2 * ↑π * I) * (2 * I * ↑π * c) = c := by field_simp
   rwa [ResidueTheoremAtOrigin'] ; all_goals { simp [*] }
 
+/-%%
+The rectangle (square) integral of $f(s) = 1/s$ with corners $-1-i$ and $1+i$ is equal to
+  $2\pi i$.
+%%-/
 @[blueprint
   (title := "ResidueTheoremAtOrigin")
-  (statement := /--
-  The rectangle (square) integral of $f(s) = 1/s$ with corners $-1-i$ and $1+i$ is equal to
-  $2\pi i$.
-  -/)
   (proof := /-- This is a special case of the more general result above. -/)
   (latexEnv := "lemma")]
 lemma ResidueTheoremAtOrigin : RectangleIntegral' (fun s ↦ 1 / s) (-1 - I) (1 + I) = 1 := by
@@ -500,13 +501,13 @@ lemma ResidueTheoremAtOrigin : RectangleIntegral' (fun s ↦ 1 / s) (-1 - I) (1 
   all_goals { simp [field] }
 
 -- TODO: generalize to `f g : ℂ → E`
-@[blueprint
-  (title := "ResidueTheoremOnRectangleWithSimplePole")
-  (statement := /--
-  Suppose that $f$ is a holomorphic function on a rectangle, except for a simple pole at $p$.
+/-%%
+Suppose that $f$ is a holomorphic function on a rectangle, except for a simple pole at $p$.
   By the latter, we mean that there is a function $g$ holomorphic on the rectangle such that,
   $f = g + A/(s-p)$ for some $A\in\C$. Then the integral of $f$ over the rectangle is $A$.
-  -/)
+%%-/
+@[blueprint
+  (title := "ResidueTheoremOnRectangleWithSimplePole")
   (proof := /--
   Replace $f$ with $g + A/(s-p)$ in the integral.
   The integral of $g$ vanishes by Lemma \ref{HolomorphicOn.vanishesOnRectangle}.

@@ -27,15 +27,15 @@ theorem, arXiv:2204.01980.
 open Finset Nat Real
 
 
-@[blueprint "thm:pt_2"
-  (title := "PT Corollary 2")
-  (statement := /--
-  One has
+/-%%
+One has
   \[
   |\pi(x) - \mathrm{Li}(x)| \leq 235 x (\log x)^{0.52} \exp(-0.8 \sqrt{\log x})
   \]
   for all $x \geq \exp(2000)$.
-  -/)
+%%-/
+@[blueprint "thm:pt_2"
+  (title := "PT Corollary 2")
   (latexEnv := "theorem")]
 theorem PT.corollary_2 : Eπ.classicalBound 235 1.52 0.8 1 (exp 2000) := by
   have := FKS2.corollary_22
@@ -62,16 +62,16 @@ theorem PT.corollary_2 : Eπ.classicalBound 235 1.52 0.8 1 (exp 2000) := by
         mul_inv_cancel₀ <| ne_of_gt <| exp_pos (-(2119 / 2500) + 4 / 5),
         add_one_le_exp (-(2119 / 2500) + 4 / 5), add_one_le_exp (-(-(2119 / 2500) + 4 / 5))])
 
-@[blueprint
-  "thm:jy_13"
-  (title := "JY Corollary 1.3")
-  (statement := /--
-  One has
+/-%%
+One has
   \[
   |\pi(x) - \mathrm{Li}(x)| \leq 9.59 x (\log x)^{0.515} \exp(-0.8274 \sqrt{\log x})
   \]
   for all $x \geq 2$.
-  -/)
+%%-/
+@[blueprint
+  "thm:jy_13"
+  (title := "JY Corollary 1.3")
   (latexEnv := "theorem")]
 theorem JY.corollary_1_3 : Eπ.classicalBound 9.59 1.515 0.8274 1 2 := by
   intro x hx
@@ -104,17 +104,17 @@ theorem JY.corollary_1_3 : Eπ.classicalBound 9.59 1.515 0.8274 1 2 := by
           norm_num [← log_rpow, mul_comm, ← log_mul, log_le_log_iff]
 
 
-@[blueprint
-  "thm:jy_14"
-  (title := "JY Theorem 1.4")
-  (statement := /--
-  One has
+/-%%
+One has
   \[
   |\pi(x) - \mathrm{Li}(x)| \leq 0.028 x (\log x)^{0.801}
     \exp(-0.1853 \log^{3/5} x / (\log \log x)^{1/5}))
   \]
   for all $x \geq 2$.
-  -/)
+%%-/
+@[blueprint
+  "thm:jy_14"
+  (title := "JY Theorem 1.4")
   (latexEnv := "theorem")]
 theorem JY.theorem_1_4 : Eπ.vinogradovBound 0.028 0.801 0.1853 23 := sorry
 
@@ -198,13 +198,14 @@ theorem PrimeGaps2014.has_prime_in_interval (x : ℝ) (hx : x > exp 60) :
 theorem PrimeGaps2024.has_prime_in_interval (x : ℝ) (hx : x > exp 60) :
     HasPrimeInInterval (x*(1-1/76900000000)) (x/76900000000) := by sorry
 
+/-%%
+If $x > 2,898,242$, then there
+  is a prime in the interval
+  \[ \left[ x, x\left(1 + \frac{1}{111(\log x)^2}\right) \right]. \]
+%%-/
 @[blueprint
   "thm:trudgian2016"
   (title := "Trudgian 2016")
-  (statement := /-- If $x > 2,898,242$, then there
-  is a prime in the interval
-  \[ \left[ x, x\left(1 + \frac{1}{111(\log x)^2}\right) \right]. \]
-  -/)
   (latexEnv := "theorem")]
 theorem Trudgian2016.has_prime_in_interval (x : ℝ) (hx : x > 2898242) :
     HasPrimeInInterval x (x / (111 * (log x) ^ 2)) := by sorry

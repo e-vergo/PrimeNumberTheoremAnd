@@ -4,5 +4,6 @@
   "githubUrl": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd",
   "baseUrl": "/PrimeNumberTheoremAnd/",
   "blueprintTexPath": "blueprint/src/blueprint.tex",
-  "assetsDir": "../../toolchain/dress-blueprint-action/assets"
+  "assetsDir": "../../toolchain/dress-blueprint-action/assets",
+  "statementSource": "delimiters"
 }
