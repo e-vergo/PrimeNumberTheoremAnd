@@ -7,7 +7,7 @@ name = "PrimeNumberTheoremAnd"
 
 [[require]]
 name = "Dress"
-git = "https://github.com/e-vergo/Dress"
+git = "https://github.com/e-vergo/Dress.git"
 rev = "main"
 
 [[require]]
