@@ -200,16 +200,16 @@ lemma deriv.comp_ofReal' {e : ℂ → ℂ} (hf : Differentiable ℂ e) :
 
 
 /-- *Need differentiability, and decay at `0` and `∞`* -/
-/-%%
-Let $f, g$ be once differentiable functions from $\mathbb{R}_{>0}$ to $\mathbb{C}$ so that $fg'$
-  and $f'g$ are both integrable, and $f\cdot g (x)\to 0$ as $x\to 0^+,\infty$.
-  Then
-  $$
-  \int_0^\infty f(x)g'(x) dx = -\int_0^\infty f'(x)g(x)dx.
-  $$
-%%-/
 @[blueprint
   (title := "PartialIntegration")
+  (statement := /--
+  Let $f, g$ be once differentiable functions from $\mathbb{R}_{>0}$ to $\mathbb{C}$ so that $fg'$
+    and $f'g$ are both integrable, and $f\cdot g (x)\to 0$ as $x\to 0^+,\infty$.
+    Then
+    $$
+    \int_0^\infty f(x)g'(x) dx = -\int_0^\infty f'(x)g(x)dx.
+    $$
+  -/)
   (proof := /-- Partial integration. -/)
   (latexEnv := "lemma")]
 lemma PartialIntegration (f g : ℝ → ℂ)
@@ -276,29 +276,29 @@ local notation (name := mellintransform) "𝓜" => mellin
 blueprint_comment /--
 Finally, we need Mellin Convolutions and properties thereof.
 -/
-/-%%
-Let $f$ and $g$ be functions from $\mathbb{R}_{>0}$ to $\mathbb{C}$. Then we define the
-  Mellin convolution of $f$ and $g$ to be the function $f\ast g$ from $\mathbb{R}_{>0}$
-  to $\mathbb{C}$ defined by
-  $$(f\ast g)(x) = \int_0^\infty f(y)g(x/y)\frac{dy}{y}.$$
-%%-/
 @[blueprint
-  (title := "MellinConvolution")]
+  (title := "MellinConvolution")
+  (statement := /--
+  Let $f$ and $g$ be functions from $\mathbb{R}_{>0}$ to $\mathbb{C}$. Then we define the
+    Mellin convolution of $f$ and $g$ to be the function $f\ast g$ from $\mathbb{R}_{>0}$
+    to $\mathbb{C}$ defined by
+    $$(f\ast g)(x) = \int_0^\infty f(y)g(x/y)\frac{dy}{y}.$$
+  -/)]
 noncomputable def MellinConvolution (f g : ℝ → 𝕂) (x : ℝ) : 𝕂 :=
   ∫ y in Ioi 0, f y * g (x / y) / y
 
 blueprint_comment /--
 Let us start with a simple property of the Mellin convolution.
 -/
-/-%%
-Let $f$ and $g$ be functions from $\mathbb{R}_{>0}$ to $\mathbb{R}$ or $\mathbb{C}$, for $x\neq0$,
-  $$
-    (f\ast g)(x)=(g\ast f)(x)
-    .
-  $$
-%%-/
 @[blueprint
   (title := "MellinConvolutionSymmetric")
+  (statement := /--
+  Let $f$ and $g$ be functions from $\mathbb{R}_{>0}$ to $\mathbb{R}$ or $\mathbb{C}$, for $x\neq0$,
+    $$
+      (f\ast g)(x)=(g\ast f)(x)
+      .
+    $$
+  -/)
   (proof := /--
   By Definition \ref{MellinConvolution},
   $$
@@ -353,18 +353,18 @@ lemma support_MellinConvolution (f g : ℝ → 𝕂) :
 blueprint_comment /--
 The Mellin transform of a convolution is the product of the Mellin transforms.
 -/
-/-%%
-Let $f$ and $g$ be functions from $\mathbb{R}_{>0}$ to $\mathbb{C}$ such that
-  \begin{equation}
-    (x,y)\mapsto f(y)\frac{g(x/y)}yx^{s-1}
-    \label{eq:assm_integrable_Mconv}
-  \end{equation}
-  is absolutely integrable on $[0,\infty)^2$.
-  Then
-  $$\mathcal{M}(f\ast g)(s) = \mathcal{M}(f)(s)\mathcal{M}(g)(s).$$
-%%-/
 @[blueprint
   (title := "MellinConvolutionTransform")
+  (statement := /--
+  Let $f$ and $g$ be functions from $\mathbb{R}_{>0}$ to $\mathbb{C}$ such that
+    \begin{equation}
+      (x,y)\mapsto f(y)\frac{g(x/y)}yx^{s-1}
+      \label{eq:assm_integrable_Mconv}
+    \end{equation}
+    is absolutely integrable on $[0,\infty)^2$.
+    Then
+    $$\mathcal{M}(f\ast g)(s) = \mathcal{M}(f)(s)\mathcal{M}(g)(s).$$
+  -/)
   (proof := /--
   By Definitions \ref{MellinTransform} and \ref{MellinConvolution}
   $$
@@ -855,13 +855,13 @@ lemma Smooth1Properties_below_aux {x ε : ℝ} (hx : x ≤ 1 - Real.log 2 * ε) 
   rw [sub_lt_iff_lt_add, add_comm, ← sub_lt_iff_lt_add]
   exact (div_lt_iff₀ εpos).mp <| Smooth1Properties_estimate εpos
 
-/-%%
-Fix $\epsilon>0$. There is an absolute constant $c>0$ so that:
-  If $0 < x \leq (1-c\epsilon)$, then
-  $$\widetilde{1_{\epsilon}}(x) = 1.$$
-%%-/
 @[blueprint
   (title := "Smooth1Properties-below")
+  (statement := /--
+  Fix $\epsilon>0$. There is an absolute constant $c>0$ so that:
+    If $0 < x \leq (1-c\epsilon)$, then
+    $$\widetilde{1_{\epsilon}}(x) = 1.$$
+  -/)
   (proof := /--
   Opening the definition, we have that the Mellin convolution of $1_{(0,1]}$ with $\nu_\epsilon$ is
   $$
@@ -979,13 +979,13 @@ lemma Smooth1Properties_above_aux2 {x y ε : ℝ} (hε : ε ∈ Ioo 0 1) (hy : y
     rw [ge_iff_le, div_le_iff₀, div_mul_eq_mul_div, le_div_iff₀', mul_comm] <;> try linarith
   · rw [ge_iff_le, le_div_iff₀ <| ypos]; exact (mul_le_iff_le_one_right zero_lt_two).mpr y1
 
-/-%%
-Fix $0<\epsilon<1$. There is an absolute constant $c>0$ so that:
-  if $x\geq (1+c\epsilon)$, then
-  $$\widetilde{1_{\epsilon}}(x) = 0.$$
-%%-/
 @[blueprint
   (title := "Smooth1Properties-above")
+  (statement := /--
+  Fix $0<\epsilon<1$. There is an absolute constant $c>0$ so that:
+    if $x\geq (1+c\epsilon)$, then
+    $$\widetilde{1_{\epsilon}}(x) = 0.$$
+  -/)
   (proof := /--
   Again the Mellin convolution is
   $$\int_0^1 \nu_\epsilon(x/y)\frac{dy}{y},$$
@@ -1066,11 +1066,9 @@ lemma MellinConvNonNeg_of_NonNeg {f g : ℝ → ℝ} (f_nonneg : ∀ x > 0, 0 �
     positivity
 
 
-/-%%
-If $\nu$ is nonnegative, then $\widetilde{1_{\epsilon}}(x)$ is nonnegative.
-%%-/
 @[blueprint
   (title := "Smooth1Nonneg")
+  (statement := /-- If $\nu$ is nonnegative, then $\widetilde{1_{\epsilon}}(x)$ is nonnegative. -/)
   (proof := /--
   By Definitions \ref{Smooth1}, \ref{MellinConvolution} and \ref{DeltaSpike}
   $$
@@ -1103,11 +1101,9 @@ lemma Smooth1LeOne_aux {x ε : ℝ} {ν : ℝ → ℝ} (xpos : 0 < x) (εpos : 0
       field_simp
 
 
-/-%%
-If $\nu$ is nonnegative and has mass one, then $\widetilde{1_{\epsilon}}(x)\le 1$, $\forall x>0$.
-%%-/
 @[blueprint
   (title := "Smooth1LeOne")
+  (statement := /-- If $\nu$ is nonnegative and has mass one, then $\widetilde{1_{\epsilon}}(x)\le 1$, $\forall x>0$. -/)
   (proof := /--
   By Definitions \ref{Smooth1}, \ref{MellinConvolution} and \ref{DeltaSpike}
   $$
@@ -1166,13 +1162,13 @@ blueprint_comment /--
 Combining the above, we have the following three Main Lemmata of this section on the Mellin
 transform of $\widetilde{1_{\epsilon}}$.
 -/
-/-%%
-Fix  $\epsilon>0$. Then the Mellin transform of $\widetilde{1_{\epsilon}}$ is
-  $$\mathcal{M}(\widetilde{1_{\epsilon}})(s) =
-  \frac{1}{s}\left(\mathcal{M}(\nu)\left(\epsilon s\right)\right).$$
-%%-/
 @[blueprint
   (title := "MellinOfSmooth1a")
+  (statement := /--
+  Fix  $\epsilon>0$. Then the Mellin transform of $\widetilde{1_{\epsilon}}$ is
+    $$\mathcal{M}(\widetilde{1_{\epsilon}})(s) =
+    \frac{1}{s}\left(\mathcal{M}(\nu)\left(\epsilon s\right)\right).$$
+  -/)
   (proof := /--
   By Definition \ref{Smooth1},
   $$
@@ -1293,13 +1289,13 @@ lemma MellinOfSmooth1a {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
 
 
 
-/-%%
-Given $0<\sigma_1\le\sigma_2$, for any $s$ such that $\sigma_1\le\mathcal Re(s)\le\sigma_2$,
-  we have
-  $$\mathcal{M}(\widetilde{1_{\epsilon}})(s) = O\left(\frac{1}{\epsilon|s|^2}\right).$$
-%%-/
 @[blueprint
   (title := "MellinOfSmooth1b")
+  (statement := /--
+  Given $0<\sigma_1\le\sigma_2$, for any $s$ such that $\sigma_1\le\mathcal Re(s)\le\sigma_2$,
+    we have
+    $$\mathcal{M}(\widetilde{1_{\epsilon}})(s) = O\left(\frac{1}{\epsilon|s|^2}\right).$$
+  -/)
   (proof := /-- Use Lemma \ref{MellinOfSmooth1a} and the bound in Lemma \ref{MellinOfPsi}. -/)
   (latexEnv := "lemma")]
 lemma MellinOfSmooth1b {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
@@ -1331,12 +1327,12 @@ lemma MellinOfSmooth1b {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
 
 
 
-/-%%
-At $s=1$, we have
-  $$\mathcal{M}(\widetilde{1_{\epsilon}})(1) = 1+O(\epsilon)).$$
-%%-/
 @[blueprint
   (title := "MellinOfSmooth1c")
+  (statement := /--
+  At $s=1$, we have
+    $$\mathcal{M}(\widetilde{1_{\epsilon}})(1) = 1+O(\epsilon)).$$
+  -/)
   (proof := /--
   Follows from Lemmas \ref{MellinOfSmooth1a}, \ref{MellinOfDeltaSpikeAt1} and
   \ref{MellinOfDeltaSpikeAt1_asymp}.
@@ -1357,13 +1353,13 @@ lemma MellinOfSmooth1c {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
 
 
 
-/-%%
-Fix a nonnegative, continuously differentiable function $F$ on $\mathbb{R}$ with support in
-  $[1/2,2]$. Then for any $\epsilon>0$, the function
-  $x \mapsto \int_{(0,\infty)} x^{1+it} \widetilde{1_{\epsilon}}(x) dx$ is continuous at any $y>0$.
-%%-/
 @[blueprint
   (title := "Smooth1ContinuousAt")
+  (statement := /--
+  Fix a nonnegative, continuously differentiable function $F$ on $\mathbb{R}$ with support in
+    $[1/2,2]$. Then for any $\epsilon>0$, the function
+    $x \mapsto \int_{(0,\infty)} x^{1+it} \widetilde{1_{\epsilon}}(x) dx$ is continuous at any $y>0$.
+  -/)
   (proof := /--
   Use Lemma \ref{MellinconvolutionSymmetric} to write $\widetilde{1_{\epsilon}}(x)$ as an integral
   over an integral near $1$, in particular avoiding the singularity at $0$. The integrand may be

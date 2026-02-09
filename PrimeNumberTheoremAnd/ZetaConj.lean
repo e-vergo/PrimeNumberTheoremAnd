@@ -7,13 +7,13 @@ open scoped Complex ComplexConjugate
 blueprint_comment /--
 Already on Mathlib (with a shortened proof):
 -/
-/-%%
-Let $f : \mathbb{C} \to \mathbb{C}$ be a complex differentiable function at $p \in \mathbb{C}$
-    with derivative $a$. Then the function $g(z) = \overline{f(\overline{z})}$ is complex
-    differentiable at $\overline{p}$ with derivative $\overline{a}$.
-%%-/
 @[blueprint
   (title := "hasDerivAt-conj-conj")
+  (statement := /--
+  Let $f : \mathbb{C} \to \mathbb{C}$ be a complex differentiable function at $p \in \mathbb{C}$
+      with derivative $a$. Then the function $g(z) = \overline{f(\overline{z})}$ is complex
+      differentiable at $\overline{p}$ with derivative $\overline{a}$.
+  -/)
   (proof := /-- We expand the definition of the derivative and compute. -/)]
 theorem hasDerivAt_conj_conj {f : ℂ → ℂ} {p a : ℂ} (hf : HasDerivAt f a p) :
     HasDerivAt (fun z ↦ conj (f (conj z))) (conj a) (conj p) := by
@@ -33,13 +33,13 @@ theorem hasDerivAt_conj_conj {f : ℂ → ℂ} {p a : ℂ} (hf : HasDerivAt f a 
 blueprint_comment /--
 Submitted to Mathlib:
 -/
-/-%%
-Let $f : \mathbb{C} \to \mathbb{C}$ be a function at $p \in \mathbb{C}$ with derivative $a$.
-    Then the derivative of the function $g(z) = \overline{f(\overline{z})}$ at $\overline{p}$ is
-    $\overline{a}$.
-%%-/
 @[blueprint
   (title := "deriv-conj-conj")
+  (statement := /--
+  Let $f : \mathbb{C} \to \mathbb{C}$ be a function at $p \in \mathbb{C}$ with derivative $a$.
+      Then the derivative of the function $g(z) = \overline{f(\overline{z})}$ at $\overline{p}$ is
+      $\overline{a}$.
+  -/)
   (proof := /--
     We proceed by case analysis on whether $f$ is differentiable at $p$. If $f$ is differentiable
     at $p$, then we can apply the previous theorem. If $f$ is not differentiable at $p$, then
@@ -60,12 +60,12 @@ theorem deriv_conj_conj (f : ℂ → ℂ) (p : ℂ) :
       rw [deriv_zero_of_not_differentiableAt hg, deriv_zero_of_not_differentiableAt hf, map_zero]
 
 
-/-%%
-Conjugation symmetry of the Riemann zeta function in the half-plane of convergence. Let
-    $s \in \mathbb{C}$ with $\Re(s) > 1$. Then $\overline{\zeta(\overline{s})} = \zeta(s)$.
-%%-/
 @[blueprint
   (title := "conj-riemannZeta-conj-aux1")
+  (statement := /--
+  Conjugation symmetry of the Riemann zeta function in the half-plane of convergence. Let
+      $s \in \mathbb{C}$ with $\Re(s) > 1$. Then $\overline{\zeta(\overline{s})} = \zeta(s)$.
+  -/)
   (proof := /--
     We expand the definition of the Riemann zeta function as a series and find that the two sides
     are equal term by term.
@@ -91,12 +91,12 @@ lemma conj_riemannZeta_conj_aux1 (s : ℂ) (hs : 1 < s.re) :
 blueprint_comment /--
 % TODO: Submit this and the following corollaries to Mathlib.
 -/
-/-%%
-Conjugation symmetry of the Riemann zeta function. Let $s \in \mathbb{C}$. Then
-    $$\overline{\zeta(\overline{s})} = \zeta(s).$$
-%%-/
 @[blueprint
   (title := "conj-riemannZeta-conj")
+  (statement := /--
+  Conjugation symmetry of the Riemann zeta function. Let $s \in \mathbb{C}$. Then
+      $$\overline{\zeta(\overline{s})} = \zeta(s).$$
+  -/)
   (proof := /--
     By the previous lemma, the two sides are equal on the half-plane
     $\{s \in \mathbb{C} : \Re(s) > 1\}$. Then, by analytic continuation, they are equal on the
@@ -146,12 +146,12 @@ theorem conj_riemannZeta_conj (s : ℂ) : conj (riemannZeta (conj s)) = riemannZ
 
 
 
-/-%%
-Conjugation symmetry of the Riemann zeta function. Let $s \in \mathbb{C}$. Then
-    $$\zeta(\overline{s}) = \overline{\zeta(s)}.$$
-%%-/
 @[blueprint
   (title := "riemannZeta-conj")
+  (statement := /--
+  Conjugation symmetry of the Riemann zeta function. Let $s \in \mathbb{C}$. Then
+      $$\zeta(\overline{s}) = \overline{\zeta(s)}.$$
+  -/)
   (proof := /--
     This follows as an immediate corollary of Theorem \ref{conj_riemannZeta_conj}.
   -/)]
@@ -161,12 +161,12 @@ theorem riemannZeta_conj (s : ℂ) : riemannZeta (conj s) = conj (riemannZeta s)
 
 
 
-/-%%
-Conjugation symmetry of the derivative of the Riemann zeta function. Let $s \in \mathbb{C}$.
-    Then $$\zeta'(\overline{s}) = \overline{\zeta'(s)}.$$
-%%-/
 @[blueprint
   (title := "deriv-riemannZeta-conj")
+  (statement := /--
+  Conjugation symmetry of the derivative of the Riemann zeta function. Let $s \in \mathbb{C}$.
+      Then $$\zeta'(\overline{s}) = \overline{\zeta'(s)}.$$
+  -/)
   (proof := /--
     We apply the derivative conjugation symmetry to the Riemann zeta function and use the
     conjugation symmetry of the Riemann zeta function itself.
@@ -188,13 +188,13 @@ theorem logDerivZeta_conj' (s : ℂ) :
 blueprint_comment /--
 % TODO: Submit this to Mathlib.
 -/
-/-%%
-The conjugation symmetry of the interval integral. Let $f : \mathbb{R} \to \mathbb{C}$ be a
-    measurable function, and let $a, b \in \mathbb{R}$. Then
-    $$\int_{a}^{b} \overline{f(x)} \, dx = \overline{\int_{a}^{b} f(x) \, dx}.$$
-%%-/
 @[blueprint
   (title := "intervalIntegral-conj")
+  (statement := /--
+  The conjugation symmetry of the interval integral. Let $f : \mathbb{R} \to \mathbb{C}$ be a
+      measurable function, and let $a, b \in \mathbb{R}$. Then
+      $$\int_{a}^{b} \overline{f(x)} \, dx = \overline{\int_{a}^{b} f(x) \, dx}.$$
+  -/)
   (proof := /--
     We unfold the interval integral into an integral over a uIoc and use the conjugation property
     of integrals.

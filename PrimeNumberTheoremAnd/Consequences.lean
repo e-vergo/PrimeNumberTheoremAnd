@@ -33,14 +33,14 @@ lemma th43_b (x : ℝ) (hx : 2 ≤ x) :
   rw [integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hx]
   exact Chebyshev.primeCounting_eq_theta_div_log_add_integral hx
 
-/-%%
-For any arithmetic function $f$ and real number $x$, one has
-  $$ \sum_{n \leq x} f(n) = \sum_{n \leq ⌊x⌋_+} f(n)$$
-  and
-  $$ \sum_{n < x} f(n) = \sum_{n < ⌈x⌉_+} f(n).$$
-%%-/
 @[blueprint
   (title := "finsum-range-eq-sum-range")
+  (statement := /--
+  For any arithmetic function $f$ and real number $x$, one has
+    $$ \sum_{n \leq x} f(n) = \sum_{n \leq ⌊x⌋_+} f(n)$$
+    and
+    $$ \sum_{n < x} f(n) = \sum_{n < ⌈x⌉_+} f(n).$$
+  -/)
   (proof := /-- Straightforward. -/)
   (latexEnv := "lemma")]
 lemma finsum_range_eq_sum_range {R : Type*} [AddCommMonoid R] {f : ArithmeticFunction R} (x : ℝ) :
@@ -157,12 +157,12 @@ lemma filter_prime_Iic_eq_Icc (n : ℕ) : filter Prime (Iic n) = filter Prime (I
 lemma Icc_zero_eq_insert (n : ℕ) : Icc 0 n = insert 0 (Icc 1 n) := by
   ext m; simp [mem_Icc]; omega
 
-/-%%
-One has
-  $$ \sum_{p \leq x} \log p = x + o(x).$$
-%%-/
 @[blueprint "chebyshev-asymptotic"
   (title := "chebyshev-asymptotic")
+  (statement := /--
+  One has
+    $$ \sum_{p \leq x} \log p = x + o(x).$$
+  -/)
   (proof := /--
   From the prime number theorem we already have
   $$ \sum_{n \leq x} \Lambda(n) = x + o(x)$$
@@ -273,12 +273,12 @@ theorem chebyshev_asymptotic'' :
 -- one could also consider adding a version with p < x instead of p \leq x
 
 
-/-%%
-We have
-    $$ \prod_{p \leq x} p = \exp( x + o(x) )$$
-%%-/
 @[blueprint
   (title := "primorial-bounds")
+  (statement := /--
+  We have
+      $$ \prod_{p \leq x} p = \exp( x + o(x) )$$
+  -/)
   (proof := /-- Exponentiate Theorem \ref{chebyshev_asymptotic}. -/)
   (latexEnv := "corollary")]
 theorem primorial_bounds :
@@ -760,13 +760,13 @@ theorem pi_asymp'' :
     _ = ε := by
       field
 
-/-%%
-There exists a function $c(x)$ such that $c(x) = o(1)$ as $x \to \infty$ and
-  $$ \pi(x) = (1 + c(x)) \int_2^x \frac{dt}{\log t}$$
-  for all $x$ large enough.
-%%-/
 @[blueprint
   (title := "pi-asymp")
+  (statement := /--
+  There exists a function $c(x)$ such that $c(x) = o(1)$ as $x \to \infty$ and
+    $$ \pi(x) = (1 + c(x)) \int_2^x \frac{dt}{\log t}$$
+    for all $x$ large enough.
+  -/)
   (proof := /--
   We have the identity
   $$ \pi(x) = \frac{1}{\log x} \sum_{p \leq x} \log p
@@ -849,13 +849,13 @@ lemma integral_div_log_asymptotic : ∃ c : ℝ → ℝ, c =o[atTop] (fun _ ↦ 
     rw [integral_log_inv_pialt x hx]
     field [show log x ≠ 0 by simp; grind]
 
-/-%%
-One has
-  $$ \pi(x) = (1+o(1)) \frac{x}{\log x}$$
-  as $x \to \infty$.
-%%-/
 @[blueprint
   (title := "pi-alt")
+  (statement := /--
+  One has
+    $$ \pi(x) = (1+o(1)) \frac{x}{\log x}$$
+    as $x \to \infty$.
+  -/)
   (proof := /--
   An integration by parts gives
   $$ \int_2^x \frac{dt}{\log t} = \frac{x}{\log x} - \frac{2}{\log 2} +
@@ -963,13 +963,13 @@ lemma nth_prime_asymp : (fun n ↦ ((nth_prime n) : ℝ)) ~[atTop] (fun n ↦ n 
       <;> norm_cast<;> linarith [prime_nth_prime n |>.two_le]
   field
 
-/-%%
-One has
-    $$ p_n = (1+o(1)) n \log n$$
-  as $n \to \infty$.
-%%-/
 @[blueprint
   (title := "pn-asymptotic")
+  (statement := /--
+  One has
+      $$ p_n = (1+o(1)) n \log n$$
+    as $n \to \infty$.
+  -/)
   (proof := /--
     Use Corollary \ref{pi_alt} to show that $n=\pi(p_n)\sim p_n/\log p_n$
     Taking logs gives $\log n \sim \log p_n - \log\log p_n \sim \log p_n$.
@@ -999,12 +999,12 @@ theorem pn_asymptotic : ∃ c : ℕ → ℝ, c =o[atTop] (fun _ ↦ (1 : ℝ)) �
   norm_num
 
 
-/-%%
-We have $p_{n+1} - p_n = o(p_n)$
-    as $n \to \infty$.
-%%-/
 @[blueprint
   (title := "pn-pn-plus-one")
+  (statement := /--
+  We have $p_{n+1} - p_n = o(p_n)$
+      as $n \to \infty$.
+  -/)
   (proof := /-- Easy consequence of preceding proposition. -/)
   (latexEnv := "corollary")]
 theorem pn_pn_plus_one : ∃ c : ℕ → ℝ, c =o[atTop] (fun _ ↦ (1 : ℝ)) ∧
@@ -1549,12 +1549,12 @@ lemma tendsto_by_squeeze (ε : ℝ) (hε : ε > 0) :
       rw [Filter.tendsto_comp_val_Ioi_atTop (a := 1)]
       exact x_log_x_atTop
 
-/-%%
-For every $\eps>0$, there is a prime between $x$ and $(1+\eps)x$ for
-  all sufficiently large $x$.
-%%-/
 @[blueprint
   (title := "prime-between")
+  (statement := /--
+  For every $\eps>0$, there is a prime between $x$ and $(1+\eps)x$ for
+    all sufficiently large $x$.
+  -/)
   (proof := /-- Use Corollary \ref{pi_alt} to show that $\pi((1+\eps)x) - \pi(x)$ goes to infinity
   as $x \to \infty$. -/)
   (latexEnv := "corollary")]
@@ -1581,12 +1581,10 @@ theorem prime_between {ε : ℝ} (hε : 0 < ε) :
   use p
 
 
-/-%%
-We have $|\sum_{n \leq x} \frac{\mu(n)}{n}| \leq 1$.
-%%-/
 @[blueprint
   "mun"
-  (proof := /--
+  
+  (statement := /-- We have $|\sum_{n \leq x} \frac{\mu(n)}{n}| \leq 1$. -/)(proof := /--
   From M\"obius inversion $1_{n=1} = \sum_{d|n} \mu(d)$ and summing we have
     $$ 1 = \sum_{d \leq x} \mu(d) \lfloor \frac{x}{d} \rfloor$$
     for any $x \geq 1$. Since $\lfloor \frac{x}{d} \rfloor = \frac{x}{d} - \epsilon_d$ with
@@ -1937,12 +1935,10 @@ lemma M_isLittleO' : M =o[atTop] id := by
   exact M_isLittleO
 
 
-/-%%
-We have $\sum_{n \leq x} \mu(n) = o(x)$.
-%%-/
 @[blueprint
   "mu-pnt"
   (title := "M\\\"obius form of prime number theorem")
+  (statement := /-- We have $\sum_{n \leq x} \mu(n) = o(x)$. -/)
   (proof := /--
   From the Dirichlet convolution identity
     $$ \mu(n) \log n = - \sum_{d|n} \mu(d) \Lambda(n/d)$$
@@ -2206,12 +2202,10 @@ lemma sum_mu_div_sq_isLittleO : (fun N : ℕ ↦ ∑ d ∈ Finset.Icc 1 (Nat.sqr
   filter_upwards [ Filter.eventually_ge_atTop N₀, Filter.eventually_ge_atTop N₁ ] with N hN₀' hN₁' using by rw [ Real.norm_of_nonneg ( Nat.cast_nonneg _ ) ] ; rw [ h_sum_rewrite ] ; exact le_trans ( hN₀ _ hN₀' ) ( by nlinarith [ hN₁ _ hN₁', show ( N : ℝ ) ≥ 0 by positivity ] ) ;
 
 
-/-%%
-We have $\sum_{n \leq x} \lambda(n) = o(x)$.
-%%-/
 @[blueprint
   "lambda-pnt"
-  (proof := /--
+  
+  (statement := /-- We have $\sum_{n \leq x} \lambda(n) = o(x)$. -/)(proof := /--
   From the identity
     $$ \lambda(n) = \sum_{d^2|n} \mu(n/d^2)$$
   and summing, we have
@@ -2381,12 +2375,10 @@ lemma sum_mobius_div_approx (x : ℝ) (K : ℕ) (hK : 0 < K) (hx : 1 ≤ x) :
 
 
 
-/-%%
-We have $\sum_{n \leq x} \mu(n)/n = o(1)$.
-%%-/
 @[blueprint
   "mu-pnt-alt"
   (title := "Alternate M\\\"obius form of prime number theorem")
+  (statement := /-- We have $\sum_{n \leq x} \mu(n)/n = o(1)$. -/)
   (proof := /--
   As in the proof of Theorem \ref{mun}, we have
     $$ 1 = \sum_{d \leq x} \mu(d) \lfloor \frac{x}{d} \rfloor$$
@@ -2448,12 +2440,12 @@ blueprint_comment /--
 \section{Consequences of the PNT in arithmetic progressions}
 -/
 
-/-%%
-If $a\ (q)$ is a primitive residue class, then one has
-  $$ \sum_{p \leq x: p = a\ (q)} \log p = \frac{x}{\phi(q)} + o(x).$$
-%%-/
 @[blueprint
   (title := "Prime number theorem in AP")
+  (statement := /--
+  If $a\ (q)$ is a primitive residue class, then one has
+    $$ \sum_{p \leq x: p = a\ (q)} \log p = \frac{x}{\phi(q)} + o(x).$$
+  -/)
   (proof := /--
   This is a routine modification of the proof of Theorem \ref{chebyshev_asymptotic}.
   -/)
@@ -2525,11 +2517,9 @@ theorem chebyshev_asymptotic_pnt
   · simpa only [mul_assoc] using
       (isLittleO_sqrt_mul_log.const_mul_left 2).trans_isTheta (isTheta_self_div_const htot_pos.ne')
 
-/-%%
-Any primitive residue class contains an infinite number of primes.
-%%-/
 @[blueprint
   (title := "Dirichlet's theorem")
+  (statement := /-- Any primitive residue class contains an infinite number of primes. -/)
   (proof := /--
   If this were not the case, then the sum $\sum_{p \leq x: p = a\ (q)} \log p$
   would be bounded in $x$, contradicting Theorem \ref{chebyshev_asymptotic_pnt}.

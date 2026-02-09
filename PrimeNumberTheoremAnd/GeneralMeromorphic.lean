@@ -12,13 +12,13 @@ open scoped Interval
 
 /-- A function is `MeromorphicOnRectangle` if it's holomorphic off of a finite set of `poles`,
   none of which is on the boundary of the rectangle (so the function is continuous there). -/
-/-%%
-A function $f$ is Meromorphic on a rectangle with corners $z$ and $w$ if it is holomorphic off
-    a (finite) set of poles, none of which are on the boundary of the rectangle.
-    [Note: Might be overkill, can just work explicitly with the functions that arise. Of course
-    would be nice to have the general theory as well...]
-%%-/
-@[blueprint]
+@[blueprint
+  (statement := /--
+  A function $f$ is Meromorphic on a rectangle with corners $z$ and $w$ if it is holomorphic off
+      a (finite) set of poles, none of which are on the boundary of the rectangle.
+      [Note: Might be overkill, can just work explicitly with the functions that arise. Of course
+      would be nice to have the general theory as well...]
+  -/)]
 class MeromorphicOnRectangle (f : ℂ → ℂ) (poles : Finset ℂ) (z w : ℂ) : Prop where
   holomorphicOn : HolomorphicOn f ((Rectangle z w) ∩ polesᶜ)
   hasPoleAt : ∀ p ∈ poles, MeromorphicAt f p

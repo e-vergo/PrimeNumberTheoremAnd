@@ -91,21 +91,21 @@ def table_8 : List (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × ℝ)
     (0.98, 0.99, 0.05870, 0.3131, 0.3364, 34.6187, 16.3800, 4.7049, 2.2262),
     (0.99, 1.0, 0.05420, 0.3133, 0.3360, 36.0559, 17.0819, 4.5304, 2.1464)]
 
-/-%%
-Let $H_0$ denote a verification height for RH.  Let $10^9/H_0≤ k \leq 1$, $t > 0$,
-    $H \in [1002, H_0)$, $α > 0$, $δ ≥ 1$, $\eta_0 = 0.23622$, $1 + \eta_0 \leq \mu \leq 1+\eta$,
-    and $\eta \in (\eta_0, 1/2)$ be fixed. Let $\sigma > 1/2 + d / \log H_0$.  Then for any
-    $T \geq H_0$, one has
-    $$ N(\sigma,T) \leq (T-H) \log T / (2\pi d) *
-      \log ( 1 + CC_1(\log(kT))^{2\sigma} (\log T)^{4(1-\sigma)} T^{8/3(1-\sigma)} / (T-H) )
-      + CC_2 * \log^2 T / 2 \pi d$$
-    and
-    $$ N(\sigma,T) \leq \frac{CC_1}{2\pi d} (\log kT)^{2\sigma} (\log T)^{5-4*\sigma}
-      T^{8/3(1-\sigma)} + CC_2 * \log^2 T / 2 \pi d$$.
-%%-/
 @[blueprint
   "fks-theorem-2-7"
-  (title := "FKS Theorem 2.7")]
+  (title := "FKS Theorem 2.7")
+  (statement := /--
+  Let $H_0$ denote a verification height for RH.  Let $10^9/H_0≤ k \leq 1$, $t > 0$,
+      $H \in [1002, H_0)$, $α > 0$, $δ ≥ 1$, $\eta_0 = 0.23622$, $1 + \eta_0 \leq \mu \leq 1+\eta$,
+      and $\eta \in (\eta_0, 1/2)$ be fixed. Let $\sigma > 1/2 + d / \log H_0$.  Then for any
+      $T \geq H_0$, one has
+      $$ N(\sigma,T) \leq (T-H) \log T / (2\pi d) *
+        \log ( 1 + CC_1(\log(kT))^{2\sigma} (\log T)^{4(1-\sigma)} T^{8/3(1-\sigma)} / (T-H) )
+        + CC_2 * \log^2 T / 2 \pi d$$
+      and
+      $$ N(\sigma,T) \leq \frac{CC_1}{2\pi d} (\log kT)^{2\sigma} (\log T)^{5-4*\sigma}
+        T^{8/3(1-\sigma)} + CC_2 * \log^2 T / 2 \pi d$$.
+  -/)]
 theorem theorem_2_7 (I : Inputs) {k δ α d η₀ η μ σ H T : ℝ}
     (hk : k ∈ Set.Icc ((10 ^ 9) / I.H₀) 1)
     (hα : α > 0)
@@ -302,13 +302,13 @@ theorem theorem_3_2 (α ω : ℝ) (hα : α ∈ Set.Ioc 0 (1 / 2)) (hω : ω ∈
 
 noncomputable def ε₁ (x T : ℝ) : ℝ := 2 * (log x) ^ 2 / T
 
-/-%%
-Let $x > e^{50}$ and $3 \log x < T < \sqrt{x}/3$.  Then
-    $E_\psi(x) ≤ \sum_{|\gamma| < T} |x^{\rho-1}/\rho| + 2 \log^2 x / T$.
-%%-/
 @[blueprint
   "fks-proposition-3-4"
-  (title := "FKS Proposition 3.4")]
+  (title := "FKS Proposition 3.4")
+  (statement := /--
+  Let $x > e^{50}$ and $3 \log x < T < \sqrt{x}/3$.  Then
+      $E_\psi(x) ≤ \sum_{|\gamma| < T} |x^{\rho-1}/\rho| + 2 \log^2 x / T$.
+  -/)]
 theorem proposition_3_4 {x T : ℝ} (hx : x > exp 50)
     (hT : T ∈ Set.Ioo (3 * log x) (sqrt x / 3)) :
     Eψ x ≤ riemannZeta.zeroes_sum (Set.Ioo 0 1) (Set.Ioo (-T) T)
@@ -321,13 +321,13 @@ noncomputable def ε₂ (I : Inputs) (x σ₁ T : ℝ) : ℝ :=
     2 * x ^ (-0.5 : ℝ) * (I.S₀ + I.B₁ I.T₀ T) +
       (x ^ (σ₁ - 1) - x ^ (-0.5 : ℝ)) * (I.B₁ I.H₀ T)
 
-/-%%
-Let $\sigma_1 \in (1/2,1)$ and let $(T_0,S_0)$ be taken from Table 1.  Then
-    $\Sigma_0^{\sigma_1} ≤ 2 x^{-1/2} (S_0 + B_1(T_0,T)) + (x_1^{\sigma_1-1} - x^{-1/2}) B_1(H_0,T)$.
-%%-/
 @[blueprint
   "fks-proposition-3-6"
-  (title := "FKS Proposition 3.6")]
+  (title := "FKS Proposition 3.6")
+  (statement := /--
+  Let $\sigma_1 \in (1/2,1)$ and let $(T_0,S_0)$ be taken from Table 1.  Then
+      $\Sigma_0^{\sigma_1} ≤ 2 x^{-1/2} (S_0 + B_1(T_0,T)) + (x_1^{\sigma_1-1} - x^{-1/2}) B_1(H_0,T)$.
+  -/)]
 theorem proposition_3_6 (I : Inputs) {σ₁ T x : ℝ} (hσ_1 : σ₁ ∈ Set.Icc 0.5 1) (hT : T > I.T₀)
     (x : ℝ) :
     riemannZeta.Sigma T x 0 σ₁ ≤ ε₂ I x σ₁ T := by sorry
@@ -338,12 +338,10 @@ theorem riemannZeta.Hσ_zeroes (H₀ R σ : ℝ) (hH₀ : riemannZeta.RH_up_to H
     (hR : riemannZeta.classicalZeroFree R) :
     riemannZeta.N' σ (Hσ H₀ R σ) = 0 := by sorry
 
-/-%%
-$\Sigma_a^b = 2 * \sum_{H_a ≤ \gamma < T; a \leq \beta < b} \frac{x^{\beta-1}}{\gamma}$.
-%%-/
 @[blueprint
   "fks-eq13"
-  (title := "FKS equation (3.13)")]
+  (title := "FKS equation (3.13)")
+  (statement := /-- $\Sigma_a^b = 2 * \sum_{H_a ≤ \gamma < T; a \leq \beta < b} \frac{x^{\beta-1}}{\gamma}$. -/)]
 theorem eq_13 {H₀ R a b T x : ℝ} (hH₀ : riemannZeta.RH_up_to H₀)
     (hR : riemannZeta.classicalZeroFree R) :
     riemannZeta.Sigma T x a b = 2 * riemannZeta.zeroes_sum (Set.Ico a b) (Set.Ioc (Hσ H₀ R a) T)
@@ -353,12 +351,10 @@ noncomputable def σn (σ₁ σ₂ : ℝ) (n N : ℕ) : ℝ := σ₁ + (σ₂ - 
 
 noncomputable def Hn (H₀ R σ₁ σ₂ : ℝ) (n N : ℕ) : ℝ := Hσ H₀ R (σn σ₁ σ₂ n N)
 
-/-%%
-If $\sigma < 1 - 1/R \log H_0$ then $H_σ = H_0$.
-%%-/
 @[blueprint
   "fks-remark-3-7"
-  (title := "FKS Remark 3.7")]
+  (title := "FKS Remark 3.7")
+  (statement := /-- If $\sigma < 1 - 1/R \log H_0$ then $H_σ = H_0$. -/)]
 theorem remark_3_7 {H₀ R σ : ℝ} (hσ : σ < 1 - 1 / (R * log H₀)) : Hσ H₀ R σ = H₀ := by sorry
 
 noncomputable def ε₃ (I : Inputs) (x σ₁ σ₂ : ℝ) (N : ℕ) (T : ℝ) : ℝ :=
@@ -367,41 +363,39 @@ noncomputable def ε₃ (I : Inputs) (x σ₁ σ₂ : ℝ) (N : ℕ) (T : ℝ) :
         ∑ n ∈ Finset.Ico 1 N, (I.B₀ (σn σ₁ σ₂ n N) (Hn I.H₀ I.R σ₁ σ₂ n N) T) *
           x ^ ((σ₂ - σ₁) * (n + 1) / N)
 
-/-%%
-Let $N \geq 2$ be an integer.  If $5/8 \leq \sigma_1 < \sigma_2 \leq 1$, $T \geq H_0$, then
-    $\Sigma_{\sigma_1}^{\sigma_2} ≤ 2 x^{-(1-\sigma_1)+(\sigma_2-\sigma_1/N)}B_0(\sigma_1,
-    H_{\sigma_1}, T) + 2 x^{(1-\sigma_1)} (1 - x^{-(\sigma_2-\sigma_1)/N})
-    \sum_{n=1}^{N-1} B_0(\sigma^{(n)}, H^{(n)}, T) x^{(\sigma_2-\sigma_1) (n+1)/N}$.
-%%-/
 @[blueprint
   "fks-proposition-3-8"
-  (title := "FKS Proposition 3.8")]
+  (title := "FKS Proposition 3.8")
+  (statement := /--
+  Let $N \geq 2$ be an integer.  If $5/8 \leq \sigma_1 < \sigma_2 \leq 1$, $T \geq H_0$, then
+      $\Sigma_{\sigma_1}^{\sigma_2} ≤ 2 x^{-(1-\sigma_1)+(\sigma_2-\sigma_1/N)}B_0(\sigma_1,
+      H_{\sigma_1}, T) + 2 x^{(1-\sigma_1)} (1 - x^{-(\sigma_2-\sigma_1)/N})
+      \sum_{n=1}^{N-1} B_0(\sigma^{(n)}, H^{(n)}, T) x^{(\sigma_2-\sigma_1) (n+1)/N}$.
+  -/)]
 theorem proposition_3_8 (I : Inputs) (x : ℝ) {σ₁ σ₂ : ℝ} (N : ℕ) (T : ℝ)
     (hσ₁ : σ₁ ∈ Set.Icc (5 / 8) 1) (hσ₂ : σ₂ ∈ Set.Ioc σ₁ 1)
     (hσ : Set.Icc σ₁ σ₂ ⊆ I.ZDB.σ_range) (hT : T ≥ I.H₀) :
     riemannZeta.Sigma T x σ₁ σ₂ ≤ ε₃ I x σ₁ σ₂ N T := by sorry
 
-/-%%
-If $\sigma_1 \geq 0.9$ then $\Sigma_{\sigma_1}^{\sigma_2} \leq 0.00125994 x^{\sigma_2-1}$.
-%%-/
 @[blueprint
   "fks-corollary-3-10"
-  (title := "FKS Corollary 3.10")]
+  (title := "FKS Corollary 3.10")
+  (statement := /-- If $\sigma_1 \geq 0.9$ then $\Sigma_{\sigma_1}^{\sigma_2} \leq 0.00125994 x^{\sigma_2-1}$. -/)]
 theorem corollary_3_10 {σ₁ σ₂ T x : ℝ} (hσ₁ : σ₁ ∈ Set.Icc 0.9 1) (hσ₂ : σ₂ ∈ Set.Ioc σ₁ 1) :
     riemannZeta.Sigma T x σ₁ σ₂ ≤ 0.00125994 * x ^ (σ₂ - 1) := by sorry
 
-/-%%
-Let $5/8 < \sigma_2 \leq 1$, $t_0 = t_0(\sigma_2,x) = \max(H_{\sigma_2},
-    \exp( \sqrt{\log x}/R))$ and $T > 0$.  Let $K \geq 2$ and consider a strictly increasing
-    sequence $(t_k)_{k=0}^K$ such that $t_k = T$.  Then
-    $\Sigma_{\sigma_2}^1 ≤ 2 N(\sigma_2,T) x^{-1/R\log t_0}/t_0$ and
-    $\Sigma_{\sigma_2}^1 ≤ 2 ((\sum_{k=1}^{K-1} N(\sigma_2, t_k)
-    (x^{-1/R\log t_{k-1}} / t_{k-1} - x^{-1/(R \log t_k)}/t_k)) +
-    x^{-1/R \log t_{K-1}}/t_{K-1} N(\sigma_2,T))$.
-%%-/
 @[blueprint
   "fks-proposition-3-11"
-  (title := "FKS Proposition 3.11")]
+  (title := "FKS Proposition 3.11")
+  (statement := /--
+  Let $5/8 < \sigma_2 \leq 1$, $t_0 = t_0(\sigma_2,x) = \max(H_{\sigma_2},
+      \exp( \sqrt{\log x}/R))$ and $T > 0$.  Let $K \geq 2$ and consider a strictly increasing
+      sequence $(t_k)_{k=0}^K$ such that $t_k = T$.  Then
+      $\Sigma_{\sigma_2}^1 ≤ 2 N(\sigma_2,T) x^{-1/R\log t_0}/t_0$ and
+      $\Sigma_{\sigma_2}^1 ≤ 2 ((\sum_{k=1}^{K-1} N(\sigma_2, t_k)
+      (x^{-1/R\log t_{k-1}} / t_{k-1} - x^{-1/(R \log t_k)}/t_k)) +
+      x^{-1/R \log t_{K-1}}/t_{K-1} N(\sigma_2,T))$.
+  -/)]
 theorem proposition_3_11 (I : Inputs) {σ₂ T x : ℝ} (K : ℕ) (hσ₂ : σ₂ ∈ Set.Ioc (5 / 8) 1)
     (t_seq : Fin (K + 2) → ℝ)
     (ht0 : t_seq 0 = max (Hσ I.H₀ I.R σ₂) (exp (sqrt (log x) / I.R)))
@@ -423,52 +417,52 @@ noncomputable def ε₄ (I : Inputs) (t₀ x σ₂ : ℝ) (K : ℕ) (T : ℝ) : 
         (I.ZDB.N σ₂ (t (k + 1)) - I.ZDB.N σ₂ (t k)) +
       2 * (I.ZDB.N σ₂ (t 1)) * x ^ (-1 / (I.R * log (t 0))) / (t 0)
 
-/-%%
-Let $5/8 < \sigma_2 \leq 1$, $t_0 = t_0(\sigma_2, x) = \max\left(H_{\sigma_2},
-    \exp\left(\sqrt{\frac{\log x}{R}}\right)\right)$, $T > t_0$. Let $K \geq 2$,
-    $\lambda = (T/t_0)^{1/K}$, and consider $(t_k)_{k=0}^K$ the sequence given by
-    $t_k = t_0 \lambda^k$. Then
-    \[
-    \Sigma^1_{\sigma_2} = 2 \sum_{\substack{0 < \gamma < T \\ \sigma_2 \leq \beta < 1}}
-      \frac{x^{\beta-1}}{\gamma} \leq \varepsilon_4(x, \sigma_2, K, T),
-    \]
-    where
-    \[
-    \varepsilon_4(x, \sigma_2, K, T) = 2 \sum_{k=1}^{K-1} \frac{x^{-\frac{1}{R \log t_k}}}{t_k}
-      \left( \tilde{N}(\sigma_2, t_{k+1}) - \tilde{N}(\sigma_2, t_k) \right) +
-      2\tilde{N}(\sigma_2, t_1) \frac{x^{-\frac{1}{R(\log t_0)}}}{t_0},
-    \]
-    and $\tilde{N}(\sigma, T)$ satisfy (ZDB) $N(\sigma, T) \leq \tilde{N}(\sigma, T)$.
-%%-/
 @[blueprint
   "fks-corollary-3-12"
-  (title := "FKS Corollary 3.12")]
+  (title := "FKS Corollary 3.12")
+  (statement := /--
+  Let $5/8 < \sigma_2 \leq 1$, $t_0 = t_0(\sigma_2, x) = \max\left(H_{\sigma_2},
+      \exp\left(\sqrt{\frac{\log x}{R}}\right)\right)$, $T > t_0$. Let $K \geq 2$,
+      $\lambda = (T/t_0)^{1/K}$, and consider $(t_k)_{k=0}^K$ the sequence given by
+      $t_k = t_0 \lambda^k$. Then
+      \[
+      \Sigma^1_{\sigma_2} = 2 \sum_{\substack{0 < \gamma < T \\ \sigma_2 \leq \beta < 1}}
+        \frac{x^{\beta-1}}{\gamma} \leq \varepsilon_4(x, \sigma_2, K, T),
+      \]
+      where
+      \[
+      \varepsilon_4(x, \sigma_2, K, T) = 2 \sum_{k=1}^{K-1} \frac{x^{-\frac{1}{R \log t_k}}}{t_k}
+        \left( \tilde{N}(\sigma_2, t_{k+1}) - \tilde{N}(\sigma_2, t_k) \right) +
+        2\tilde{N}(\sigma_2, t_1) \frac{x^{-\frac{1}{R(\log t_0)}}}{t_0},
+      \]
+      and $\tilde{N}(\sigma, T)$ satisfy (ZDB) $N(\sigma, T) \leq \tilde{N}(\sigma, T)$.
+  -/)]
 theorem corollary_3_12 (I : Inputs) {σ₂ t₀ T x : ℝ} (K : ℕ) (hσ₂ : σ₂ ∈ Set.Ioc (5 / 8) 1)
     (ht₀ : t₀ = max (Hσ I.H₀ I.R σ₂) (exp (sqrt (log x) / I.R))) (hT : T > t₀)
     (ZDB : zero_density_bound) :
     riemannZeta.Sigma T x σ₂ 1 ≤ ε₄ I t₀ x σ₂ K T := by sorry
 
-/-%%
-Fix $K \geq 2$ and $c > 1$, and set $t_0$, $T$, and $\sigma_2$ as functions of $x$ defined by
-    \begin{equation}
-    t_0 = t_0(x) = \exp\left(\sqrt{\frac{\log x}{R}}\right), \quad T = t_0^c, \quad \text{and}
-      \quad \sigma_2 = 1 - \frac{2}{R \log t_0}.
-    \end{equation}
-    Then, with $\varepsilon_4(x, \sigma_2, K, T)$ as defined in (3.22), we have that as
-    $x \to \infty$,
-    \begin{equation}
-    \varepsilon_4(x, \sigma_2, K, T) = (1 + o(1)) C
-      \frac{(\log t_0)^{3 + \frac{4}{R \log t_0}}}{t_0^2}, \quad \text{with }
-      C = 2c_1 e^{\frac{16w_1}{3R}} w_1^3, \text{ and } w_1 = 1 + \frac{c-1}{K},
-    \end{equation}
-    where $c_1$ is an admissible value for (ZDB) on some interval $[\sigma_1, 1]$. Moreover, both
-    $\varepsilon_4(x, \sigma_2, K, T)$ and
-    $\frac{\varepsilon_4(x, \sigma_2, K, T) t_0^2}{(\log t_0)^3}$ are decreasing in $x$ for
-    $x > \exp(Re^2)$.
-%%-/
 @[blueprint
   "fks-proposition-3-14"
-  (title := "FKS Proposition 3-14")]
+  (title := "FKS Proposition 3-14")
+  (statement := /--
+  Fix $K \geq 2$ and $c > 1$, and set $t_0$, $T$, and $\sigma_2$ as functions of $x$ defined by
+      \begin{equation}
+      t_0 = t_0(x) = \exp\left(\sqrt{\frac{\log x}{R}}\right), \quad T = t_0^c, \quad \text{and}
+        \quad \sigma_2 = 1 - \frac{2}{R \log t_0}.
+      \end{equation}
+      Then, with $\varepsilon_4(x, \sigma_2, K, T)$ as defined in (3.22), we have that as
+      $x \to \infty$,
+      \begin{equation}
+      \varepsilon_4(x, \sigma_2, K, T) = (1 + o(1)) C
+        \frac{(\log t_0)^{3 + \frac{4}{R \log t_0}}}{t_0^2}, \quad \text{with }
+        C = 2c_1 e^{\frac{16w_1}{3R}} w_1^3, \text{ and } w_1 = 1 + \frac{c-1}{K},
+      \end{equation}
+      where $c_1$ is an admissible value for (ZDB) on some interval $[\sigma_1, 1]$. Moreover, both
+      $\varepsilon_4(x, \sigma_2, K, T)$ and
+      $\frac{\varepsilon_4(x, \sigma_2, K, T) t_0^2}{(\log t_0)^3}$ are decreasing in $x$ for
+      $x > \exp(Re^2)$.
+  -/)]
 theorem proposition_3_14 (I : Inputs) {c : ℝ} (K : ℕ) (hc : c > 1) (hK : K ≥ 2) :
     let t₀ : ℝ → ℝ := fun x ↦ exp (sqrt (log x) / I.R)
     let T : ℝ → ℝ := fun x ↦ (t₀ x) ^ c
@@ -486,17 +480,17 @@ noncomputable def ε (I : Inputs) (x₀ σ₂ c : ℝ) (N K : ℕ) : ℝ :=
     let T := t₀ ^ c
     ε₁ x₀ T + ε₂ I x₀ 0.9 T + ε₃ I x₀ 0.9 σ₂ N T + ε₄ I t₀ x₀ σ₂ K T
 
-/-%%
-For any $x_0$ with $\log x_0 > 1000$, and all $0.9 < \sigma_2 < 1$, $2 \leq c \leq 30$, and
-    $N, K \geq 1$ the formula $\varepsilon(x_0) := \varepsilon(x_0, \sigma_2, c, N, K)$ as defined
-    in (4.1) gives an effectively computable bound
-    \[
-    E_\psi(x) \leq \varepsilon(x_0) \quad \text{for all } x \geq x_0.
-    \]
-%%-/
 @[blueprint
   "fks-theorem-1-1"
-  (title := "FKS Theorem 1.1")]
+  (title := "FKS Theorem 1.1")
+  (statement := /--
+  For any $x_0$ with $\log x_0 > 1000$, and all $0.9 < \sigma_2 < 1$, $2 \leq c \leq 30$, and
+      $N, K \geq 1$ the formula $\varepsilon(x_0) := \varepsilon(x_0, \sigma_2, c, N, K)$ as defined
+      in (4.1) gives an effectively computable bound
+      \[
+      E_\psi(x) \leq \varepsilon(x_0) \quad \text{for all } x \geq x_0.
+      \]
+  -/)]
 theorem theorem_1_1 (I : Inputs) (x₀ σ₂ c : ℝ) (N K : ℕ) (hlog : log x₀ > 1000)
     (hσ₂ : σ₂ ∈ Set.Ioo 0.9 1) (hc : c ∈ Set.Icc 2 30) (hN : N ≥ 1) (hK : K ≥ 1) :
     ∀ x ≥ x₀, Eψ x ≤ ε I x₀ σ₂ c N K := by sorry
@@ -541,38 +535,38 @@ def table_5 : List (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × ℝ) := [
   (1000000, 0.99950, 1.2150e-540, 4.5688e-43425, 1.9527e-361, 3.9371e-359, 3.9566e-359)]
 
 
-/-%%
-Moreover, a collection of values, $\varepsilon(x_0)$ computed with well chosen parameters are
-    provided in Table 5.
-%%-/
 @[blueprint
   "fks-theorem-1-1b"
-  (title := "FKS Theorem 1.1b")]
+  (title := "FKS Theorem 1.1b")
+  (statement := /--
+  Moreover, a collection of values, $\varepsilon(x_0)$ computed with well chosen parameters are
+      provided in Table 5.
+  -/)]
 theorem theorem_1_1b {log_x0 σ2 c N K ε1 ε2 ε3 ε4 ε_total : ℝ}
     (h : (log_x0, σ2, ε1, ε2, ε3, ε4, ε_total) ∈ table_5) :
     ∀ x, log x ≥ log_x0 → Eψ x ≤ ε_total := by sorry
 
-/-%%
-For all $0 < \log x \leq 2100$ we have that
-    \[
-    E_\psi(x) \leq 2(\log x)^{3/2} \exp\left(-0.8476836\sqrt{\log x}\right).
-    \]
-%%-/
 @[blueprint
   "fks-lemma-5-2"
-  (title := "FKS Lemma 5.2")]
+  (title := "FKS Lemma 5.2")
+  (statement := /--
+  For all $0 < \log x \leq 2100$ we have that
+      \[
+      E_\psi(x) \leq 2(\log x)^{3/2} \exp\left(-0.8476836\sqrt{\log x}\right).
+      \]
+  -/)]
 theorem lemma_5_3 {x : ℝ} (h : log x ∈ Set.Ioc 0 2100) :
     Eψ x ≤ 2 * (log x) ^ (3 / 2) * exp (-0.8476836 * sqrt (log x)) := by sorry
 
-/-%%
-For all $2100 < \log x \leq 200000$ we have that
-    \[
-    E_\psi(x) \leq 9.22022(\log x)^{3/2} \exp\left(-0.8476836\sqrt{\log x}\right).
-    \]
-%%-/
 @[blueprint
   "fks-lemma-5-3"
-  (title := "FKS Lemma 5.3")]
+  (title := "FKS Lemma 5.3")
+  (statement := /--
+  For all $2100 < \log x \leq 200000$ we have that
+      \[
+      E_\psi(x) \leq 9.22022(\log x)^{3/2} \exp\left(-0.8476836\sqrt{\log x}\right).
+      \]
+  -/)]
 theorem lemma_5_4 {x : ℝ} (h : log x ∈ Set.Ioc 2100 200000) :
     Eψ x ≤ 9.22022 * (log x) ^ (3 / 2) * exp (-0.8476836 * sqrt (log x)) := by sorry
 
@@ -610,34 +604,34 @@ noncomputable def A (x₀ : ℝ) : ℝ :=
   else if log x₀ < 1e9 then 96.0345
   else 93.6772
 
-/-%%
-If $\log x_0 \geq 1000$ then we have an admissible bound for $E_\psi$ with the indicated choice
-    of $A(x_0)$, $B = 3/2$, $C = 2$, and $R = 5.5666305$.
-%%-/
 @[blueprint
   "fks-theorem-1-2b"
-  (title := "FKS Theorem 1.2b")]
+  (title := "FKS Theorem 1.2b")
+  (statement := /--
+  If $\log x_0 \geq 1000$ then we have an admissible bound for $E_\psi$ with the indicated choice
+      of $A(x_0)$, $B = 3/2$, $C = 2$, and $R = 5.5666305$.
+  -/)]
 theorem theorem_1_2b (x₀ : ℝ) (h : log x₀ ≥ 1000) :
     Eψ.classicalBound (A x₀) (3 / 2) 2 5.5666305 x₀ := by sorry
 
 
-/-%%
-For all x > 2 we have
-    $E_ψ(x) \leq 121.096 (\log x/R)^{3/2} \exp(-2 \sqrt{\log x/R})$ with $R = 5.5666305$.
-%%-/
 @[blueprint "fks_cor_13"
   (title := "FKS1 Corollary 1.3")
+  (statement := /--
+  For all x > 2 we have
+      $E_ψ(x) \leq 121.096 (\log x/R)^{3/2} \exp(-2 \sqrt{\log x/R})$ with $R = 5.5666305$.
+  -/)
   (uses := ["classical-bound-psi"])
   (latexEnv := "theorem")]
 theorem FKS_corollary_1_3 :
     Eψ.classicalBound 121.096 (3 / 2) 2 5.5666305 2 := sorry
 
-/-%%
-For all x > 2 we have
-    $E_ψ(x) \leq 9.22022(\log x)^{3/2} \exp(-0.8476836 \sqrt{\log x})$.
-%%-/
 @[blueprint "fks_cor_14"
   (title := "FKS1 Corollary 1.4")
+  (statement := /--
+  For all x > 2 we have
+      $E_ψ(x) \leq 9.22022(\log x)^{3/2} \exp(-0.8476836 \sqrt{\log x})$.
+  -/)
   (proof := /-- TODO. -/)]
 theorem FKS_corollary_1_4 :
     Eψ.classicalBound 9.22022 (3 / 2) 0.8476836 1 2 := sorry

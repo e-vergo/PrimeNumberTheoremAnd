@@ -58,11 +58,9 @@ def Table1 : List (ℝ × ℝ × ℕ × ℝ × ℝ × ℝ) := [
   (13900, 0.99, 2, 3.144e-20, 2445999556030, 2.358e-20)
 ]
 
-/-%%
-For $x \geq e^{b}$ we have $\psi(x) - x| \leq \varepsilon$, where $b, \varepsilon$ are given by \cite[Table 1]{Dusart2018}.
-%%-/
 @[blueprint "Dusart_prop_3_2"
   (title := "Dusart Proposition 3.2")
+  (statement := /-- For $x \geq e^{b}$ we have $\psi(x) - x| \leq \varepsilon$, where $b, \varepsilon$ are given by \cite[Table 1]{Dusart2018}. -/)
   (latexEnv := "proposition")]
 theorem proposition_3_2 {b σ₀ : ℝ} {m : ℕ} {δ T₁ ε : ℝ} (h : (b, σ₀, m, δ, T₁, ε) ∈ Table1)
 {x : ℝ} (hx : x ≥ exp b) : Eψ x ≤ ε := by sorry
@@ -75,11 +73,9 @@ def Table_3_3 : List (ℕ × ℝ) := [
    (4, 59.18)
 ]
 
-/-%%
-We have $|\psi(x) - x| < \eta_k x / \log^k x$ for $x \geq 2$ with $(k,\eta)$ given by the table in \cite[Theorem 3.3]{Dusart2018}.
-%%-/
 @[blueprint "Dusart_thm_3_3"
   (title := "Dusart Theorem 3.3")
+  (statement := /-- We have $|\psi(x) - x| < \eta_k x / \log^k x$ for $x \geq 2$ with $(k,\eta)$ given by the table in \cite[Theorem 3.3]{Dusart2018}. -/)
   (latexEnv := "theorem")]
 theorem theorem_3_3 {k : ℕ} {η : ℝ} (h : (k, η) ∈ Table_3_3) {x : ℝ} (hx : x ≥ 2) :
   Eψ x ≤ η / (log x) ^ k := by sorry
@@ -136,12 +132,12 @@ def Table2 : List ( ℝ × ℝ × ℝ ) := [
   (1e15,999999965752660.939840,31724269.567843)
 ]
 
-/-%%
-We have $\vartheta(x)$ and $\psi(x)-\vartheta(x)$ for various $x$ given by \cite[Table 2]{Dusart2018}, in particular
-  $\vartheta(10^{15}) = 999999965752660.939839805291048\dots$
-%%-/
 @[blueprint "Dusart_lemma_4_1"
   (title := "Dusart Lemma 4.1")
+  (statement := /--
+  We have $\vartheta(x)$ and $\psi(x)-\vartheta(x)$ for various $x$ given by \cite[Table 2]{Dusart2018}, in particular
+    $\vartheta(10^{15}) = 999999965752660.939839805291048\dots$
+  -/)
   (latexEnv := "lemma")]
 theorem lemma_4_1 {x ϑx ψϑx : ℝ} (h : (x, ϑx, ψϑx) ∈ Table2) : θ x ∈ Set.Icc ϑx (ϑx + 1e-6) ∧ ψ x - θ x ∈ Set.Icc ψϑx (ψϑx + 1e-6) := by sorry
 
@@ -160,348 +156,342 @@ def Table_4_2 : List (ℕ × ℝ × ℝ) := [
   (4, 151.3, 2)
 ]
 
-/-%%
-We have $|\vartheta(x) - x| < \eta_k x / \log^k x$ for $x \geq x_k$ with $(k,\eta_k,x_k)$ given by the table in \cite[Theorem 4.2]{Dusart2018}.
-%%-/
 @[blueprint "Dusart_thm_4_2"
   (title := "Dusart Theorem 4.2")
+  (statement := /-- We have $|\vartheta(x) - x| < \eta_k x / \log^k x$ for $x \geq x_k$ with $(k,\eta_k,x_k)$ given by the table in \cite[Theorem 4.2]{Dusart2018}. -/)
   (latexEnv := "theorem")]
 theorem theorem_4_2 {k : ℕ} {ηk xk : ℝ} (h : (k, ηk, xk) ∈ Table_4_2) {x : ℝ} (hx : x ≥ xk) :
   Eθ x ≤ ηk / (log x) ^ k := by sorry
 
-/-%%
-For $x \geq 121$, we have
-  \[
-  1 - \frac{4 \log 2}{\log x} \sqrt{x} < \psi(x) - \vartheta(x),
-  \quad \sqrt{\frac{\log^3 x}{x}} \, \vartheta(x^{1/2}).
-  \]
-%%-/
 @[blueprint "Dusart_prop_4_3"
   (title := "Dusart Proposition 4.3")
+  (statement := /--
+  For $x \geq 121$, we have
+    \[
+    1 - \frac{4 \log 2}{\log x} \sqrt{x} < \psi(x) - \vartheta(x),
+    \quad \sqrt{\frac{\log^3 x}{x}} \, \vartheta(x^{1/2}).
+    \]
+  -/)
   (latexEnv := "proposition")]
 theorem proposition_4_3 {x : ℝ} (hx : x ≥ 121) :
   ψ x - θ x ≥ 1 - (4 * Real.log 2) / (log x) * sqrt x ∧
   ψ x - θ x ≥ sqrt (log x ^ 3 / x) * θ (x ^ (1 / 2 : ℝ)) := by sorry
 
-/-%%
-For $x > 0$, we have
-  \[
-  \psi(x) - \vartheta(x) - \vartheta(\sqrt{x}) < 1.777745 x^{1/3}.
-  \]
-%%-/
 @[blueprint "Dusart_prop_4_4"
   (title := "Dusart Proposition 4.4")
+  (statement := /--
+  For $x > 0$, we have
+    \[
+    \psi(x) - \vartheta(x) - \vartheta(\sqrt{x}) < 1.777745 x^{1/3}.
+    \]
+  -/)
   (latexEnv := "proposition")]
 theorem proposition_4_4 {x : ℝ} (hx : x > 0) :
   ψ x - θ x - θ (sqrt x) < 1.777745 * x ^ (1 / 3 : ℝ) := by sorry
 
-/-%%
-For $x > 0$, we have
-  \[
-  \psi(x) - \vartheta(x) < \Bigl(1 + 1.47 \times 10^{-7}\Bigr) \sqrt{x} + 1.78 x^{1/3}.
-  \]
-%%-/
 @[blueprint "Dusart_corollary_4_5"
   (title := "Dusart Corollary 4.5")
+  (statement := /--
+  For $x > 0$, we have
+    \[
+    \psi(x) - \vartheta(x) < \Bigl(1 + 1.47 \times 10^{-7}\Bigr) \sqrt{x} + 1.78 x^{1/3}.
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_4_5 {x : ℝ} (hx : x > 0) :
   ψ x - θ x < (1 + 1.47e-7) * sqrt x + 1.78 * x ^ (1 / 3 : ℝ) := by sorry
 
 /- Theorem5.1Forx⩾4·109, π(x)= x lnx 1+ 1 lnx + 2 ln2x+O∗ 7.32 ln3x . -/
 
-/-%%
-For $x \geq 4 \times 10^9$, we have
-  \[
-  \pi(x) = \frac{x}{\log x} \Biggl(1 + \frac{1}{\log x} + \frac{2 \log \log x}{\log^2 x} + O^*\Bigl(\frac{7.32}{\log^3 x}\Bigr)\Biggr).
-  \]
-%%-/
 @[blueprint "Dusart_thm_5_1"
   (title := "Dusart Theorem 5.1")
+  (statement := /--
+  For $x \geq 4 \times 10^9$, we have
+    \[
+    \pi(x) = \frac{x}{\log x} \Biggl(1 + \frac{1}{\log x} + \frac{2 \log \log x}{\log^2 x} + O^*\Bigl(\frac{7.32}{\log^3 x}\Bigr)\Biggr).
+    \]
+  -/)
   (latexEnv := "theorem")]
 theorem theorem_5_1 {x : ℝ} (hx : x ≥ 4e9) : ∃ E,
   (pi x = x / log x * (1 + 1 / log x + 2 * log (log x) / (log x) ^ 2 + E) ∧ |E| ≤ 7.32 / (log x) ^ 3) := by sorry
 
-/-%%
-For $x \geq 17$, we have
-  \[
-  \frac{x}{\log x} \leq \pi(x).
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_2_a"
   (title := "Dusart Corollary 5.2 (a)")
+  (statement := /--
+  For $x \geq 17$, we have
+    \[
+    \frac{x}{\log x} \leq \pi(x).
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_2_a {x : ℝ} (hx : x ≥ 17) : pi x ≥ x / log x := by sorry
 
-/-%%
-For $x > 1$, we have
-  \[
-  \pi(x) \leq 1.2551 \frac{x}{\log x}.
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_2_b"
   (title := "Dusart Corollary 5.2 (b)")
+  (statement := /--
+  For $x > 1$, we have
+    \[
+    \pi(x) \leq 1.2551 \frac{x}{\log x}.
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_2_b {x : ℝ} (hx : x > 1) : pi x ≤ 1.2551 * (x / log x) := by sorry
 
-/-%%
-For $x \geq 599$, we have
-  \[
-  \pi(x) \geq \frac{x}{\log x} \Bigl(1 + \frac{1}{\log x}\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_2_c"
   (title := "Dusart Corollary 5.2 (c)")
+  (statement := /--
+  For $x \geq 599$, we have
+    \[
+    \pi(x) \geq \frac{x}{\log x} \Bigl(1 + \frac{1}{\log x}\Bigr).
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_2_c {x : ℝ} (hx : x ≥ 599) : pi x ≥ x / log x * (1 + 1 / log x) := by sorry
 
-/-%%
-For $x > 1$, we have
-  \[
-  \pi(x) \leq \frac{x}{\log x} \Bigl(1 + \frac{1.2762}{\log x}\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_2_d"
   (title := "Dusart Corollary 5.2 (d)")
+  (statement := /--
+  For $x > 1$, we have
+    \[
+    \pi(x) \leq \frac{x}{\log x} \Bigl(1 + \frac{1.2762}{\log x}\Bigr).
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_2_d {x : ℝ} (hx : x > 1) : pi x ≤ x / log x * (1 + 1.2762 / log x) := by sorry
 
-/-%%
-For $x \geq 88789$, we have
-  \[
-  \pi(x) \geq \frac{x}{\log x} \Bigl(1 + \frac{1}{\log x} + \frac{2}{\log^2 x}\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_2_e"
   (title := "Dusart Corollary 5.2 (e)")
+  (statement := /--
+  For $x \geq 88789$, we have
+    \[
+    \pi(x) \geq \frac{x}{\log x} \Bigl(1 + \frac{1}{\log x} + \frac{2}{\log^2 x}\Bigr).
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_2_e {x : ℝ} (hx : x ≥ 88789) : pi x ≥ x / log x * (1 + 1 / log x + 2 / (log x) ^ 2) := by sorry
 
-/-%%
-For $x > 1$, we have
-  \[
-  \pi(x) \leq \frac{x}{\log x} \Bigl(1 + \frac{1}{\log x} + \frac{2.53816}{\log^2 x}\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_2_f"
   (title := "Dusart Corollary 5.2 (f)")
+  (statement := /--
+  For $x > 1$, we have
+    \[
+    \pi(x) \leq \frac{x}{\log x} \Bigl(1 + \frac{1}{\log x} + \frac{2.53816}{\log^2 x}\Bigr).
+    \]
+  -/)
   (latexEnv := "corollary")]
 
 theorem corollary_5_2_f {x : ℝ} (hx : x > 1) : pi x ≤ x / log x * (1 + 1 / log x + 2.53816 / (log x) ^ 2) := by sorry
 
-/-%%
-For $x \geq 5393$, we have
-  \[
-  \frac{x}{\log x - 1} \leq \pi(x)
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_3_a"
   (title := "Dusart Corollary 5.3 (a)")
+  (statement := /--
+  For $x \geq 5393$, we have
+    \[
+    \frac{x}{\log x - 1} \leq \pi(x)
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_3_a {x : ℝ} (hx : x ≥ 5393) : pi x ≥ x / (log x - 1) := by sorry
 
-/-%%
-For $x > e^{1.112}$, we have
-  \[
-  \pi(x) \leq \frac{x}{\log x - 1.112}.
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_3_b"
   (title := "Dusart Corollary 5.3 (b)")
+  (statement := /--
+  For $x > e^{1.112}$, we have
+    \[
+    \pi(x) \leq \frac{x}{\log x - 1.112}.
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_3_b {x : ℝ} (hx : x > exp 1.112) : pi x ≤ x / (log x - 1.112) := by sorry
 
-/-%%
-For $x \geq 468049$, we have
-  \[
-  \frac{x}{\log x - 1 - \frac{1}{\log x}} \leq \pi(x).
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_3_c"
   (title := "Dusart Corollary 5.3 (c)")
+  (statement := /--
+  For $x \geq 468049$, we have
+    \[
+    \frac{x}{\log x - 1 - \frac{1}{\log x}} \leq \pi(x).
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_3_c {x : ℝ} (hx : x ≥ 468049) : pi x ≥ x / (log x - 1 - 1 / log x) := by sorry
 
-/-%%
-For $x > 5.6$, we have
-  \[
-  \pi(x) \leq \frac{x}{\log x - 1 - \frac{1.2311}{\log x}}.
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_3_d"
   (title := "Dusart Corollary 5.3 (d)")
+  (statement := /--
+  For $x > 5.6$, we have
+    \[
+    \pi(x) \leq \frac{x}{\log x - 1 - \frac{1.2311}{\log x}}.
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_3_d {x : ℝ} (hx : x > 5.6) : pi x ≤ x / (log x - 1 - 1.2311 / log x) := by sorry
 
-/-%%
-There exists a constant $X_0$ (one may take $X_0 = 89693$) with the following property:
-  for every real $x \geq X_0$, there exists a prime $p$ with
-  \[
-  x < p \le x\Bigl(1 + \frac{1}{\log^3 x}\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_prop_5_4"
   (title := "Dusart Proposition 5.4")
+  (statement := /--
+  There exists a constant $X_0$ (one may take $X_0 = 89693$) with the following property:
+    for every real $x \geq X_0$, there exists a prime $p$ with
+    \[
+    x < p \le x\Bigl(1 + \frac{1}{\log^3 x}\Bigr).
+    \]
+  -/)
   (latexEnv := "proposition")]
 theorem proposition_5_4 : HasPrimeInInterval.log_thm 89693 3 := sorry
 
-/-%%
-For all $x \geq 468991632$, there exists a prime $p$ such that
-  \[
-  x < p \leq x\Bigl(1 + \frac{1}{5000 \log^2 x}\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_cor_5_5"
   (title := "Dusart Corollary 5.5")
+  (statement := /--
+  For all $x \geq 468991632$, there exists a prime $p$ such that
+    \[
+    x < p \leq x\Bigl(1 + \frac{1}{5000 \log^2 x}\Bigr).
+    \]
+  -/)
   (latexEnv := "corollary")]
 theorem corollary_5_5 {x : ℝ} (hx : x ≥ 468991632) : HasPrimeInInterval x (x * (1 + 1 / (5000 * (log x) ^ 2))) := by sorry
 
-/-%%
-We have for $x \geq 2278383$,
-  \[
-  \sum_{p \leq x} \frac{1}{p} = \log \log x + M + O^*\Bigl(\frac{0.2}{\log^3 x}\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_thm_5_6"
   (title := "Dusart Theorem 5.6")
+  (statement := /--
+  We have for $x \geq 2278383$,
+    \[
+    \sum_{p \leq x} \frac{1}{p} = \log \log x + M + O^*\Bigl(\frac{0.2}{\log^3 x}\Bigr).
+    \]
+  -/)
   (latexEnv := "theorem")]
 theorem theorem_5_6 {x : ℝ} (hx : x ≥ 2278383) : ∃ E,
   ( (∑ p ∈ Finset.filter Prime (Finset.range (⌊x⌋₊ + 1)), 1 / p) = log (log x) + meisselMertensConstant + E ∧ |E| ≤ 0.2 / (log x) ^ 3 ) := by sorry
 
-/-%%
-We have for $x \geq 912560$,
-  \[
-  \sum_{p \leq x} \frac{\log p}{p} = \log x + E + O^*\Bigl(\frac{0.3}{\log^2 x}\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_thm_5_7"
   (title := "Dusart Theorem 5.7")
+  (statement := /--
+  We have for $x \geq 912560$,
+    \[
+    \sum_{p \leq x} \frac{\log p}{p} = \log x + E + O^*\Bigl(\frac{0.3}{\log^2 x}\Bigr).
+    \]
+  -/)
   (latexEnv := "theorem")]
 theorem theorem_5_7 {x : ℝ} (hx : x ≥ 912560) : ∃ E,
   ( (∑ p ∈ Finset.filter Prime (Finset.range (⌊x⌋₊ + 1)), Real.log p / p) = log x
   + mertensConstant + E ∧ |E| ≤ 0.3 / (log x) ^ 2 ) := by sorry
 
-/-%%
-We have for $x \geq 2278382$,
-  \[
-  \prod_{p \leq x} \Bigl(1 - \frac{1}{p}\Bigr) = \frac{e^{-\gamma}}{\log x} \Bigl(1 + O^*\Bigl(\frac{0.2}{\log^3 x}\Bigr)\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_thm_5_9a"
   (title := "Dusart Theorem 5.9 (a)")
+  (statement := /--
+  We have for $x \geq 2278382$,
+    \[
+    \prod_{p \leq x} \Bigl(1 - \frac{1}{p}\Bigr) = \frac{e^{-\gamma}}{\log x} \Bigl(1 + O^*\Bigl(\frac{0.2}{\log^3 x}\Bigr)\Bigr).
+    \]
+  -/)
   (latexEnv := "theorem")]
 theorem theorem_5_9a {x : ℝ} (hx : x ≥ 2278382) : ∃ E,
   ( (∏ p ∈ Finset.filter Prime (Finset.range (⌊x⌋₊ + 1)), (1 - 1 / p)) = exp (-eulerMascheroniConstant) / log x * (1 + E) ∧ |E| ≤ 0.2 / (log x) ^ 3 ) := by sorry
 
-/-%%
-We have for $x \geq 2278382$,
-  \[
-  \prod_{p \leq x} \frac{p}{p-1} = e^{\gamma} \log x \Bigl(1 + O^*\Bigl(\frac{0.2}{\log^3 x}\Bigr)\Bigr).
-  \]
-%%-/
 @[blueprint "Dusart_thm_5_9b"
   (title := "Dusart Theorem 5.9 (b)")
+  (statement := /--
+  We have for $x \geq 2278382$,
+    \[
+    \prod_{p \leq x} \frac{p}{p-1} = e^{\gamma} \log x \Bigl(1 + O^*\Bigl(\frac{0.2}{\log^3 x}\Bigr)\Bigr).
+    \]
+  -/)
   (latexEnv := "theorem")]
 theorem theorem_5_9b {x : ℝ} (hx : x ≥ 2278382) : ∃ E,
   ( (∏ p ∈ Finset.filter Prime (Finset.range (⌊x⌋₊ + 1)), p / (p - 1)) = exp eulerMascheroniConstant * log x * (1 + E) ∧ |E| ≤ 0.2 / (log x) ^ 3 ) := by sorry
 
 /- Lemma5.10 pk ⩽ kln pk for k ⩾ 4, ln pk ⩽ lnk +lnlnk +1 for k ⩾ 2. (5.8) (5.9) -/
 
-/-%%
-We have for $k \geq 4$, $p_k \leq k \log p_k$.
-%%-/
 @[blueprint "Dusart_lemma_5_10a"
   (title := "Dusart Lemma 5.10")
+  (statement := /-- We have for $k \geq 4$, $p_k \leq k \log p_k$. -/)
   (latexEnv := "lemma")]
 theorem lemma_5_10a {k : ℕ} (hk : k ≥ 4) : nth Nat.Prime k ≤ k * Real.log (nth Nat.Prime k) := by sorry
 
-/-%%
-We have for $k \geq 2$, $\log p_k \leq \log k + \log \log k + 1$.
-%%-/
 @[blueprint "Dusart_lemma_5_10b"
   (title := "Dusart Lemma 5.10")
+  (statement := /-- We have for $k \geq 2$, $\log p_k \leq \log k + \log \log k + 1$. -/)
   (latexEnv := "lemma")]
 theorem lemma_5_10b {k : ℕ} (hk : k ≥ 2) : Real.log (nth Nat.Prime k) ≤ Real.log k + Real.log (Real.log k) + 1 := by sorry
 
-/-%%
-We have for $k \geq 198$,
-  \[
-  \vartheta(p_k) \leq k \log k + \log \log k - 1 + \frac{\log \log k - 2}{\log k}.
-  \]
-%%-/
 @[blueprint "Massias_Robin_thm_Bv"
   (title := "Massias and Robin Theorem B (v)")
+  (statement := /--
+  We have for $k \geq 198$,
+    \[
+    \vartheta(p_k) \leq k \log k + \log \log k - 1 + \frac{\log \log k - 2}{\log k}.
+    \]
+  -/)
   (latexEnv := "theorem")]
 theorem massias_robin_thm_Bv {k : ℕ} (hk : k ≥ 198) :
   θ (nth Nat.Prime k) ≤ k * Real.log k + Real.log (Real.log k) - 1 + (Real.log (Real.log k) - 2) / (Real.log k) := by sorry
 
-/-%%
-We have for $p_k \geq 10^{11}$,
-  \[
-  \vartheta(p_k) \geq k \log k + \log \log k - 1 + \frac{\log \log k - 2.050735}{\log k}.
-  \]
-%%-/
 @[blueprint "Dusart_prop_5_11a"
   (title := "Dusart Proposition 5.11")
+  (statement := /--
+  We have for $p_k \geq 10^{11}$,
+    \[
+    \vartheta(p_k) \geq k \log k + \log \log k - 1 + \frac{\log \log k - 2.050735}{\log k}.
+    \]
+  -/)
   (latexEnv := "proposition")]
 theorem proposition_5_11a {k : ℕ} (hk : nth Nat.Prime k ≥ 10 ^ 11) :
   θ (nth Nat.Prime k) ≥ k * Real.log k + Real.log (Real.log k) - 1 + (Real.log (Real.log k) - 2.050735) / (Real.log k) := by sorry
 
-/-%%
-We have for $p_k \geq 10^{15}$,
-  \[
-  \vartheta(p_k) \geq k \log k + \log \log k - 1 + \frac{\log \log k - 2.04}{\log k}.
-  \]
-%%-/
 @[blueprint "Dusart_prop_5_11b"
   (title := "Dusart Proposition 5.11")
+  (statement := /--
+  We have for $p_k \geq 10^{15}$,
+    \[
+    \vartheta(p_k) \geq k \log k + \log \log k - 1 + \frac{\log \log k - 2.04}{\log k}.
+    \]
+  -/)
   (latexEnv := "proposition")]
 theorem proposition_5_11b {k : ℕ} (hk : nth Nat.Prime k ≥ 10 ^ 15) :
   θ (nth Nat.Prime k) ≥ k * Real.log k + Real.log (Real.log k) - 1 + (Real.log (Real.log k) - 2.04) / (Real.log k) := by sorry
 
-/-%%
-We have for $k \geq 781$,
-  \[
-  \vartheta(p_k) \leq k \log k + \log \log k - 1 + \frac{\log \log k - 2}{\log k} - \frac{0.782}{\log^2 k}.
-  \]
-%%-/
 @[blueprint "Dusart_prop_5_12"
   (title := "Dusart Proposition 5.12")
+  (statement := /--
+  We have for $k \geq 781$,
+    \[
+    \vartheta(p_k) \leq k \log k + \log \log k - 1 + \frac{\log \log k - 2}{\log k} - \frac{0.782}{\log^2 k}.
+    \]
+  -/)
   (latexEnv := "proposition")]
 theorem proposition_5_12 {k : ℕ} (hk : k ≥ 781) :
   θ (nth Nat.Prime k) ≤ k * Real.log k + Real.log (Real.log k) - 1 + (Real.log (Real.log k) - 2) / (Real.log k) - 0.782 / (Real.log k) ^ 2 := by sorry
 
-/-%%
-We have for $k \geq 178974$,
-  \[
-  p_k \leq k \log k + \log \log k - 1 + \frac{\log \log k - 1.95}{\log k}.
-  \]
-%%-/
 @[blueprint "Dusart_lemma_5_14"
   (title := "Dusart Lemma 5.14")
+  (statement := /--
+  We have for $k \geq 178974$,
+    \[
+    p_k \leq k \log k + \log \log k - 1 + \frac{\log \log k - 1.95}{\log k}.
+    \]
+  -/)
   (latexEnv := "lemma")]
 theorem lemma_5_14 {k : ℕ} (hk : k ≥ 178974) :
   nth Nat.Prime k ≤ k * Real.log k + Real.log (Real.log k) - 1 + (Real.log (Real.log k) - 1.95) / (Real.log k) := by sorry
 
-/-%%
-We have for $k \geq 688383$,
-  \[
-  p_k \leq k \log k + \log \log k - 1 + \frac{\log \log k - 2}{\log k}.
-  \]
-%%-/
 @[blueprint "Dusart_prop_5_15"
   (title := "Dusart Proposition 5.15")
+  (statement := /--
+  We have for $k \geq 688383$,
+    \[
+    p_k \leq k \log k + \log \log k - 1 + \frac{\log \log k - 2}{\log k}.
+    \]
+  -/)
   (latexEnv := "proposition")]
 theorem proposition_5_15 {k : ℕ} (hk : k ≥ 688383) :
   nth Nat.Prime k ≤ k * Real.log k + Real.log (Real.log k) - 1 + (Real.log (Real.log k) - 2) / (Real.log k) := by sorry
 
-/-%%
-We have for $k \geq 3$,
-  \[
-  p_k \geq k \log k + \log \log k - 1 + \frac{\log \log k - 2.1}{\log k}.
-  \]
-%%-/
 @[blueprint "Dusart_prop_5_16"
   (title := "Dusart Proposition 5.16")
+  (statement := /--
+  We have for $k \geq 3$,
+    \[
+    p_k \geq k \log k + \log \log k - 1 + \frac{\log \log k - 2.1}{\log k}.
+    \]
+  -/)
   (latexEnv := "proposition")]
 theorem proposition_5_16 {k : ℕ} (hk : k ≥ 3) :
   nth Nat.Prime k ≥ k * Real.log k + Real.log (Real.log k) - 1 + (Real.log (Real.log k) - 2.1) / (Real.log k) := by sorry

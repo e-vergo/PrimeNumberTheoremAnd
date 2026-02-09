@@ -20,23 +20,19 @@ lemma Chebyshev.theta_pos {y : ℝ} (hy : 2 ≤ y) : 0 < θ y := by
   · simp only [mem_filter] at hn; exact_mod_cast hn.2.one_lt
   · simpa using ⟨(le_floor_iff (by grind : 0 ≤ y)).2 hy, Nat.prime_two⟩
 
-/-%%
-$\vartheta(x) = x + O( x / \log^2 x)$.
-%%-/
 @[blueprint
   "rs-pnt"
   (title := "A medium version of the prime number theorem")
+  (statement := /-- $\vartheta(x) = x + O( x / \log^2 x)$. -/)
   (proof := /-- This in principle follows by establishing an analogue of Theorem \ref{chebyshev-asymptotic}, using mediumPNT in place of weakPNT. -/)
   (latexEnv := "theorem")
   (discussion := 597)]
 theorem pnt : ∃ C ≥ 0, ∀ x ≥ 2, |θ x - x| ≤ C * x / log x ^ 2 := by sorry
 
-/-%%
-The function $\vartheta(x) = \sum_{p \leq x} \log p$ defines a Stieltjes function (monotone and right continuous).
-%%-/
 @[blueprint
   "theta-stieltjes"
   (title := "The Chebyshev function is Stieltjes")
+  (statement := /-- The function $\vartheta(x) = \sum_{p \leq x} \log p$ defines a Stieltjes function (monotone and right continuous). -/)
   (proof := /-- Trivial -/)
   (latexEnv := "sublemma")
   (discussion := 598)]
@@ -53,12 +49,10 @@ noncomputable def θ.Stieltjes : StieltjesFunction ℝ := {
       simp [floor_of_nonpos hx, theta_eq_theta_coe_floor y, floor_eq_zero.mpr hy.2]
 }
 
-/-%%
-$\sum_{p \leq x} f(p) = \int_{2}^x \frac{f(y)}{\log y}\ d\vartheta(y)$.
-%%-/
 @[blueprint
   "rs-pre-413"
   (title := "RS-prime display before (4.13)")
+  (statement := /-- $\sum_{p \leq x} f(p) = \int_{2}^x \frac{f(y)}{\log y}\ d\vartheta(y)$. -/)
   (proof := /-- This follows from the definition of the Stieltjes integral. -/)
   (latexEnv := "sublemma")
   (discussion := 599)]
@@ -66,12 +60,10 @@ theorem pre_413 {f : ℝ → ℝ} (hf : ContinuousOn f (Set.Ici 2)) {x : ℝ} (h
     ∑ p ∈ filter Prime (Iic ⌊x⌋₊), f p =
       ∫ y in Set.Icc 2 x, f y / log y ∂θ.Stieltjes.measure := by sorry
 
-/-%%
-$\sum_{p \leq x} f(p) = \frac{f(x) \vartheta(x)}{\log x} - \int_2^x \vartheta(y) \frac{d}{dy}( \frac{f(y)}{\log y} )\ dy.$
-%%-/
 @[blueprint
   "rs-413"
   (title := "RS equation (4.13)")
+  (statement := /-- $\sum_{p \leq x} f(p) = \frac{f(x) \vartheta(x)}{\log x} - \int_2^x \vartheta(y) \frac{d}{dy}( \frac{f(y)}{\log y} )\ dy.$ -/)
   (proof := /-- Follows from Sublemma \ref{rs-pre-413} and integration by parts. -/)
   (latexEnv := "sublemma")
   (discussion := 650)]
@@ -80,13 +72,13 @@ theorem eq_413 {f : ℝ → ℝ} {x : ℝ} (hx : 2 ≤ x) (hf : DifferentiableOn
       ∫ y in 2..x, θ y * deriv (fun t ↦ f t / log t) y := by
   sorry
 
-/-%%
-$$\sum_{p \leq x} f(p) = \int_2^x \frac{f(y)\ dy}{\log y} + \frac{2 f(2)}{\log 2} $$
-  $$ + \frac{f(x) (\vartheta(x) - x)}{\log x} - \int_2^x (\vartheta(y) - y) \frac{d}{dy}( \frac{f(y)}{\log y} )\ dy.$$
-%%-/
 @[blueprint
   "rs-414"
   (title := "RS equation (4.14)")
+  (statement := /--
+  $$\sum_{p \leq x} f(p) = \int_2^x \frac{f(y)\ dy}{\log y} + \frac{2 f(2)}{\log 2} $$
+    $$ + \frac{f(x) (\vartheta(x) - x)}{\log x} - \int_2^x (\vartheta(y) - y) \frac{d}{dy}( \frac{f(y)}{\log y} )\ dy.$$
+  -/)
   (proof := /-- Follows from Sublemma \ref{rs-413} and integration by parts. -/)
   (latexEnv := "sublemma")
   (discussion := 600)]
@@ -158,12 +150,10 @@ theorem eq_414 {f : ℝ → ℝ} {x : ℝ} (hx : 2 ≤ x) (hf : DifferentiableOn
     · exact (hd.continuousOn_mul (by fun_prop)).congr_ae (hoc ▸ this)
   _ = _ := by ring
 
-/-%%
-$$L_f := \frac{2f(2)}{\log 2} - \int_2^\infty (\vartheta(y) - y) \frac{d}{dy} (\frac{f(y)}{\log y})\ dy.$$
-%%-/
 @[blueprint
   "rs-416"
-  (title := "RS equation (4.16)")]
+  (title := "RS equation (4.16)")
+  (statement := /-- $$L_f := \frac{2f(2)}{\log 2} - \int_2^\infty (\vartheta(y) - y) \frac{d}{dy} (\frac{f(y)}{\log y})\ dy.$$ -/)]
 noncomputable def L (f : ℝ → ℝ) : ℝ :=
     2 * f 2 / Real.log 2 - ∫ y in Set.Ioi 2, (θ y - y) * deriv (fun t ↦ f t / log t) y
 
@@ -264,13 +254,13 @@ theorem integrableOn_deriv {f : ℝ → ℝ} (hf : DifferentiableOn ℝ f (Set.I
     · simpa using intervalIntegrable_inv_log_pow 2 1 (by linarith : 1 < (2 : ℝ)) x
     · simpa using intervalIntegrable_inv_log_pow 2 2 (by linarith : 1 < (2 : ℝ)) x
 
-/-%%
-$$\sum_{p \leq x} f(p) = \int_2^x \frac{f(y)\ dy}{\log y} + L_f $$
-  $$ + \frac{f(x) (\vartheta(x) - x)}{\log x} + \int_x^\infty (\vartheta(y) - y) \frac{d}{dy}( \frac{f(y)}{\log y} )\ dy.$$
-%%-/
 @[blueprint
   "rs-415"
   (title := "RS equation (4.15)")
+  (statement := /--
+  $$\sum_{p \leq x} f(p) = \int_2^x \frac{f(y)\ dy}{\log y} + L_f $$
+    $$ + \frac{f(x) (\vartheta(x) - x)}{\log x} + \int_x^\infty (\vartheta(y) - y) \frac{d}{dy}( \frac{f(y)}{\log y} )\ dy.$$
+  -/)
   (proof := /-- Follows from Sublemma \ref{rs-414} and Definition \ref{rs-416}. -/)
   (latexEnv := "sublemma")
   (discussion := 601)]
@@ -283,12 +273,10 @@ theorem eq_415 {f : ℝ → ℝ} (hf : DifferentiableOn ℝ f (Set.Ici 2)) {x : 
     (hft.mono_set (Set.Ioi_subset_Ioi hx))]
   ring
 
-/-%%
-$$\pi(x) = \frac{\vartheta(x)}{\log x} + \int_2^x \frac{\vartheta(y)\ dy}{y \log^2 y}.$$
-%%-/
 @[blueprint
   "rs-417"
   (title := "RS equation (4.17)")
+  (statement := /-- $$\pi(x) = \frac{\vartheta(x)}{\log x} + \int_2^x \frac{\vartheta(y)\ dy}{y \log^2 y}.$$ -/)
   (proof := /-- Follows from Sublemma \ref{rs-413} applied to $f(t) = 1$. -/)
   (latexEnv := "sublemma")
   (discussion := 602)]
@@ -296,12 +284,10 @@ theorem eq_417 {x : ℝ} (hx : 2 ≤ x) :
     pi x = θ x / log x + ∫ y in 2..x, θ y / (y * log y ^ 2) := by
   exact Chebyshev.primeCounting_eq_theta_div_log_add_integral hx
 
-/-%%
-$$\sum_{p \leq x} \frac{1}{p} = \frac{\vartheta(x)}{x \log x} + \int_2^x \frac{\vartheta(y) (1 + \log y)\ dy}{y^2 \log^2 y}.$$
-%%-/
 @[blueprint
   "rs-418"
   (title := "RS equation (4.18)")
+  (statement := /-- $$\sum_{p \leq x} \frac{1}{p} = \frac{\vartheta(x)}{x \log x} + \int_2^x \frac{\vartheta(y) (1 + \log y)\ dy}{y^2 \log^2 y}.$$ -/)
   (proof := /-- Follows from Sublemma \ref{rs-413} applied to $f(t) = 1/t$. -/)
   (latexEnv := "sublemma")
   (discussion := 652)]
@@ -342,12 +328,10 @@ theorem ioiIntegral_tendsto_zero {ι E : Type*} [NormedAddCommGroup E] [NormedSp
   exact Tendsto.congr' this (sub_self (∫ x in Set.Ioi a, f x ∂μ) ▸ (Tendsto.const_sub _ <|
     intervalIntegral_tendsto_integral_Ioi a hfi hb))
 
-/-%%
-$B := \lim_{x \to \infty} \left( \sum_{p \leq x} \frac{1}{p} - \log \log x \right)$.
-%%-/
 @[blueprint
   "Meissel-Mertens-constant"
-  (title := "Meissel-Mertens constant B")]
+  (title := "Meissel-Mertens constant B")
+  (statement := /-- $B := \lim_{x \to \infty} \left( \sum_{p \leq x} \frac{1}{p} - \log \log x \right)$. -/)]
 noncomputable def _root_.meisselMertensConstant : ℝ := - log (log 2) + L (fun x => 1 / x)
 
 theorem integrableOn_deriv_inv : IntegrableOn (fun y ↦ (θ y - y) *
@@ -390,13 +374,13 @@ theorem mertens_second_theorem : Filter.atTop.Tendsto (fun x : ℝ ↦
       · exact mul_nonneg (h1 hy).le (h2 hy)
     · exact ((tendsto_pow_atTop (by linarith : 3 ≠ 0)).comp tendsto_log_atTop).const_div_atTop C
 
-/-%%
-$$\sum_{p \leq x} \frac{1}{p} = \log \log x + B + \frac{\vartheta(x) - x}{x \log x} $$
-  $$ - \int_2^x \frac{(\vartheta(y)-y) (1 + \log y)\ dy}{y^2 \log^2 y}.$$
-%%-/
 @[blueprint
   "rs-419"
   (title := "RS equation (4.19) and Mertens' second theorem")
+  (statement := /--
+  $$\sum_{p \leq x} \frac{1}{p} = \log \log x + B + \frac{\vartheta(x) - x}{x \log x} $$
+    $$ - \int_2^x \frac{(\vartheta(y)-y) (1 + \log y)\ dy}{y^2 \log^2 y}.$$
+  -/)
   (proof := /-- Follows from Sublemma \ref{rs-413} applied to $f(t) = 1/t$. One can also use this identity to demonstrate convergence of the limit defining $B$.-/)
   (latexEnv := "sublemma")
   (discussion := 603)]
@@ -446,13 +430,13 @@ theorem mertens_second_theorem' :
 theorem mertens_first_theorem : Filter.atTop.Tendsto (fun x : ℝ ↦
     ∑ p ∈ filter Nat.Prime (range ⌊x⌋₊), Real.log p / p - log x - mertensConstant) (nhds 0) := by sorry
 
-/-%%
-$$\sum_{p \leq x} \frac{\log p}{p} = \log x + E + \frac{\vartheta(x) - x}{x} $$
-  $$ - \int_2^x \frac{(\vartheta(y)-y)\ dy}{y^2}.$$
-%%-/
 @[blueprint
   "rs-420"
   (title := "RS equation (4.19) and Mertens' first theorem")
+  (statement := /--
+  $$\sum_{p \leq x} \frac{\log p}{p} = \log x + E + \frac{\vartheta(x) - x}{x} $$
+    $$ - \int_2^x \frac{(\vartheta(y)-y)\ dy}{y^2}.$$
+  -/)
   (proof := /-- Follows from Sublemma \ref{rs-413} applied to $f(t) = \log t / t$.  Convergence will need Theorem \ref{rs-pnt}. -/)
   (latexEnv := "sublemma")
   (discussion := 604)]

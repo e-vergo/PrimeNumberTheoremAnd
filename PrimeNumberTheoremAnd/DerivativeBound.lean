@@ -24,14 +24,14 @@ import Mathlib.Analysis.Normed.Group.Basic
 import Mathlib.Analysis.Complex.AbsMax
 import PrimeNumberTheoremAnd.BorelCaratheodory
 
-/-%%
-Let $R,\,M>0$ and $0 < r < r' < R$. Let $f$ be analytic on $|z|\leq R$ such that $f(0)=0$ and
-  suppose $\Re f(z)\leq M$ for all $|z|\leq R$. Then we have that
-  $$|f'(z)|\leq\frac{2M(r')^2}{(R-r')(r'-r)^2}$$
-  for all $|z|\leq r$.
-%%-/
 @[blueprint "DerivativeBound"
   (title := "DerivativeBound")
+  (statement := /--
+  Let $R,\,M>0$ and $0 < r < r' < R$. Let $f$ be analytic on $|z|\leq R$ such that $f(0)=0$ and
+    suppose $\Re f(z)\leq M$ for all $|z|\leq R$. Then we have that
+    $$|f'(z)|\leq\frac{2M(r')^2}{(R-r')(r'-r)^2}$$
+    for all $|z|\leq r$.
+  -/)
   (proof := /--
   By Cauchy's integral formula we know that
   $$f'(z)=\frac{1}{2\pi i}\oint_{|w|=r'}\frac{f(w)}{(w-z)^2}\,dw=

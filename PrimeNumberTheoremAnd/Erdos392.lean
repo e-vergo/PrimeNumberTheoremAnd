@@ -14,11 +14,9 @@ in turn is inspired by the arguments in \url{https://arxiv.org/abs/2503.20170}.
 
 open Finset Nat Real Multiset Asymptotics
 
-/-%%
-We work with (approximate) factorizations $a_1 \dots a_t$ of a factorial $n!$.
-%%-/
 @[blueprint
-  "factorization-def"]
+  "factorization-def"
+  (statement := /-- We work with (approximate) factorizations $a_1 \dots a_t$ of a factorial $n!$. -/)]
 structure Factorization (n : ℕ) where
   a : Multiset ℕ
   ha : ∀ m ∈ a, m ≤ n
@@ -32,29 +30,27 @@ def Factorization.prod {n : ℕ} (f : Factorization n) {R : Type*} [CommMonoid R
     (F : ℕ → R) : R :=
   (f.a.map F).prod
 
-/-%%
-The waste of a factorizations $a_1 \dots a_t$ is defined as $\sum_i \log (n / a_i)$.
-%%-/
 @[blueprint
-  "waste-def"]
+  "waste-def"
+  (statement := /-- The waste of a factorizations $a_1 \dots a_t$ is defined as $\sum_i \log (n / a_i)$. -/)]
 noncomputable def Factorization.waste {n : ℕ} (f : Factorization n) : ℝ :=
   f.sum (fun m ↦ log (n / m : ℝ))
 
-/-%%
-The balance of a factorization $a_1 \dots a_t$ at a prime $p$ is defined as the number of
-  times $p$ divides $a_1 \dots a_t$, minus the number of times $p$ divides $n!$.
-%%-/
 @[blueprint
-  "balance-def"]
+  "balance-def"
+  (statement := /--
+  The balance of a factorization $a_1 \dots a_t$ at a prime $p$ is defined as the number of
+    times $p$ divides $a_1 \dots a_t$, minus the number of times $p$ divides $n!$.
+  -/)]
 def Factorization.balance {n : ℕ} (f : Factorization n) (p : ℕ) : ℤ :=
   f.sum (fun m ↦ m.factorization p) - (n.factorial.factorization p:ℤ)
 
-/-%%
-The total imbalance of a factorization $a_1 \dots a_t$ is the sum of absolute values of
-  the balances at each prime.
-%%-/
 @[blueprint
-  "balance-def"]
+  "balance-def"
+  (statement := /--
+  The total imbalance of a factorization $a_1 \dots a_t$ is the sum of absolute values of
+    the balances at each prime.
+  -/)]
 def Factorization.total_imbalance {n : ℕ} (f : Factorization n) : ℕ :=
   ∑ p ∈ (n+1).primesBelow, (f.balance p).natAbs
 
@@ -69,12 +65,10 @@ private lemma factorization_multiset_prod (s : Multiset ℕ) (h : (0 : ℕ) ∉ 
     have ha : a ≠ 0 := fun h' ↦ h (h' ▸ Multiset.mem_cons_self 0 t)
     rw [factorization_mul ha (Multiset.prod_ne_zero ht), Finsupp.coe_add, Pi.add_apply, ih ht]
 
-/-%%
-If a factorization has zero total imbalance, then it exactly factors $n!$.
-%%-/
 @[blueprint
   "balance-zero"
-  (latexEnv := "lemma")]
+  
+  (statement := /-- If a factorization has zero total imbalance, then it exactly factors $n!$. -/)(latexEnv := "lemma")]
 theorem Factorization.zero_total_imbalance {n : ℕ} (f : Factorization n)
     (hf : f.total_imbalance = 0) : f.prod id = n.factorial := by
   have h_balance_zero : ∀ p ∈ (n + 1).primesBelow, f.balance p = 0 := fun p hp ↦ by
@@ -93,13 +87,13 @@ theorem Factorization.zero_total_imbalance {n : ℕ} (f : Factorization n)
       exact factorization_eq_zero_of_lt ((f.ha m hm).trans_lt (lt_of_not_ge hp_le))
   all_goals aesop
 
-/-%%
-The waste of a factorization is equal to $t \log n - \log n!$, where $t$ is the
-  number of elements.
-%%-/
 @[blueprint
   "waste-eq"
-  (latexEnv := "lemma")]
+  
+  (statement := /--
+  The waste of a factorization is equal to $t \log n - \log n!$, where $t$ is the
+    number of elements.
+  -/)(latexEnv := "lemma")]
 theorem Factorization.waste_eq {n : ℕ} (f : Factorization n) (hf : f.total_imbalance = 0) :
     f.a.card * (Real.log n) = Real.log n.factorial + f.waste := by
   unfold waste sum
@@ -118,14 +112,14 @@ theorem Factorization.waste_eq {n : ℕ} (f : Factorization n) (hf : f.total_imb
     exact congrArg _ (Multiset.map_congr rfl fun m hm ↦ by
       rw [Real.log_div hn_pos.ne' (cast_ne_zero.mpr (f.hpos m hm).ne')]; ring)
 
-/-%%
-The score of a factorization (relative to a cutoff parameter $L$) is equal to its waste,
-  plus $\log p$ for every surplus prime $p$, $\log (n/p)$ for every deficit prime above $L$,
-  $\log L$ for every deficit prime below $L$ and an additional $\log n$ if one is not in
-  total balance.
-%%-/
 @[blueprint
-  "score-def"]
+  "score-def"
+  (statement := /--
+  The score of a factorization (relative to a cutoff parameter $L$) is equal to its waste,
+    plus $\log p$ for every surplus prime $p$, $\log (n/p)$ for every deficit prime above $L$,
+    $\log L$ for every deficit prime below $L$ and an additional $\log n$ if one is not in
+    total balance.
+  -/)]
 noncomputable def Factorization.score {n : ℕ} (f : Factorization n) (L : ℕ) : ℝ :=
   f.waste
   + (if f.total_imbalance > 0 then Real.log n else 0)
@@ -134,12 +128,10 @@ noncomputable def Factorization.score {n : ℕ} (f : Factorization n) (L : ℕ) 
     else if p ≤ L then (-f.balance p) * (Real.log L)
     else (-f.balance p) * (Real.log (n/p))
 
-/-%%
-If one is in total balance, then the score is equal to the waste.
-%%-/
 @[blueprint
   "score-eq"
-  (latexEnv := "lemma")]
+  
+  (statement := /-- If one is in total balance, then the score is equal to the waste. -/)(latexEnv := "lemma")]
 theorem Factorization.score_eq {n : ℕ} {f : Factorization n} (hf : f.total_imbalance = 0) (L : ℕ) :
     f.score L = f.waste := by
   simp_all [total_imbalance, score]
@@ -628,13 +620,13 @@ lemma Factorization.score_le_of_add_submultiset {n : ℕ} (f : Factorization n) 
     norm_num [add_assoc]
     rw [← log_mul (by positivity) (by positivity), log_le_log_iff] <;> norm_cast <;> nlinarith
 
-/-%%
-If there is a prime $p$ in surplus, one can remove it without increasing the
-  score.
-%%-/
 @[blueprint
   "score-lower-1"
-  (proof := /-- Locate a factor $a_i$ that contains the surplus prime $p$, then
+  
+  (statement := /--
+  If there is a prime $p$ in surplus, one can remove it without increasing the
+    score.
+  -/)(proof := /-- Locate a factor $a_i$ that contains the surplus prime $p$, then
   replace $a_i$ with $a_i/p$.-/)
   (latexEnv := "sublemma")]
 theorem Factorization.lower_score_1 {n : ℕ} (f : Factorization n) (L : ℕ)
@@ -649,13 +641,13 @@ theorem Factorization.lower_score_1 {n : ℕ} (f : Factorization n) (L : ℕ)
     hp_mem hp_pos, replace_div_score_le f m p hm h_fac_pos (prime_of_mem_primesBelow hp_mem)
       hp_mem hp_pos L⟩
 
-/-%%
-If there is a prime $p$ in deficit larger than $L$, one can remove it without
-  increasing the score.
-%%-/
 @[blueprint
   "score-lower-2"
-  (proof := /-- Add an additional factor of $p$ to the factorization.-/)
+  
+  (statement := /--
+  If there is a prime $p$ in deficit larger than $L$, one can remove it without
+    increasing the score.
+  -/)(proof := /-- Add an additional factor of $p$ to the factorization.-/)
   (latexEnv := "sublemma")]
 theorem Factorization.lower_score_2 {n : ℕ} (f : Factorization n) (L : ℕ)
     (hf : ∃ p ∈ (n + 1).primesBelow, p > L ∧ f.balance p < 0) :
@@ -808,12 +800,10 @@ lemma Factorization.lower_score_3_clean {n : ℕ} (f : Factorization n) (L : ℕ
   · exact lower_score_3_case2b f L h_surplus hf
       (not_le.mp h_prod) (not_lt.mp hL_gt_n)
 
-/-%%
-If there is a prime $p$ in deficit less than $L$, one can remove it without increasing the score.
-%%-/
 @[blueprint
   "score-lower-3"
-  (proof := /-- Without loss of generality we may assume that one is not in the previous two
+  
+  (statement := /-- If there is a prime $p$ in deficit less than $L$, one can remove it without increasing the score. -/)(proof := /-- Without loss of generality we may assume that one is not in the previous two
   situations, i.e., wlog there are no surplus primes and all primes in deficit are at most $L$.
   If all deficit primes multiply to $n$ or less, add that product to the factorization (this
   increases the waste by at most $\log n$, but we save a $\log n$ from now being in balance).
@@ -841,12 +831,10 @@ theorem Factorization.lower_score_3 {n : ℕ} (f : Factorization n) (L : ℕ)
     exact not_lt.mp fun hpL ↦ hp.not_ge <| h2 p (mem_primesBelow.mpr ⟨Nat.lt_succ_of_le
       (deficit_implies_le_n f p hp), hp_prime⟩) hpL
 
-/-%%
-One can bring any factorization into balance without increasing the score.
-%%-/
 @[blueprint
   "score-lowest"
-  (proof := /-- Apply strong induction on the total imbalance of the factorization and use the
+  
+  (statement := /-- One can bring any factorization into balance without increasing the score. -/)(proof := /-- Apply strong induction on the total imbalance of the factorization and use the
   previous three sublemmas.-/)
   (latexEnv := "lemma")]
 theorem Factorization.lowest_score {n : ℕ} (f : Factorization n) (L : ℕ) :
@@ -873,13 +861,13 @@ theorem Factorization.lowest_score {n : ℕ} (f : Factorization n) (L : ℕ) :
                 else h2 p hp (lt_of_not_ge hpL); omega
           exact let ⟨f₁, hlt, hle⟩ := lower_score_3 f L h3; reduce f₁ hlt hle
 
-/-%%
-Starting from any factorization $f$, one can find a factorization $f'$ in balance whose
-  cardinality is at most $\log n!$ plus the score of $f$, divided by $\log n$.
-%%-/
 @[blueprint
   "card-bound"
-  (proof := /-- Combine Lemma \ref{score-lowest}, Lemma \ref{score-eq}, and
+  
+  (statement := /--
+  Starting from any factorization $f$, one can find a factorization $f'$ in balance whose
+    cardinality is at most $\log n!$ plus the score of $f$, divided by $\log n$.
+  -/)(proof := /-- Combine Lemma \ref{score-lowest}, Lemma \ref{score-eq}, and
   Lemma \ref{waste-eq}.-/)
   (latexEnv := "proposition")]
 theorem Factorization.card_bound {n : ℕ} (f : Factorization n) (L : ℕ) : ∃ f' :
@@ -888,12 +876,12 @@ theorem Factorization.card_bound {n : ℕ} (f : Factorization n) (L : ℕ) : ∃
   obtain ⟨f', hf'_bal, hf'_score⟩ := lowest_score f L
   exact ⟨f', hf'_bal, by rw [waste_eq f' hf'_bal]; linarith [score_eq hf'_bal L]⟩
 
-/-%%
-Now let $M,L$ be additional parameters with $n > L^2$; we also need the minor
-  variant $\lfloor n/L \rfloor > \sqrt{n}$.
-%%-/
 @[blueprint
-  "params-set"]
+  "params-set"
+  (statement := /--
+  Now let $M,L$ be additional parameters with $n > L^2$; we also need the minor
+    variant $\lfloor n/L \rfloor > \sqrt{n}$.
+  -/)]
 structure Params where
   n : ℕ
   M : ℕ
@@ -903,13 +891,13 @@ structure Params where
   hL : n > L * L
   hL' : (n/L:ℕ) > Real.sqrt n  -- almost implied by hL, but not quite
 
-/-%%
-We perform an initial factorization by taking the natural numbers between
-  $n-n/M$ (inclusive) and $n$ (exclusive) repeated $M$ times, deleting those elements that are
-  not $n/L$-smooth (i.e., have a prime factor greater than or equal to $n/L$).
-%%-/
 @[blueprint
-  "initial-factorization-def"]
+  "initial-factorization-def"
+  (statement := /--
+  We perform an initial factorization by taking the natural numbers between
+    $n-n/M$ (inclusive) and $n$ (exclusive) repeated $M$ times, deleting those elements that are
+    not $n/L$-smooth (i.e., have a prime factor greater than or equal to $n/L$).
+  -/)]
 def Params.initial (P : Params) : Factorization P.n := {
   a := (replicate P.M (.Ico (P.n - P.n/P.M) P.n)).join.filter
     (fun m ↦ m ∈ (P.n/P.L).smoothNumbers)
@@ -924,12 +912,10 @@ def Params.initial (P : Params) : Factorization P.n := {
     exact pos_of_ne_zero (mem_smoothNumbers.mp hsmooth).1
 }
 
-/-%%
-The number of elements in this initial factorization is at most $n$.
-%%-/
 @[blueprint
   "initial-factorization-card"
-  (latexEnv := "sublemma")]
+  
+  (statement := /-- The number of elements in this initial factorization is at most $n$. -/)(latexEnv := "sublemma")]
 theorem Params.initial.card (P : Params) : P.initial.a.card ≤ P.n := by
   calc Multiset.card (filter (fun m ↦ m ∈ (P.n / P.L).smoothNumbers)
       (replicate P.M (Multiset.Ico (P.n - P.n / P.M) P.n)).join)
@@ -965,13 +951,13 @@ lemma Params.initial.div_le (P : Params) (m : ℕ) (hm : m ∈ P.initial.a) :
     _ = P.n / (P.n * (1 - 1 / (P.M : ℝ))) := by rw [mul_sub, mul_one, mul_one_div]
     _ = (1 - 1 / (P.M : ℝ))⁻¹ := by rw [div_mul_eq_div_div, div_self hn_pos.ne', one_div]
 
-/-%%
-The total waste in this initial factorization is at most
-  $n \log \frac{1}{1-1/M}$.
-%%-/
 @[blueprint
   "initial-factorization-waste"
-  (latexEnv := "lemma")]
+  
+  (statement := /--
+  The total waste in this initial factorization is at most
+    $n \log \frac{1}{1-1/M}$.
+  -/)(latexEnv := "lemma")]
 theorem Params.initial.waste (P : Params) :
     P.initial.waste ≤ P.n * log (1 - 1/(P.M : ℝ))⁻¹ := by
   unfold Factorization.waste Factorization.sum
@@ -994,12 +980,10 @@ theorem Params.initial.waste (P : Params) :
         · exact Real.log_nonneg h_inv_ge_one
         · exact_mod_cast card P
 
-/-%%
-A large prime $p \geq n/L$ cannot be in surplus.
-%%-/
 @[blueprint
   "initial-factorization-large-prime-le"
-  (proof := /-- No such prime can be present in the factorization.-/)
+  
+  (statement := /-- A large prime $p \geq n/L$ cannot be in surplus. -/)(proof := /-- No such prime can be present in the factorization.-/)
   (latexEnv := "sublemma")]
 theorem Params.initial.balance_large_prime_le (P : Params) {p : ℕ} (hp : p ≥ P.n / P.L) :
     P.initial.balance p ≤ 0 := by
@@ -1033,12 +1017,10 @@ lemma Params.initial.factorial_factorization_eq_div {n p : ℕ} (hp : p.Prime)
   · rw [div_eq_of_lt (hlog.resolve_right hp.one_lt.not_ge)]
   · cases h_floor_zero (‹_› + 2) (by linarith) <;> simp_all +decide [log_eq_iff]; grind
 
-/-%%
-A large prime $p \geq n/L$ can be in deficit by at most $n/p$.
-%%-/
 @[blueprint
   "initial-factorization-large-prime-ge"
-  (proof := /-- This is the number of times $p$ can divide $n!$. -/)
+  
+  (statement := /-- A large prime $p \geq n/L$ can be in deficit by at most $n/p$. -/)(proof := /-- This is the number of times $p$ can divide $n!$. -/)
   (latexEnv := "sublemma")]
 theorem Params.initial.balance_large_prime_ge (P : Params) {p : ℕ}
     (hp : p ≥ P.n / P.L) : P.initial.balance p ≥ -(P.n / p) := by
@@ -1132,12 +1114,10 @@ lemma Params.initial.sum_valuation_le_M_mul_interval_count (P : Params) {p : ℕ
           simp only [S, map_join, sum_join, map_replicate, Multiset.sum_replicate, smul_eq_mul,
             Multiset.Ico, card_filter, sum_eq_multiset_sum]
 
-/-%%
-A medium prime $\sqrt{n} < p ≤ n/L$ can be in surplus by at most $M$.
-%%-/
 @[blueprint
   "initial-factorization-medium-prime-le"
-  (proof := /-- Routine computation using Legendre's formula.-/)
+  
+  (statement := /-- A medium prime $\sqrt{n} < p ≤ n/L$ can be in surplus by at most $M$. -/)(proof := /-- Routine computation using Legendre's formula.-/)
   (latexEnv := "sublemma")]
 theorem Params.initial.balance_medium_prime_le (P : Params) {p : ℕ} (hp : p > Real.sqrt P.n) :
     P.initial.balance p ≤ P.M := by
@@ -1247,12 +1227,10 @@ lemma Params.initial.sum_valuation_eq (P : Params) {p : ℕ} (hp : p.Prime)
     simp_all
   simp_all [sum_congr rfl h1]
 
-/-%%
-A medium prime $\sqrt{n} < p ≤ n/L$ can be in deficit by at most $M$.
-%%-/
 @[blueprint
   "initial-factorization-medium-prime-ge"
-  (proof := /-- The number of times $p$ divides $a_1 \dots a_t$ is at least $M \lfloor n/Mp
+  
+  (statement := /-- A medium prime $\sqrt{n} < p ≤ n/L$ can be in deficit by at most $M$. -/)(proof := /-- The number of times $p$ divides $a_1 \dots a_t$ is at least $M \lfloor n/Mp
   \rfloor ≥ n/p - M$ (note that the removal of the non-smooth numbers does not remove any multiples
   of $p$).  Meanwhile, the number of times $p$ divides $n!$ is at most $n/p$.-/)
   (latexEnv := "sublemma")]
@@ -1326,12 +1304,10 @@ lemma Params.initial.sum_valuation_le (P : Params) (p : ℕ) :
   convert h_sum_le h_subset using 1
   simp [Multiset.bind]
 
-/-%%
-A small prime $p \leq \sqrt{n}$ can be in surplus by at most $M\log n$.
-%%-/
 @[blueprint
   "initial-factorization-small-prime-le"
-  (proof := /-- Routine computation using Legendre's formula, noting that at most
+  
+  (statement := /-- A small prime $p \leq \sqrt{n}$ can be in surplus by at most $M\log n$. -/)(proof := /-- Routine computation using Legendre's formula, noting that at most
   $\log n / \log 2$ powers of $p$ divide any given number up to $n$.-/)
   (latexEnv := "sublemma")
   (discussion := 513)]
@@ -1498,13 +1474,13 @@ lemma Params.initial.balance_ge_neg_M_mul_log (P : Params) {p : ℕ} (hp : p.Pri
       _ = _ := by simp [sum_add_distrib, mul_sum, mul_comm]
   · exact lt_succ_self _
 
-/-%%
-A small prime $L < p \leq \sqrt{n}$ can be in deficit by at most
-  $M\log n$.
-%%-/
 @[blueprint
   "initial-factorization-small-prime-ge"
-  (proof := /-- Routine computation using Legendre's formula, noting that at most
+  
+  (statement := /--
+  A small prime $L < p \leq \sqrt{n}$ can be in deficit by at most
+    $M\log n$.
+  -/)(proof := /-- Routine computation using Legendre's formula, noting that at most
   $\log n / \log 2$ powers of $p$ divide any given number up to $n$.-/)
   (latexEnv := "sublemma")
   (discussion := 514)]
@@ -1868,12 +1844,10 @@ lemma Params.balance_inequality_aux (P : Params) (p : ℕ) (hp_prime : p.Prime) 
       rw [div_sub_one, div_le_iff₀] <;> nlinarith [log_two_gt_d9, log_le_sub_one_of_pos zero_lt_two]) (by positivity))
         (by nlinarith [mul_le_mul_of_nonneg_left (L_sub_log_ge_one P p hp_prime) (show 0 ≤ (P.n.primeCounting : ℝ) by positivity)])
 
-/-%%
-A tiny prime $p \leq L$ can be in deficit by at most $M\log n + ML\pi(n)$.
-%%-/
 @[blueprint
   "initial-factorization-tiny-prime-ge"
-  (proof := /-- In addition to the Legendre calculations, one potentially removes factors of the
+  
+  (statement := /-- A tiny prime $p \leq L$ can be in deficit by at most $M\log n + ML\pi(n)$. -/)(proof := /-- In addition to the Legendre calculations, one potentially removes factors of the
   form $plq$ with $l \leq L$ and $q \leq n$ a prime up to $M$ times each, with at most $L$ copies
   of $p$ removed at each factor.-/)
   (latexEnv := "sublemma")
@@ -1895,15 +1869,15 @@ theorem Params.initial.balance_tiny_prime_ge (P : Params) {p : ℕ} (hp : p ≤ 
       CharP.cast_eq_zero, sub_zero, Int.cast_natCast, neg_mul, ge_iff_le, tsub_le_iff_right]
     exact le_trans (neg_nonpos_of_nonneg (by positivity)) (by positivity)
 
-/-%%
-The initial score is bounded by
-  $$ n \log(1-1/M)^{-1} + \sum_{p \leq n/L} M \log n + \sum_{p \leq \sqrt{n}} M \log^2 n / \log 2
-  + \sum_{n/L < p \leq n} \frac{n}{p} \log \frac{n}{p}
-  + \sum_{p \leq L} (M \log n + M L \pi(n)) \log L.$$
-%%-/
 @[blueprint
   "initial-score-bound"
-  (latexEnv := "proposition")
+  
+  (statement := /--
+  The initial score is bounded by
+    $$ n \log(1-1/M)^{-1} + \sum_{p \leq n/L} M \log n + \sum_{p \leq \sqrt{n}} M \log^2 n / \log 2
+    + \sum_{n/L < p \leq n} \frac{n}{p} \log \frac{n}{p}
+    + \sum_{p \leq L} (M \log n + M L \pi(n)) \log L.$$
+  -/)(latexEnv := "proposition")
   (proof := /-- Combine Lemma \ref{initial-factorization-waste},
   Sublemma \ref{initial-factorization-large-prime-le},
   Sublemma \ref{initial-factorization-large-prime-ge},
@@ -1923,13 +1897,13 @@ theorem Params.initial.score_bound (P : Params) :
       ∑ p ∈ Finset.filter (·.Prime) (Finset.Iic P.L),
         (P.M * Real.log P.n + P.M * P.L^2 * primeCounting P.n) * Real.log P.L := by sorry
 
-/-%%
-If $M$ is sufficiently large depending on $\varepsilon$, then
-$n \log(1-1/M)^{-1} \leq \varepsilon n$.
-%%-/
 @[blueprint
   "bound-score-1"
-  (proof := /-- Use the fact that $\log(1-1/M)^{-1}$ goes to zero as $M \to \infty$.-/)
+  
+  (statement := /--
+  If $M$ is sufficiently large depending on $\varepsilon$, then
+  $n \log(1-1/M)^{-1} \leq \varepsilon n$.
+  -/)(proof := /-- Use the fact that $\log(1-1/M)^{-1}$ goes to zero as $M \to \infty$.-/)
   (latexEnv := "sublemma")]
 theorem Params.initial.bound_score_1 (ε : ℝ) (hε : ε > 0) :
     ∀ᶠ M in .atTop, ∀ P : Params,
@@ -1961,13 +1935,13 @@ theorem Params.initial.bound_score_1 (ε : ℝ) (hε : ε > 0) :
     _ ≤ P.n * ε := by gcongr
     _ = ε * P.n := mul_comm ..
 
-/-%%
-If $L$ is sufficiently large depending on $M, \varepsilon$, and $n$
-  sufficiently large depending on $L$, then $\sum_{p \leq n/L} M \log n  \leq \varepsilon n$.
-%%-/
 @[blueprint
   "bound-score-2"
-  (proof := /-- Use the prime number theorem (or the Chebyshev bound). -/)
+  
+  (statement := /--
+  If $L$ is sufficiently large depending on $M, \varepsilon$, and $n$
+    sufficiently large depending on $L$, then $\sum_{p \leq n/L} M \log n  \leq \varepsilon n$.
+  -/)(proof := /-- Use the prime number theorem (or the Chebyshev bound). -/)
   (latexEnv := "sublemma")]
 theorem Params.initial.bound_score_2 (ε : ℝ) (hε : ε > 0) (M : ℕ) :
     ∀ᶠ L in .atTop, ∀ᶠ n in .atTop, ∀ P : Params,
@@ -2047,12 +2021,12 @@ theorem Params.initial.bound_score_2 (ε : ℝ) (hε : ε > 0) (M : ℕ) :
         calc 3 * M * n ≤ ε * L * n := by nlinarith
           _ = ε * n * L := by ring
 
-/-%%
-If $n$ sufficiently large depending on $M, \varepsilon$, then
-  $\sum_{p \leq \sqrt{n}} M \log^2 n / \log 2 \leq \varepsilon n$.
-%%-/
 @[blueprint "bound-score-3"
-  (proof := /-- Crude estimation. -/)
+  
+  (statement := /--
+  If $n$ sufficiently large depending on $M, \varepsilon$, then
+    $\sum_{p \leq \sqrt{n}} M \log^2 n / \log 2 \leq \varepsilon n$.
+  -/)(proof := /-- Crude estimation. -/)
   (discussion := 516)
   (latexEnv := "sublemma")]
 theorem Params.initial.bound_score_3 (ε : ℝ) (hε : ε > 0) (M : ℕ) :
@@ -2167,12 +2141,10 @@ lemma exists_phi_div_self_lt {ε : ℝ} (hε : 0 < ε) : ∃ a : ℕ, a ≠ 0 �
     · exact fun _ _ hi' ↦ hi'.pos
   · aesop
 
-/-%%
-$$\pi(n) = o(n) \quad \text{as } n \to \infty.$$
-%%-/
 @[blueprint
   "primeCounting-is-o-id"
-  (proof := /-- Given $\varepsilon > 0$, choose $a \neq 0$ with $\varphi(a)/a < \varepsilon/2$
+  
+  (statement := /-- $$\pi(n) = o(n) \quad \text{as } n \to \infty.$$ -/)(proof := /-- Given $\varepsilon > 0$, choose $a \neq 0$ with $\varphi(a)/a < \varepsilon/2$
 (using $\prod_{p \leq n}(1 - 1/p) \to 0$). For $n \geq a + 2$,
 $$\pi(n) \leq \frac{\varphi(a)}{a} \cdot n + \varphi(a) + \pi(a+1) + 1.$$
 Since $\varphi(a)/a < \varepsilon/2$, for $n$ large enough the constant terms are absorbed,
@@ -2212,13 +2184,13 @@ lemma primeCounting_is_o_id :
   have h_n_ge : (n : ℝ) ≥ M + ⌈C / (ε / 2)⌉₊ + 1 := by exact_mod_cast hn
   nlinarith [hM n (by linarith)]
 
-/-%%
-If $n$ sufficiently large depending on $L, \varepsilon$, then
-$\sum_{n/L < p \leq n} \frac{n}{p} \log \frac{n}{p} \leq \varepsilon n$.
-%%-/
 @[blueprint
   "bound-score-4"
-  (proof := /-- Bound $\frac{n}{p}$ by $L$ and use the prime number theorem (or the Chebyshev bound). -/)
+  
+  (statement := /--
+  If $n$ sufficiently large depending on $L, \varepsilon$, then
+  $\sum_{n/L < p \leq n} \frac{n}{p} \log \frac{n}{p} \leq \varepsilon n$.
+  -/)(proof := /-- Bound $\frac{n}{p}$ by $L$ and use the prime number theorem (or the Chebyshev bound). -/)
   (discussion := 517)
   (latexEnv := "sublemma")]
 theorem Params.initial.bound_score_4 (ε : ℝ) (hε : ε > 0) (L : ℕ) :
@@ -2262,12 +2234,10 @@ theorem Params.initial.bound_score_4 (ε : ℝ) (hε : ε > 0) (L : ℕ) :
   filter_upwards [h_bound, h_pi_bound] with n hn hn' P hP hP'
   exact le_trans (hn P hP hP') (by simpa [hP'] using hn')
 
-/-%%
-For all $n \geq 2$, one has $$\pi(n) \leq \sqrt{n} + \frac{2n \log 4}{\log n}.$$
-%%-/
 @[blueprint
   "primeCounting-le-bound"
-  (proof := /-- By Chebyshev's bound, $\prod_{p \leq n} p \leq 4^n$, so
+  
+  (statement := /-- For all $n \geq 2$, one has $$\pi(n) \leq \sqrt{n} + \frac{2n \log 4}{\log n}.$$ -/)(proof := /-- By Chebyshev's bound, $\prod_{p \leq n} p \leq 4^n$, so
 $\sum_{p \leq n} \log p \leq n \log 4$. The number of primes $p \leq \sqrt{n}$ is trivially
 at most $\sqrt{n}$. For primes $p > \sqrt{n}$, we have $\log p > \frac{1}{2} \log n$, hence
 $$\bigl(\pi(n) - \pi(\sqrt{n})\bigr) \cdot \tfrac{1}{2} \log n
@@ -2336,13 +2306,13 @@ lemma tendsto_primeCounting_div_id_zero :
   exact squeeze_zero_norm' (Filter.eventually_atTop.mpr ⟨2, fun n hn ↦ by
     rw [norm_of_nonneg (by positivity)]; exact h_upper_bound n hn⟩) h_tendsto
 
-/-%%
-If $n$ sufficiently large depending on $M, L, \varepsilon$, then
-$\sum_{p \leq L} (M \log n + M L \pi(n)) \log L \leq \varepsilon n$.
-%%-/
 @[blueprint
   "bound-score-5"
-  (proof := /-- Use the prime number theorem (or the Chebyshev bound). -/)
+  
+  (statement := /--
+  If $n$ sufficiently large depending on $M, L, \varepsilon$, then
+  $\sum_{p \leq L} (M \log n + M L \pi(n)) \log L \leq \varepsilon n$.
+  -/)(proof := /-- Use the prime number theorem (or the Chebyshev bound). -/)
   (discussion := 518)
   (latexEnv := "sublemma")]
 theorem Params.initial.bound_score_5 (ε : ℝ) (hε : ε > 0) (M L : ℕ) :
@@ -2375,12 +2345,10 @@ theorem Params.initial.bound_score_5 (ε : ℝ) (hε : ε > 0) (M L : ℕ) :
     · ring_nf
     · rw [count_eq_card_filter_range, add_comm, range_eq_Ico]; rfl
 
-/-%%
-The score of the initial factorization can be taken to be $o(n)$.
-%%-/
 @[blueprint
   "initial-score"
-  (proof := /-- Pick $M$ large depending on $\varepsilon$, then $L$ sufficiently large depending
+  
+  (statement := /-- The score of the initial factorization can be taken to be $o(n)$. -/)(proof := /-- Pick $M$ large depending on $\varepsilon$, then $L$ sufficiently large depending
   on $M, \varepsilon$, then $n$ sufficiently large depending on $M,L,\varepsilon$, so that the
   bounds in Sublemma \ref{bound-score-1}, Sublemma \ref{bound-score-2},
   Sublemma \ref{bound-score-3}, Sublemma \ref{bound-score-4}, and Sublemma \ref{bound-score-5}
@@ -2438,13 +2406,13 @@ theorem Params.initial.score (ε : ℝ) (hε : ε > 0) :
           exact hn3 P rfl rfl | exact hn4 P rfl rfl | exact hn5 P rfl rfl rfl
     _ = ε * n := by ring
 
-/-%%
-One can find a balanced factorization of $n!$ with cardinality at most
-  $n - n / \log n + o(n / \log n)$.-
-%%-/
 @[blueprint
   "erdos-sol-1"
-  (proof := /-- Combine Proposition \ref{initial-score} with Proposition \ref{card-bound} and
+  
+  (statement := /--
+  One can find a balanced factorization of $n!$ with cardinality at most
+    $n - n / \log n + o(n / \log n)$.-
+  -/)(proof := /-- Combine Proposition \ref{initial-score} with Proposition \ref{card-bound} and
   the Stirling approximation.-/)
   (latexEnv := "theorem")
   (discussion := 648)]
@@ -2550,13 +2518,13 @@ lemma pairProd_bound (l : List ℕ) (n : ℕ) (hl : ∀ x ∈ l, x ≤ n) :
         _ = n ^ 2 := (sq n).symm
     · exact ih (fun x hx' ↦ hl x <| by grind) x hx
 
-/-%%
-One can factorize $n!$ into at most $n/2 - n / 2\log n + o(n / \log n)$
-  numbers of size at most $n^2$.-
-%%-/
 @[blueprint
   "erdos-sol-2"
-  (proof := /-- Group the factorization arising in Theorem \ref{erdos-sol-1} into pairs, using
+  
+  (statement := /--
+  One can factorize $n!$ into at most $n/2 - n / 2\log n + o(n / \log n)$
+    numbers of size at most $n^2$.-
+  -/)(proof := /-- Group the factorization arising in Theorem \ref{erdos-sol-1} into pairs, using
   Lemma \ref{balance-zero}.-/)
   (latexEnv := "theorem")
   (discussion := 649)]
