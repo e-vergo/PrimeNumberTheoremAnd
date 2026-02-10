@@ -6,14 +6,6 @@ import PrimeNumberTheoremAnd.ZetaSummary
 open Real
 open ArithmeticFunction hiding log
 
-blueprint_comment /--
-\section{Definitions}
--/
-
-blueprint_comment /--
-In this section we define the basic types of primary estimates we will work with in the project.
-
--/
 
 /-- The Chebyshev function ψ.  TODO: align this with notation used elsewhere in PNT+ -/
 noncomputable def ψ (x : ℝ) : ℝ := Chebyshev.psi x
@@ -22,7 +14,13 @@ noncomputable def ψ (x : ℝ) : ℝ := Chebyshev.psi x
 @[blueprint
   "Epsi-def"
   (title := "Equation (2) of FKS2")
-  (statement := /-- $E_ψ(x) = |ψ(x) - x| / x$ -/)]
+  (statement := /-- $E_ψ(x) = |ψ(x) - x| / x$ -/)
+  (above := /--
+  \section{Definitions}
+
+  In this section we define the basic types of primary estimates we will work with in the project.
+  -/)
+]
 noncomputable def Eψ (x : ℝ) : ℝ := |ψ x - x| / x
 
 noncomputable def admissible_bound (A B C R : ℝ) (x : ℝ) := A * (log x / R) ^ B * exp (-C * (log x / R) ^ (1/2))

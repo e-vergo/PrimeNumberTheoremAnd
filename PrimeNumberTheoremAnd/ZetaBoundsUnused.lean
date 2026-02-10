@@ -4,10 +4,6 @@ open Complex Filter Set
 local notation (name := riemannzeta2) "ζ" => riemannZeta
 local notation (name := derivriemannzeta2) "ζ'" => deriv riemannZeta
 
-blueprint_comment /--
-It would perhaps (?) be better to refactor this entire file so that we're not using explicit
-constants but instead systematically using big Oh notation... The punchline would be:
--/
 
 @[blueprint
   (title := "LogDerivZetaBndAlt")
@@ -19,7 +15,12 @@ constants but instead systematically using big Oh notation... The punchline woul
       (Same statement but using big-Oh and filters.)
   -/)
   (proof := /-- Same as above. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  It would perhaps (?) be better to refactor this entire file so that we're not using explicit
+  constants but instead systematically using big Oh notation... The punchline would be:
+  -/)
+]
 lemma LogDerivZetaBndAlt :
     ∃ A > 0, ∀ (σ) (_ : σ ∈ Ico ((1 : ℝ) / 2) (1 : ℝ)),
     (fun (t : ℝ) ↦ ζ' (σ + t * I) / ζ (σ + t * I)) =O[cocompact ℝ ⊓

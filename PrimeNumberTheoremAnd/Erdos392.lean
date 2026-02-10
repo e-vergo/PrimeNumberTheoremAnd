@@ -5,18 +5,19 @@ import PrimeNumberTheoremAnd.Consequences
 
 namespace Erdos392
 
-blueprint_comment /--
-\section{Erdos problem 392}
-
-The proof here is adapted from \url{https://www.erdosproblems.com/forum/thread/392\#post-2696} which
-in turn is inspired by the arguments in \url{https://arxiv.org/abs/2503.20170}.
--/
 
 open Finset Nat Real Multiset Asymptotics
 
 @[blueprint
   "factorization-def"
-  (statement := /-- We work with (approximate) factorizations $a_1 \dots a_t$ of a factorial $n!$. -/)]
+  (statement := /-- We work with (approximate) factorizations $a_1 \dots a_t$ of a factorial $n!$. -/)
+  (above := /--
+  \section{Erdos problem 392}
+
+  The proof here is adapted from \url{https://www.erdosproblems.com/forum/thread/392\#post-2696} which
+  in turn is inspired by the arguments in \url{https://arxiv.org/abs/2503.20170}.
+  -/)
+]
 structure Factorization (n : ℕ) where
   a : Multiset ℕ
   ha : ∀ m ∈ a, m ≤ n

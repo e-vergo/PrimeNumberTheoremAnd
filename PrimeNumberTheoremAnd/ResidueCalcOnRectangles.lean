@@ -63,19 +63,19 @@ noncomputable def UpperUIntegral (f : ℂ → E) (σ σ' T : ℝ) : E := HIntegr
 noncomputable def LowerUIntegral (f : ℂ → E) (σ σ' T : ℝ) : E := HIntegral f σ σ' (-T) -
     I • (∫ y : ℝ in Iic (-T), f (σ' + y * I)) + I • (∫ y : ℝ in Iic (-T), f (σ + y * I))
 
-blueprint_comment /--
-It is very convenient to define integrals along vertical lines in the complex plane, as follows.
--/
 @[blueprint
   (title := "VerticalIntegral")
   (statement := /--
   Let $f$ be a function from $\mathbb{C}$ to $\mathbb{C}$, and let $\sigma$ be a real number.
     Then we define
     $$\int_{(\sigma)}f(s)ds = \int_{\sigma-i\infty}^{\sigma+i\infty}f(s)ds.$$
-  -/)]
+  -/)
+  (above := /--
+  It is very convenient to define integrals along vertical lines in the complex plane, as follows.
+  -/)
+]
 noncomputable def VerticalIntegral (f : ℂ → E) (σ : ℝ) : E := I • ∫ t : ℝ, f (σ + t * I)
 
-blueprint_comment /-- We also have a version with a factor of $1/(2\pi i)$. -/
 noncomputable abbrev VerticalIntegral' (f : ℂ → E) (σ : ℝ) : E :=
     (1 / (2 * π * I)) • VerticalIntegral f σ
 
@@ -97,7 +97,9 @@ lemma verticalIntegral_split_three (a b : ℝ) (hf : Integrable (fun t : ℝ ↦
   -/)
   (proof := /-- Follows directly from the definitions. -/)
   (proofUses := ["UpperUIntegral", "LowerUIntegral"])
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /-- We also have a version with a factor of $1/(2\pi i)$. -/)
+]
 lemma DiffVertRect_eq_UpperLowerUs {σ σ' T : ℝ}
     (f_int_σ : Integrable (fun (t : ℝ) ↦ f (σ + t * I)))
     (f_int_σ' : Integrable (fun (t : ℝ) ↦ f (σ' + t * I))) :
@@ -330,9 +332,6 @@ lemma RectanglePullToNhdOfPole' [CompleteSpace E] {z₀ z₁ z₂ z₃ p : ℂ}
   simp only [re_add_im] at *
   additive_combination h₁ + h₂ + h₃ + h₄ + h₅ + h₆ + h₇ + h₈
 
-blueprint_comment /--
-The next lemma allows to zoom a big rectangle down to a small square, centered at a pole.
--/
 /-- Given `f` holomorphic on a rectangle `z` and `w` except at a point `p`, the integral of `f` over
 the rectangle with corners `z` and `w` is the same as the integral of `f` over a small square
 centered at `p`. -/
@@ -349,7 +348,11 @@ centered at `p`. -/
   vanishes, since $f$ is holomorphic there. (The constant $c$ being ``small enough'' here just means
   that the inner square is strictly contained in the big rectangle.)
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  The next lemma allows to zoom a big rectangle down to a small square, centered at a pole.
+  -/)
+]
 lemma RectanglePullToNhdOfPole [CompleteSpace E] {z w p : ℂ} (zRe_lt_wRe : z.re ≤ w.re)
     (zIm_lt_wIm : z.im ≤ w.im) (hp : Rectangle z w ∈ 𝓝 p)
     (fHolo : HolomorphicOn f (Rectangle z w \ {p})) :

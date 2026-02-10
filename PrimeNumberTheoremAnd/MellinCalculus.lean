@@ -250,32 +250,10 @@ lemma PartialIntegration_of_support_in_Icc {a b : ℝ} (f g : ℝ → ℂ) (ha :
   have lim_at_inf : Tendsto (f * g) atTop (𝓝 0) := TendstoAtTop_of_support_in_Icc (f * g) fgSupp
   apply PartialIntegration f g fDiff gDiff fDerivgInt gDerivfInt lim_at_zero lim_at_inf
 
-blueprint_comment /--
-In this section, we define the Mellin transform (already in Mathlib, thanks to David Loeffler),
-prove its inversion formula, and
-derive a number of important properties of some special functions and bumpfunctions.
-
-Def: (Already in Mathlib)
-Let $f$ be a function from $\mathbb{R}_{>0}$ to $\mathbb{C}$. We define the Mellin transform of
-$f$ to be the function $\mathcal{M}(f)$ from $\mathbb{C}$ to $\mathbb{C}$ defined by
-$$\mathcal{M}(f)(s) = \int_0^\infty f(x)x^{s-1}dx.$$
-
-[Note: My preferred way to think about this is that we are integrating over the multiplicative
-group $\mathbb{R}_{>0}$, multiplying by a (not necessarily unitary!) character $|\cdot|^s$, and
-integrating with respect to the invariant Haar measure $dx/x$. This is very useful in the kinds
-of calculations carried out below. But may be more difficult to formalize as things now stand. So
-we might have clunkier calculations, which ``magically'' turn out just right - of course they're
-explained by the aforementioned structure...]
-
--/
-
 
 local notation (name := mellintransform) "𝓜" => mellin
 
 
-blueprint_comment /--
-Finally, we need Mellin Convolutions and properties thereof.
--/
 @[blueprint
   (title := "MellinConvolution")
   (statement := /--
@@ -283,13 +261,30 @@ Finally, we need Mellin Convolutions and properties thereof.
     Mellin convolution of $f$ and $g$ to be the function $f\ast g$ from $\mathbb{R}_{>0}$
     to $\mathbb{C}$ defined by
     $$(f\ast g)(x) = \int_0^\infty f(y)g(x/y)\frac{dy}{y}.$$
-  -/)]
+  -/)
+  (above := /--
+  In this section, we define the Mellin transform (already in Mathlib, thanks to David Loeffler),
+  prove its inversion formula, and
+  derive a number of important properties of some special functions and bumpfunctions.
+
+  Def: (Already in Mathlib)
+  Let $f$ be a function from $\mathbb{R}_{>0}$ to $\mathbb{C}$. We define the Mellin transform of
+  $f$ to be the function $\mathcal{M}(f)$ from $\mathbb{C}$ to $\mathbb{C}$ defined by
+  $$\mathcal{M}(f)(s) = \int_0^\infty f(x)x^{s-1}dx.$$
+
+  [Note: My preferred way to think about this is that we are integrating over the multiplicative
+  group $\mathbb{R}_{>0}$, multiplying by a (not necessarily unitary!) character $|\cdot|^s$, and
+  integrating with respect to the invariant Haar measure $dx/x$. This is very useful in the kinds
+  of calculations carried out below. But may be more difficult to formalize as things now stand. So
+  we might have clunkier calculations, which ``magically'' turn out just right - of course they're
+  explained by the aforementioned structure...]
+
+  Finally, we need Mellin Convolutions and properties thereof.
+  -/)
+]
 noncomputable def MellinConvolution (f g : ℝ → 𝕂) (x : ℝ) : 𝕂 :=
   ∫ y in Ioi 0, f y * g (x / y) / y
 
-blueprint_comment /--
-Let us start with a simple property of the Mellin convolution.
--/
 @[blueprint
   (title := "MellinConvolutionSymmetric")
   (statement := /--
@@ -311,7 +306,11 @@ Let us start with a simple property of the Mellin convolution.
     .
   $$
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  Let us start with a simple property of the Mellin convolution.
+  -/)
+]
 lemma MellinConvolutionSymmetric (f g : ℝ → 𝕂) {x : ℝ} (xpos : 0 < x) :
     MellinConvolution f g x = MellinConvolution g f x := by
   unfold MellinConvolution
@@ -350,9 +349,6 @@ lemma support_MellinConvolution (f g : ℝ → 𝕂) :
     (MellinConvolution f g).support ⊆ f.support * g.support :=
   support_MellinConvolution_subsets subset_rfl subset_rfl
 
-blueprint_comment /--
-The Mellin transform of a convolution is the product of the Mellin transforms.
--/
 @[blueprint
   (title := "MellinConvolutionTransform")
   (statement := /--
@@ -387,7 +383,11 @@ The Mellin transform of a convolution is the product of the Mellin transforms.
     \mathcal M(f)(s)\mathcal M(g)(s)
     .
   $$
-  -/)]
+  -/)
+  (above := /--
+  The Mellin transform of a convolution is the product of the Mellin transforms.
+  -/)
+]
 lemma MellinConvolutionTransform (f g : ℝ → ℂ) (s : ℂ)
     (hf : IntegrableOn (fun x y ↦ f y * g (x / y) / (y : ℂ) * (x : ℂ) ^ (s - 1)).uncurry
       (Ioi 0 ×ˢ Ioi 0)) :
@@ -478,13 +478,6 @@ lemma MellinOfPsi_aux {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
     conv => lhs; rhs; intro; rw [← mul_one_div, mul_comm]
     rw [integral_const_mul]
 
-blueprint_comment /--
-The $\nu$ function has Mellin transform $\mathcal{M}(\nu)(s)$ which is entire and decays (at
-least) like $1/|s|$.
-
-[Of course it decays faster than any power of $|s|$, but it turns out that we will just need one
-power.]
--/
 
 -- filter-free version:
 @[blueprint
@@ -505,7 +498,15 @@ power.]
   $$
   Since $\Re(s)$ is bounded, the right-hand side is bounded by a
   constant times $1/|s|$.
-  -/)]
+  -/)
+  (above := /--
+  The $\nu$ function has Mellin transform $\mathcal{M}(\nu)(s)$ which is entire and decays (at
+  least) like $1/|s|$.
+
+  [Of course it decays faster than any power of $|s|$, but it turns out that we will just need one
+  power.]
+  -/)
+]
 lemma MellinOfPsi {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
     (suppν : ν.support ⊆ Set.Icc (1 / 2) 2) :
     ∃ C > 0, ∀ (σ₁ : ℝ) (_ : 0 < σ₁) (s : ℂ) (_ : σ₁ ≤ s.re) (_ : s.re ≤ 2),
@@ -561,9 +562,6 @@ lemma MellinOfPsi {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
     have : 0 ≤ 1 * ‖s‖⁻¹ := by positivity
     linarith
   · exact ⟨C, lt_of_le_of_ne Cnonneg fun a ↦ CeqZero (id (Eq.symm a)), mainBnd⟩
-blueprint_comment /--
-We can make a delta spike out of this bumpfunction, as follows.
--/
 
 @[blueprint
   (title := "DeltaSpike")
@@ -571,13 +569,14 @@ We can make a delta spike out of this bumpfunction, as follows.
   Let $\nu$ be a bumpfunction supported in $[1/2,2]$. Then for any $\epsilon>0$, we define the
   delta spike $\nu_\epsilon$ to be the function from $\mathbb{R}_{>0}$ to $\mathbb{C}$ defined by
   $$\nu_\epsilon(x) = \frac{1}{\epsilon}\nu\left(x^{\frac{1}{\epsilon}}\right).$$
-  -/)]
+  -/)
+  (above := /--
+  We can make a delta spike out of this bumpfunction, as follows.
+  -/)
+]
 noncomputable def DeltaSpike (ν : ℝ → ℝ) (ε : ℝ) : ℝ → ℝ :=
   fun x ↦ ν (x ^ (1 / ε)) / ε
 
-blueprint_comment /--
-This spike still has mass one:
--/
 
 @[blueprint
   (title := "DeltaSpikeMass")
@@ -589,7 +588,9 @@ This spike still has mass one:
   Substitute $y=x^{1/\epsilon}$, and use the fact that $\nu$ has mass one, and that $dx/x$ is Haar
   measure.
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /-- This spike still has mass one: -/)
+]
 lemma DeltaSpikeMass {ν : ℝ → ℝ} (mass_one : ∫ x in Ioi 0, ν x / x = 1) {ε : ℝ}
     (εpos : 0 < ε) : ∫ x in Ioi 0, ((DeltaSpike ν ε) x) / x = 1 :=
   calc
@@ -645,16 +646,15 @@ lemma DeltaSpikeOfRealContinuous {ν : ℝ → ℝ} {ε : ℝ} (εpos : 0 < ε)
     (diffν : ContDiff ℝ 1 ν) : Continuous (fun x ↦ (DeltaSpike ν ε x : ℂ)) :=
   continuous_ofReal.comp <| DeltaSpikeContinuous εpos diffν
 
-blueprint_comment /--
-The Mellin transform of the delta spike is easy to compute.
--/
 @[blueprint
   (title := "MellinOfDeltaSpike")
   (statement := /--
   For any $\epsilon>0$, the Mellin transform of $\nu_\epsilon$ is
   $$\mathcal{M}(\nu_\epsilon)(s) = \mathcal{M}(\nu)\left(\epsilon s\right).$$
   -/)
-  (proof := /-- Substitute $y=x^{1/\epsilon}$, use Haar measure; direct calculation. -/)]
+  (proof := /-- Substitute $y=x^{1/\epsilon}$, use Haar measure; direct calculation. -/)
+  (above := /-- The Mellin transform of the delta spike is easy to compute. -/)
+]
 theorem MellinOfDeltaSpike (ν : ℝ → ℝ) {ε : ℝ} (εpos : ε > 0) (s : ℂ) :
     𝓜 (fun x ↦ (DeltaSpike ν ε x : ℂ)) s = 𝓜 (fun x ↦ (ν x : ℂ)) (ε * s) := by
   unfold DeltaSpike
@@ -663,9 +663,6 @@ theorem MellinOfDeltaSpike (ν : ℝ → ℝ) {ε : ℝ} (εpos : ε > 0) (s : �
   simp only [one_div, inv_inv, ofReal_inv, div_inv_eq_mul, real_smul]
   rw [mul_div_cancel_left₀ _ (ne_zero_of_re_pos εpos)]
   ring_nf
-blueprint_comment /--
-In particular, for $s=1$, we have that the Mellin transform of $\nu_\epsilon$ is $1+O(\epsilon)$.
--/
 
 @[blueprint
   (title := "MellinOfDeltaSpikeAt1")
@@ -675,7 +672,11 @@ In particular, for $s=1$, we have that the Mellin transform of $\nu_\epsilon$ is
   \mathcal{M}(\nu)(\epsilon).$$
   -/)
   (proof := /-- This is immediate from the above theorem. -/)
-  (latexEnv := "corollary")]
+  (latexEnv := "corollary")
+  (above := /--
+  In particular, for $s=1$, we have that the Mellin transform of $\nu_\epsilon$ is $1+O(\epsilon)$.
+  -/)
+]
 lemma MellinOfDeltaSpikeAt1 (ν : ℝ → ℝ) {ε : ℝ} (εpos : ε > 0) :
     𝓜 (fun x ↦ (DeltaSpike ν ε x : ℂ)) 1 = 𝓜 (fun x ↦ (ν x : ℂ)) ε := by
   convert MellinOfDeltaSpike ν εpos 1; simp [mul_one]
@@ -737,33 +738,29 @@ lemma MellinOfDeltaSpikeAt1_asymp {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν
   convert this
   simp only [mellin, zero_sub, cpow_neg_one, smul_eq_mul]
   rw [← ofReal_one, ← mass_one]; convert integral_ofReal.symm; field_simp; simp
-blueprint_comment /--
-Let $1_{(0,1]}$ be the function from $\mathbb{R}_{>0}$ to $\mathbb{C}$ defined by
-$$1_{(0,1]}(x) = \begin{cases}
-1 & \text{ if }x\leq 1\\
-0 & \text{ if }x>1
-\end{cases}.$$
-This has Mellin transform:
-[Note: this already exists in mathlib]
--/
 @[blueprint
   (title := "MellinOf1")
   (statement := /--
   The Mellin transform of $1_{(0,1]}$ is
   $$\mathcal{M}(1_{(0,1]})(s) = \frac{1}{s}.$$
   -/)
-  (proof := /-- This is a straightforward calculation. -/)]
+  (proof := /-- This is a straightforward calculation. -/)
+  (above := /--
+  Let $1_{(0,1]}$ be the function from $\mathbb{R}_{>0}$ to $\mathbb{C}$ defined by
+  $$1_{(0,1]}(x) = \begin{cases}
+  1 & \text{ if }x\leq 1\\
+  0 & \text{ if }x>1
+  \end{cases}.$$
+  This has Mellin transform:
+  [Note: this already exists in mathlib]
+  -/)
+]
 lemma MellinOf1 (s : ℂ) (h : s.re > 0) :
     𝓜 ((fun x ↦ if 0 < x ∧ x ≤ 1 then 1 else 0)) s = 1 / s := by
   convert (hasMellin_one_Ioc h).right
   congr
 
 
-
-blueprint_comment /--
-What will be essential for us is properties of the smooth version of $1_{(0,1]}$, obtained as the
- Mellin convolution of $1_{(0,1]}$ with $\nu_\epsilon$.
--/
 @[blueprint
   (title := "Smooth1")
   (statement := /--
@@ -783,7 +780,12 @@ What will be essential for us is properties of the smooth version of $1_{(0,1]}$
   $$
   $f$ is monotone increasing on [1, \infty), and we are done.
   -/)
-  (latexEnv := "definition")]
+  (latexEnv := "definition")
+  (above := /--
+  What will be essential for us is properties of the smooth version of $1_{(0,1]}$, obtained as the
+   Mellin convolution of $1_{(0,1]}$ with $\nu_\epsilon$.
+  -/)
+]
 noncomputable def Smooth1 (ν : ℝ → ℝ) (ε : ℝ) : ℝ → ℝ :=
   MellinConvolution (fun x ↦ if 0 < x ∧ x ≤ 1 then 1 else 0) (DeltaSpike ν ε)
 
@@ -842,11 +844,6 @@ lemma Smooth1Properties_estimate {ε : ℝ} (εpos : 0 < ε) :
   exact mono (by rw [mem_Ici]) (mem_Ici.mpr <| le_of_lt hc) hc
 
 
-
-blueprint_comment /--
-In particular, we have the following two properties.
--/
-
 lemma Smooth1Properties_below_aux {x ε : ℝ} (hx : x ≤ 1 - Real.log 2 * ε) (εpos : 0 < ε) :
     x < 2 ^ (-ε) := by
   calc
@@ -897,7 +894,9 @@ lemma Smooth1Properties_below_aux {x ε : ℝ} (hx : x ≤ 1 - Real.log 2 * ε) 
     1-c\epsilon < 2^{-\epsilon}.
   $$
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /-- In particular, we have the following two properties. -/)
+]
 lemma Smooth1Properties_below {ν : ℝ → ℝ} (suppν : ν.support ⊆ Icc (1 / 2) 2)
     (mass_one : ∫ x in Ioi 0, ν x / x = 1) :
     ∃ (c : ℝ), 0 < c ∧ c = Real.log 2 ∧
@@ -927,7 +926,6 @@ lemma Smooth1Properties_below {ν : ℝ → ℝ} (suppν : ν.support ⊆ Icc (1
     · simp only [mem_Icc, not_and, not_le]; intro
       linarith [(by apply (div_lt_iff₀ (by linarith)).mpr; nlinarith : x / y < 2 ^ (-ε))]
     · rw [le_div_iff₀ (by linarith), zero_mul]; exact xpos.le
-
 
 
 lemma Smooth1Properties_above_aux {x ε : ℝ} (hx : 1 + (2 * Real.log 2) * ε ≤ x)
@@ -1157,11 +1155,6 @@ lemma Smooth1LeOne {ν : ℝ → ℝ} (νnonneg : ∀ x > 0, 0 ≤ ν x)
       · positivity
 
 
-
-blueprint_comment /--
-Combining the above, we have the following three Main Lemmata of this section on the Mellin
-transform of $\widetilde{1_{\epsilon}}$.
--/
 @[blueprint
   (title := "MellinOfSmooth1a")
   (statement := /--
@@ -1214,7 +1207,12 @@ transform of $\widetilde{1_{\epsilon}}$.
     .
   $$
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  Combining the above, we have the following three Main Lemmata of this section on the Mellin
+  transform of $\widetilde{1_{\epsilon}}$.
+  -/)
+]
 lemma MellinOfSmooth1a {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
     (suppν : ν.support ⊆ Icc (1 / 2) 2)
     {ε : ℝ} (εpos : 0 < ε) {s : ℂ} (hs : 0 < s.re) :
@@ -1288,7 +1286,6 @@ lemma MellinOfSmooth1a {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
     simp
 
 
-
 @[blueprint
   (title := "MellinOfSmooth1b")
   (statement := /--
@@ -1325,8 +1322,6 @@ lemma MellinOfSmooth1b {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
       ring
 
 
-
-
 @[blueprint
   (title := "MellinOfSmooth1c")
   (statement := /--
@@ -1350,7 +1345,6 @@ lemma MellinOfSmooth1c {ν : ℝ → ℝ} (diffν : ContDiff ℝ 1 ν)
   rw [MellinOfSmooth1a diffν suppν hε'.1 (s := 1) (by norm_num)]
   simp only [inv_one, mul_one, one_mul, id_eq, Real.norm_eq_abs]
   exact hε
-
 
 
 @[blueprint
@@ -1451,8 +1445,6 @@ lemma Smooth1ContinuousAt {SmoothingF : ℝ → ℝ}
     rw [this]
     apply ContinuousOn.continuousAt_indicator (by fun_prop)
     simp [frontier_Ioc hx, ypos.ne', hx2.symm]
-
-
 
 
 lemma Smooth1MellinConvergent {Ψ : ℝ → ℝ} {ε : ℝ} (diffΨ : ContDiff ℝ 1 Ψ)

@@ -6,17 +6,16 @@ namespace Lcm
 open ArithmeticFunction hiding log
 open Finset Nat Real
 
-blueprint_comment /--
-\section{The least common multiple sequence is not highly abundant for large \(n\)}
--/
-
-blueprint_comment /--
-\subsection{Problem statement and notation}
--/
 
 @[blueprint
   "sigma-def"
-  (statement := /-- $\sigma(n)$ is the sum of the divisors of $n$. -/)]
+  (statement := /-- $\sigma(n)$ is the sum of the divisors of $n$. -/)
+  (above := /--
+  \section{The least common multiple sequence is not highly abundant for large \(n\)}
+
+  \subsection{Problem statement and notation}
+  -/)
+]
 def σ : ArithmeticFunction ℕ := sigma 1
 
 noncomputable abbrev σnorm (n : ℕ) : ℝ := (σ n : ℝ) / (n : ℝ)
@@ -34,9 +33,6 @@ noncomputable abbrev σnorm (n : ℕ) : ℝ := (σ n : ℝ) / (n : ℝ)
 def HighlyAbundant (N : ℕ) : Prop :=
   ∀ m : ℕ, m < N → σ m < σ N
 
-blueprint_comment /--
-Informally, a highly abundant number has an unusually large sum of divisors.
--/
 
 @[blueprint
   "Ln-def"
@@ -46,44 +42,13 @@ Informally, a highly abundant number has an unusually large sum of divisors.
       L_n := \mathrm{lcm}(1,2,\dots,n).
     \]
     We call \((L_n)_{n \ge 1}\) the \emph{least common multiple sequence}.
-  -/)]
+  -/)
+  (above := /--
+  Informally, a highly abundant number has an unusually large sum of divisors.
+  -/)
+]
 def L (n : ℕ) : ℕ := (Finset.Icc 1 n).lcm _root_.id
 
-blueprint_comment /--
-Clearly $L_n$ has a lot of divisors, and numerical experiments for small $n$ suggests that $L_n$
-is often highly abundant.  This leads to the following question:
--/
-
-
-blueprint_comment /--
-\begin{quote}
-\textbf{Original MathOverflow question.}
-Is it true that every value in the sequence \(L_n = \mathrm{lcm}(1,2,\dots,n)\) is highly abundant?
-Equivalently,
-\[
-  \{L_n : n \ge 1\} \subseteq HA?
-\]
-\end{quote}
-
-Somewhat surprisingly, the answer is \emph{no}: not every \(L_n\) is highly abundant.
-
-It has previously been verified in Lean that \(L_n\) is highly aboundant for $n \leq 70$,
-$81 \leq n \leq 96$, $125 \leq n \leq 148$, $169 \leq n \leq 172$, and not highly abondant for all
-other $n ≤ 10^{10}$.  The arguments here establish the non-highly-abundance of \(L_n\) for all
-$n \geq 89683^2$ sufficiently large \(n\), thus completing the determination in Lean of all $n$ for
-which \(L_n\) is highly abundant. This argument was taken from
-\href{https://mathoverflow.net/questions/501066/is-the-least-common-multiple-sequence-textlcm1-2-dots-n-a-subset-of-t?noredirect=1\#comment1313839_501066}{this
-MathOverflow answer}.
-
-\subsection{A general criterion using three medium primes and three large primes}
--/
-
-blueprint_comment /--
-The key step in the proof is to show that, if one can find six primes $p_1,p_2,p_3,q_1,q_2,q_3$
-obeying a certain inequality, then one can find a competitor $M < L_n$ to $L_n$ with
-$\sigma(M) > \sigma(L_n)$, which will demonstrate that $L_n$ is not highly abundant.
-More precisely:
--/
 
 @[blueprint
   "lcm-criterion"
@@ -104,7 +69,38 @@ More precisely:
 
     NOTE: In the Lean formalization of this argument, we index the primes from 0 to 2 rather than
     from 1 to 3.
-  -/)]
+  -/)
+  (above := /--
+  Clearly $L_n$ has a lot of divisors, and numerical experiments for small $n$ suggests that $L_n$
+  is often highly abundant.  This leads to the following question:
+
+  \begin{quote}
+  \textbf{Original MathOverflow question.}
+  Is it true that every value in the sequence \(L_n = \mathrm{lcm}(1,2,\dots,n)\) is highly abundant?
+  Equivalently,
+  \[
+    \{L_n : n \ge 1\} \subseteq HA?
+  \]
+  \end{quote}
+
+  Somewhat surprisingly, the answer is \emph{no}: not every \(L_n\) is highly abundant.
+
+  It has previously been verified in Lean that \(L_n\) is highly aboundant for $n \leq 70$,
+  $81 \leq n \leq 96$, $125 \leq n \leq 148$, $169 \leq n \leq 172$, and not highly abondant for all
+  other $n ≤ 10^{10}$.  The arguments here establish the non-highly-abundance of \(L_n\) for all
+  $n \geq 89683^2$ sufficiently large \(n\), thus completing the determination in Lean of all $n$ for
+  which \(L_n\) is highly abundant. This argument was taken from
+  \href{https://mathoverflow.net/questions/501066/is-the-least-common-multiple-sequence-textlcm1-2-dots-n-a-subset-of-t?noredirect=1\#comment1313839_501066}{this
+  MathOverflow answer}.
+
+  \subsection{A general criterion using three medium primes and three large primes}
+
+  The key step in the proof is to show that, if one can find six primes $p_1,p_2,p_3,q_1,q_2,q_3$
+  obeying a certain inequality, then one can find a competitor $M < L_n$ to $L_n$ with
+  $\sigma(M) > \sigma(L_n)$, which will demonstrate that $L_n$ is not highly abundant.
+  More precisely:
+  -/)
+]
 structure Criterion where
   n : ℕ
   hn : n ≥ 1
@@ -159,9 +155,6 @@ lemma Criterion.q_gt_two (c : Criterion) (i : Fin 3) : 2 < c.q i := by
     grind [c.p_gt_two 2]
   exact h_q_gt_two i
 
-blueprint_comment /--
-\subsection{Factorisation of \(L_n\) and construction of a competitor}
--/
 
 noncomputable def Criterion.L' (c : Criterion) : ℕ := L c.n / ∏ i, c.q i
 
@@ -279,7 +272,11 @@ lemma Criterion.val_p_L' (c : Criterion) (i : Fin 3) : (c.L').factorization (c.p
   Hence we may write \(L_n = q_1 q_2 q_3 L'\) where \(L'\) is the quotient obtained by removing
   these prime factors.  By construction, \(q_i \nmid L'\) for each \(i\).
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  \subsection{Factorisation of \(L_n\) and construction of a competitor}
+  -/)
+]
 theorem Criterion.ln_eq (c : Criterion) : L c.n = c.q 0 * c.q 1 * c.q 2 * c.L' := by
   rw [L', ← Fin.prod_univ_three, Nat.mul_div_cancel' <| Fintype.prod_dvd_of_isRelPrime ?_ ?_]
   · refine fun i j h ↦ Nat.coprime_iff_isRelPrime.mp ?_
@@ -653,11 +650,6 @@ theorem Criterion.Ln_div_M_lt (c : Criterion) :
   simp only [one_div] at hinv
   convert hinv using 2
 
-blueprint_comment /--
-\subsection{A sufficient condition}
-
-We give a sufficient condition for $\sigma(M) \geq \sigma(L_n)$.
--/
 
 @[blueprint
   "lem:criterion-sufficient"
@@ -693,7 +685,13 @@ We give a sufficient condition for $\sigma(M) \geq \sigma(L_n)$.
   since \(M/L_n<1\) and both sides are integers.
   -/)
   (proofUses := ["lem:M-basic"])
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  \subsection{A sufficient condition}
+
+  We give a sufficient condition for $\sigma(M) \geq \sigma(L_n)$.
+  -/)
+]
 theorem Criterion.not_highlyAbundant_1 (c : Criterion)
     (h : σnorm c.M * (1 - (4 : ℝ) * (∏ i, c.p i) / (∏ i, c.q i)) ≥ σnorm (L c.n)) :
     ¬HighlyAbundant (L c.n) := by
@@ -720,10 +718,6 @@ theorem Criterion.not_highlyAbundant_1 (c : Criterion)
       _ = σ (L c.n) := by field_simp [σnorm, c.M_pos.ne']
   exact not_lt.mpr (cast_lt.mp hσM_gt).le (hHA c.M c.M_lt)
 
-blueprint_comment /--
-Combining Lemma \ref{lem:criterion-sufficient} with Lemma \ref{lem:sigmaLn}, we see that it
-suffices to bound \(\sigma(M)/M\) from below in terms of \(\sigma(L')/L'\):
--/
 
 @[blueprint
   "lem:criterion-reduced"
@@ -744,7 +738,12 @@ suffices to bound \(\sigma(M)/M\) from below in terms of \(\sigma(L')/L'\):
   with the assumed bound \eqref{eq:main-ineq}; this is a straightforward rearrangement.
   -/)
   (proofUses := ["lem:sigmaLn", "lem:criterion-sufficient"])
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  Combining Lemma \ref{lem:criterion-sufficient} with Lemma \ref{lem:sigmaLn}, we see that it
+  suffices to bound \(\sigma(M)/M\) from below in terms of \(\sigma(L')/L'\):
+  -/)
+]
 theorem Criterion.not_highlyAbundant_2 (c : Criterion)
     (h : σnorm c.M ≥ σnorm c.L' * (∏ i, (1 + 1 / (c.p i * (c.p i + 1 : ℝ)))) *
     (1 + (3 : ℝ) / (8 * c.n))) : ¬HighlyAbundant (L c.n) := by
@@ -768,9 +767,6 @@ theorem Criterion.not_highlyAbundant_2 (c : Criterion)
   _ ≤ σnorm c.M * (1 - (4 : ℝ) * (∏ i, c.p i) / (∏ i, c.q i)) :=
     mul_le_mul_of_nonneg_right h hR_pos.le
 
-blueprint_comment /--
-\subsection{Conclusion of the criterion}
--/
 
 private lemma σnorm_ratio_ge_aux {k : ℕ} (n : ℕ) (hk : 2 ^ k ≤ n) :
     (∑ i ∈ Finset.range (k + 3), (1 / 2 : ℝ) ^ i) / (∑ i ∈ Finset.range (k + 1), (1 / 2 : ℝ) ^ i) ≥
@@ -829,7 +825,9 @@ private lemma σnorm_ratio_ge_aux {k : ℕ} (n : ℕ) (hk : 2 ^ k ≤ n) :
   Finally, the contribution of all other primes is at least \(1\).
   -/)
   (latexEnv := "lemma")
-  (discussion := 664)]
+  (discussion := 664)
+  (above := /-- \subsection{Conclusion of the criterion} -/)
+]
 theorem Criterion.σnorm_M_ge_σnorm_L'_mul (c : Criterion) :
     σnorm c.M ≥
       σnorm c.L' * (∏ i, (1 + 1 / (c.p i * (c.p i + 1 : ℝ)))) * (1 + 3 / (8 * c.n)) := by
@@ -940,12 +938,6 @@ theorem Criterion.σnorm_M_ge_σnorm_L'_mul (c : Criterion) :
   · simp [c.hp_mono.injective]
 
 
-
-blueprint_comment /--
-We have thus completed the key step of demonstrating a sufficient criterion to establish that
-$L_n$ is not highly abundant:
--/
-
 @[blueprint
   "thm:criterion"
   
@@ -967,17 +959,15 @@ $L_n$ is not highly abundant:
   \]
   Applying Lemma~\ref{lem:criterion-sufficient}, we obtain \(\sigma(M) \ge \sigma(L_n)\) with
   \(M < L_n\), so \(L_n\) cannot be highly abundant.
-  -/)]
+  -/)
+  (above := /--
+  We have thus completed the key step of demonstrating a sufficient criterion to establish that
+  $L_n$ is not highly abundant:
+  -/)
+]
 theorem Criterion.not_highlyAbundant (c : Criterion) : ¬HighlyAbundant (L c.n) :=
   c.not_highlyAbundant_2 c.σnorm_M_ge_σnorm_L'_mul
 
-blueprint_comment /--
-\begin{remark}
-Analogous arguments allow other pairs \((c,\alpha)\) in place of \((4,3/8)\),
-such as \((2,1/4)\), \((6,17/36)\), \((30,0.632\dots)\); or even \((1,0)\) provided more primes are
-used on the \(p\)-side than the \(q\)-side to restore an asymptotic advantage.
-\end{remark}
--/
 
 abbrev X₀ := 89693
 
@@ -1000,14 +990,6 @@ lemma hε_pos {n : ℕ} (hn : n ≥ X₀ ^ 2) : 0 < 1 + 1 / (log √(n : ℝ)) ^
 
 lemma log_X₀_pos : 0 < Real.log X₀ := by linear_combination log_X₀_gt
 
-blueprint_comment /--
-\subsection{Choice of six primes \(p_i,q_i\) for large \(n\)}
--/
-
-blueprint_comment /--
-To finish the proof we need to locate six primes $p_1,p_2,p_3,q_1,q_2,q_3$ obeying the required
-inequality.  Here we will rely on the prime number theorem of Dusart \cite{Dusart2018}.
--/
 
 @[blueprint
   "lem:choose-pi"
@@ -1024,7 +1006,20 @@ inequality.  Here we will rely on the prime number theorem of Dusart \cite{Dusar
   \(x, x(1+1/\log^3 x), x(1+1/\log^3 x)^2\), keeping track of the resulting primes and bounds.
   For \(n\) large and \(x = \sqrt{n}\), we have \(\sqrt{n} < p_1\) as soon as the first interval
   lies strictly above \(\sqrt{n}\); this can be enforced by taking \(n\) large enough. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  \begin{remark}
+  Analogous arguments allow other pairs \((c,\alpha)\) in place of \((4,3/8)\),
+  such as \((2,1/4)\), \((6,17/36)\), \((30,0.632\dots)\); or even \((1,0)\) provided more primes are
+  used on the \(p\)-side than the \(q\)-side to restore an asymptotic advantage.
+  \end{remark}
+
+  \subsection{Choice of six primes \(p_i,q_i\) for large \(n\)}
+
+  To finish the proof we need to locate six primes $p_1,p_2,p_3,q_1,q_2,q_3$ obeying the required
+  inequality.  Here we will rely on the prime number theorem of Dusart \cite{Dusart2018}.
+  -/)
+]
 theorem exists_p_primes {n : ℕ} (hn : n ≥ X₀ ^ 2) :
     ∃ p : Fin 3 → ℕ, (∀ i, Nat.Prime (p i)) ∧ StrictMono p ∧
       (∀ i, p i ≤ √(n : ℝ) * (1 + 1 / (log √(n : ℝ)) ^ 3) ^ (i + 1 : ℝ)) ∧
@@ -1063,7 +1058,6 @@ theorem exists_p_primes {n : ℕ} (hn : n ≥ X₀ ^ 2) :
   · convert hp₀_ub' using 2
   · convert hp₁_ub' using 2
   · convert hp₂_ub' using 2
-
 
 
 @[blueprint "lem:choose-qi"
@@ -1215,9 +1209,6 @@ theorem exists_q_primes {n : ℕ} (hn : n ≥ X₀ ^ 2) :
     rw [heq]
     exact hq₂_lb.le
 
-blueprint_comment /--
-\subsection{Bounding the factors in \eqref{eq:main-ineq}}
--/
 
 @[blueprint
   "lem:qi-product"
@@ -1242,7 +1233,9 @@ blueprint_comment /--
   after reindexing. Multiplying the three inequalities gives \eqref{eq:qi-upper}.
   -/)
   (proofUses := ["lem:choose-qi"])
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /-- \subsection{Bounding the factors in \eqref{eq:main-ineq}} -/)
+]
 theorem prod_q_ge {n : ℕ} (hn : n ≥ X₀ ^ 2) :
     ∏ i, (1 + (1 : ℝ) / (exists_q_primes hn).choose i) ≤
       ∏ i : Fin 3, (1 + (1 + 1 / (log √(n : ℝ)) ^ 3) ^ ((i : ℕ) + 1 : ℝ) / n) := by
@@ -1390,9 +1383,6 @@ theorem pq_ratio_ge {n : ℕ} (hn : n ≥ X₀ ^ 2) :
   · exact fun _ _ => by positivity [hε_pos hn]
   · exact (exists_q_primes hn).choose_spec.2.2.1 _
 
-blueprint_comment /--
-\subsection{Reduction to a small epsilon-inequality}
--/
 
 @[blueprint
   "lem:eps-bounds"
@@ -1411,7 +1401,9 @@ blueprint_comment /--
   (proof := /-- This is a straightforward calculus and monotonicity check: the left-hand sides are
   decreasing in \(n\) for \(n \ge X_0^2\), and equality (or the claimed upper bound) holds at
   \(n=X_0^2\).  One can verify numerically or symbolically. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /-- \subsection{Reduction to a small epsilon-inequality} -/)
+]
 theorem inv_cube_log_sqrt_le {n : ℕ} (hn : n ≥ X₀ ^ 2) :
     1 / (log √(n : ℝ)) ^ 3 ≤ 0.000675 := by
   calc
@@ -1652,9 +1644,6 @@ noncomputable def Criterion.mk' {n : ℕ} (hn : n ≥ X₀ ^ 2) : Criterion wher
         simp [field]
         ring_nf
 
-blueprint_comment /--
-\subsection{Conclusion for large \(n\)}
--/
 
 @[blueprint
   "thm:large-n-final"
@@ -1666,7 +1655,9 @@ blueprint_comment /--
   (proof := /-- By Proposition~\ref{prop:ineq-holds-large-n}, there exist primes
   \(p_1,p_2,p_3,q_1,q_2,q_3\) satisfying the hypotheses of Theorem~\ref{thm:criterion}.
   Hence \(L_n\) is not highly abundant. -/)
-  (proofUses := ["prop:ineq-holds-large-n", "thm:criterion"])]
+  (proofUses := ["prop:ineq-holds-large-n", "thm:criterion"])
+  (above := /-- \subsection{Conclusion for large \(n\)} -/)
+]
 theorem L_not_HA_of_ge (n : ℕ) (hn : n ≥ 89693 ^ 2) : ¬HighlyAbundant (L n) :=
   (Criterion.mk' hn).not_highlyAbundant
 

@@ -16,10 +16,6 @@ open Set Function Filter Complex Real
 open ArithmeticFunction (vonMangoldt)
 open scoped Chebyshev
 
-blueprint_comment /--
-The approach here is completely standard. We follow the use of
-$\mathcal{M}(\widetilde{1_{\epsilon}})$ as in [Kontorovich 2015].
--/
 
 local notation (name := mellintransform2) "𝓜" => mellin
 
@@ -46,15 +42,15 @@ end Chebyshev
     $$
     where $\Lambda(n)$ is the von Mangoldt function.
   -/)
-  (latexEnv := "definition")]
+  (latexEnv := "definition")
+  (above := /--
+  The approach here is completely standard. We follow the use of
+  $\mathcal{M}(\widetilde{1_{\epsilon}})$ as in [Kontorovich 2015].
+  -/)
+]
 noncomputable abbrev ChebyshevPsi (x : ℝ) : ℝ :=
   Chebyshev.psi x
 
-blueprint_comment /--
-It has already been established that zeta doesn't vanish on the 1 line, and has a pole at $s=1$
-of order 1.
-We also have the following.
--/
 
 @[blueprint "LogDerivativeDirichlet"
   (title := "LogDerivativeDirichlet")
@@ -62,7 +58,13 @@ We also have the following.
   We have that, for $\Re(s)>1$,
     $$-\frac{\zeta'(s)}{\zeta(s)} = \sum_{n=1}^\infty \frac{\Lambda(n)}{n^s}. $$
   -/)
-  (proof := /-- Already in Mathlib. -/)]
+  (proof := /-- Already in Mathlib. -/)
+  (above := /--
+  It has already been established that zeta doesn't vanish on the 1 line, and has a pole at $s=1$
+  of order 1.
+  We also have the following.
+  -/)
+]
 theorem LogDerivativeDirichlet (s : ℂ) (hs : 1 < s.re) :
     - deriv riemannZeta s / riemannZeta s = ∑' n, Λ n / (n : ℂ) ^ s := by
   rw [← ArithmeticFunction.LSeries_vonMangoldt_eq_deriv_riemannZeta_div hs]
@@ -74,11 +76,6 @@ theorem LogDerivativeDirichlet (s : ℂ) (hs : 1 < s.re) :
     convert this; rename ℕ => n
     by_cases h : n = 0 <;> simp [LSeries.term, h]
 
-blueprint_comment /--
-
-The main object of study is the following inverse Mellin-type transform, which will turn out to
-be a smoothed Chebyshev function.
--/
 
 noncomputable abbrev SmoothedChebyshevIntegrand
     (SmoothingF : ℝ → ℝ) (ε : ℝ) (X : ℝ) : ℂ → ℂ :=
@@ -94,7 +91,12 @@ noncomputable abbrev SmoothedChebyshevIntegrand
     \mathcal{M}(\widetilde{1_{\epsilon}})(s)
     X^{s}ds,$$
     where we'll take $\sigma = 1 + 1 / \log X$.
-  -/)]
+  -/)
+  (above := /--
+  The main object of study is the following inverse Mellin-type transform, which will turn out to
+  be a smoothed Chebyshev function.
+  -/)
+]
 noncomputable def SmoothedChebyshev (SmoothingF : ℝ → ℝ) (ε : ℝ) (X : ℝ) : ℂ :=
   VerticalIntegral' (SmoothedChebyshevIntegrand SmoothingF ε X) ((1 : ℝ) + (Real.log X)⁻¹)
 
@@ -174,9 +176,6 @@ lemma SmoothedChebyshevDirichlet_aux_integrable {SmoothingF : ℝ → ℝ}
         ring_nf
       _ ≤ _ := by
         gcongr; nlinarith
-
-
-
 
 
 -- TODO: add to mathlib
@@ -264,8 +263,6 @@ lemma SmoothedChebyshevDirichlet_aux_tsum_integral {SmoothingF : ℝ → ℝ}
       rw [← MeasureTheory.hasFiniteIntegral_iff_enorm]
       exact SmoothedChebyshevDirichlet_aux_integrable diffSmoothingF SmoothingFpos suppSmoothingF
             mass_one εpos ε_lt_one σ_gt σ_le |>.hasFiniteIntegral
-
-
 
 
 @[blueprint
@@ -387,10 +384,6 @@ theorem SmoothedChebyshevDirichlet {SmoothingF : ℝ → ℝ}
       exact Smooth1ContinuousAt diffSmoothingF SmoothingFpos suppSmoothingF
         εpos (by positivity)
 
-
-blueprint_comment /--
-The smoothed Chebyshev function is close to the actual Chebyshev function.
--/
 
 --open scoped ArithmeticFunction in
 theorem SmoothedChebyshevClose_aux {Smooth1 : (ℝ → ℝ) → ℝ → ℝ → ℝ} (SmoothingF : ℝ → ℝ)
@@ -715,7 +708,11 @@ theorem SmoothedChebyshevClose_aux {Smooth1 : (ℝ → ℝ) → ℝ → ℝ → 
   %interval is $\ll \epsilon X / \log X + 1$.
   %(The number of prime powers is $\ll X^{1/2}$.)
   %And multiplying that by $\Lambda (n) \ll \log X$ gives the desired bound.]
-  -/)]
+  -/)
+  (above := /--
+  The smoothed Chebyshev function is close to the actual Chebyshev function.
+  -/)
+]
 theorem SmoothedChebyshevClose {SmoothingF : ℝ → ℝ}
     (diffSmoothingF : ContDiff ℝ 1 SmoothingF)
     (suppSmoothingF : Function.support SmoothingF ⊆ Icc (1 / 2) 2)
@@ -818,23 +815,6 @@ theorem SmoothedChebyshevClose {SmoothingF : ℝ → ℝ}
     smoothIs1 smoothIs0
 
 
-
-blueprint_comment /--
-Returning to the definition of $\psi_{\epsilon}$, fix a large $T$ to be chosen later, and set
-$\sigma_0 = 1 + 1 / log X$,
-$\sigma_1 = 1- A/ \log T^9$, and
-$\sigma_2<\sigma_1$ a constant.
-Pull
-contours (via rectangles!) to go
-from $\sigma_0-i\infty$ up to $\sigma_0-iT$, then over to $\sigma_1-iT$, up to $\sigma_1-3i$,
-over to $\sigma_2-3i$, up to $\sigma_2+3i$, back over to $\sigma_1+3i$, up to $\sigma_1+iT$,
-over to $\sigma_0+iT$, and finally up to $\sigma_0+i\infty$.
-
-In the process, we will pick up the residue at $s=1$.
-We will do this in several stages. Here the interval integrals are defined as follows:
--/
-
-
 @[blueprint
   "I1"
   (title := "I₁")
@@ -848,7 +828,22 @@ We will do this in several stages. Here the interval integrals are defined as fo
     X^{\sigma_0 + t i}
     \ i \ dt
     $$
-  -/)]
+  -/)
+  (above := /--
+  Returning to the definition of $\psi_{\epsilon}$, fix a large $T$ to be chosen later, and set
+  $\sigma_0 = 1 + 1 / log X$,
+  $\sigma_1 = 1- A/ \log T^9$, and
+  $\sigma_2<\sigma_1$ a constant.
+  Pull
+  contours (via rectangles!) to go
+  from $\sigma_0-i\infty$ up to $\sigma_0-iT$, then over to $\sigma_1-iT$, up to $\sigma_1-3i$,
+  over to $\sigma_2-3i$, up to $\sigma_2+3i$, back over to $\sigma_1+3i$, up to $\sigma_1+iT$,
+  over to $\sigma_0+iT$, and finally up to $\sigma_0+i\infty$.
+
+  In the process, we will pick up the residue at $s=1$.
+  We will do this in several stages. Here the interval integrals are defined as follows:
+  -/)
+]
 noncomputable def I₁ (SmoothingF : ℝ → ℝ) (ε X T : ℝ) : ℂ :=
   (1 / (2 * π * I)) * (I * (∫ t : ℝ in Iic (-T),
       SmoothedChebyshevIntegrand SmoothingF ε X ((1 + (Real.log X)⁻¹) + t * I)))
@@ -944,7 +939,6 @@ noncomputable def I₃ (SmoothingF : ℝ → ℝ) (ε T X σ₁ : ℝ) : ℂ :=
     SmoothedChebyshevIntegrand SmoothingF ε X (σ₁ + t * I)))
 
 
-
 @[blueprint
   "I7"
   (title := "I₇")
@@ -961,7 +955,6 @@ noncomputable def I₃ (SmoothingF : ℝ → ℝ) (ε T X σ₁ : ℝ) : ℂ :=
 noncomputable def I₇ (SmoothingF : ℝ → ℝ) (ε T X σ₁ : ℝ) : ℂ :=
   (1 / (2 * π * I)) * (I * (∫ t in (3 : ℝ)..T,
     SmoothedChebyshevIntegrand SmoothingF ε X (σ₁ + t * I)))
-
 
 
 @[blueprint
@@ -1024,7 +1017,6 @@ theorem realDiff_of_complexDiff {f : ℂ → ℂ} (s : ℂ) (hf : Differentiable
   simp
 
 
-
 def LogDerivZetaHasBound (A C : ℝ) : Prop := ∀ (σ : ℝ) (t : ℝ) (_ : 3 < |t|)
     (_ : σ ∈ Ici (1 - A / Real.log |t| ^ 9)), ‖ζ' (σ + t * I) / ζ (σ + t * I)‖ ≤
     C * Real.log |t| ^ 9
@@ -1057,9 +1049,6 @@ theorem dlog_riemannZeta_bdd_on_vertical_lines {σ₀ : ℝ} (σ₀_gt : 1 < σ�
   have := dlog_riemannZeta_bdd_on_vertical_lines_explicit σ₀_gt t
   rw [neg_div, norm_neg] at this
   exact le_trans this (lt_one_add _).le
-
-
-
 
 
 @[blueprint
@@ -1141,8 +1130,6 @@ theorem SmoothedChebyshevPull1_aux_integrable {SmoothingF : ℝ → ℝ} {ε : �
       linarith
 
 
-
-
 @[blueprint
   (title := "BddAboveOnRect")
   (statement := /-- Let $g : \C \to \C$ be a holomorphic function on a rectangle, then $g$ is bounded above on the rectangle. -/)
@@ -1154,10 +1141,6 @@ lemma BddAboveOnRect {g : ℂ → ℂ} {z w : ℂ} (holoOn : HolomorphicOn g (z.
     apply IsCompact.reProdIm <;> apply isCompact_uIcc
   refine IsCompact.bddAbove_image compact_rect ?_
   apply holoOn.continuousOn.norm
-
-
-
-
 
 
 @[blueprint
@@ -1344,7 +1327,6 @@ theorem SmoothedChebyshevPull1 {SmoothingF : ℝ → ℝ} {ε : ℝ} (ε_pos : 0
       ring
 
 
-
 lemma interval_membership (r : ℝ) (a b : ℝ) (h1 : r ∈ Set.Icc (min a b) (max a b)) (h2 : a < b) :
     a ≤ r ∧ r ≤ b := by
   -- Since a < b, we have min(a,b) = a and max(a,b) = b
@@ -1406,9 +1388,6 @@ theorem SmoothedChebyshevPull2_aux1 {T σ₁ : ℝ} (σ₁lt : σ₁ < 1)
     simp at h
     linarith
 
-blueprint_comment /--
-Next pull contours to another box.
--/
 
 @[blueprint
   (title := "SmoothedChebyshevPull2")
@@ -1421,7 +1400,9 @@ Next pull contours to another box.
     $$
   -/)
   (proof := /-- Mimic the proof of Lemma \ref{SmoothedChebyshevPull1}. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /-- Next pull contours to another box. -/)
+]
 theorem SmoothedChebyshevPull2 {SmoothingF : ℝ → ℝ} {ε : ℝ} (ε_pos : 0 < ε) (ε_lt_one : ε < 1)
     (X : ℝ) (_ : 3 < X)
     {T : ℝ} (T_pos : 3 < T) {σ₁ σ₂ : ℝ}
@@ -1610,11 +1591,6 @@ theorem SmoothedChebyshevPull2 {SmoothingF : ℝ → ℝ} {ε : ℝ} (ε_pos : 0
       ring
 
 
-
-blueprint_comment /--
-We insert this information in $\psi_{\epsilon}$. We add and subtract the integral over the box
-$[1-\delta,2] \times_{ℂ} [-T,T]$, which we evaluate as follows
--/
 @[blueprint
   (title := "ZetaBoxEval")
   (statement := /--
@@ -1626,7 +1602,12 @@ $[1-\delta,2] \times_{ℂ} [-T,T]$, which we evaluate as follows
     ,$$
     where the implicit constant is independent of $X$.
   -/)
-  (proof := /-- Unfold the definitions and apply Lemma \ref{MellinOfSmooth1c}. -/)]
+  (proof := /-- Unfold the definitions and apply Lemma \ref{MellinOfSmooth1c}. -/)
+  (above := /--
+  We insert this information in $\psi_{\epsilon}$. We add and subtract the integral over the box
+  $[1-\delta,2] \times_{ℂ} [-T,T]$, which we evaluate as follows
+  -/)
+]
 theorem ZetaBoxEval {SmoothingF : ℝ → ℝ}
     (suppSmoothingF : Function.support SmoothingF ⊆ Icc (1 / 2) 2)
     (mass_one : ∫ x in Ioi 0, SmoothingF x / x = 1)
@@ -1763,14 +1744,6 @@ theorem integral_evaluation (x : ℝ) (T : ℝ) (T_large : 3 < T) :
       rw [rpow_neg_one]
 
 
-
-blueprint_comment /--
-It remains to estimate all of the integrals.
--/
-
-blueprint_comment /--
-This auxiliary lemma is useful for what follows.
--/
 @[blueprint
   (title := "IBound-aux1")
   (statement := /--
@@ -1783,7 +1756,13 @@ This auxiliary lemma is useful for what follows.
   We use the fact that $\log^k X / X$ goes to $0$ as $X \to \infty$.
   Then we use the extreme value theorem to find a constant $C$ that works for all $X \geq X_0$.
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  It remains to estimate all of the integrals.
+
+  This auxiliary lemma is useful for what follows.
+  -/)
+]
 lemma IBound_aux1 (X₀ : ℝ) (X₀pos : X₀ > 0) (k : ℕ) : ∃ C ≥ 1, ∀ X ≥ X₀, Real.log X ^ k ≤ C * X := by
   -- When X is large, the ratio goes to 0.
   have ⟨M, hM⟩ := Filter.eventually_atTop.mp (isLittleO_log_rpow_rpow_atTop k zero_lt_one).eventuallyLE
@@ -1814,9 +1793,6 @@ lemma IBound_aux1 (X₀ : ℝ) (X₀pos : X₀ > 0) (k : ℕ) : ∃ C ≥ 1, ∀
       _ ≤ max C₁ 1 * X := by
         rw[mul_le_mul_iff_left₀ Xpos]
         exact le_max_right C₁ 1
-
-
-
 
 
 @[blueprint
@@ -2222,8 +2198,6 @@ theorem I9Bound
   rwa [I9I1 (by linarith), norm_conj]
 
 
-
-
 lemma one_add_inv_log {X : ℝ} (X_ge : 3 ≤ X) : (1 + (Real.log X)⁻¹) < 2 := by
   rw[← one_add_one_eq_two]
   refine (add_lt_add_iff_left 1).mpr ?_
@@ -2413,8 +2387,6 @@ lemma I2Bound {SmoothingF : ℝ → ℝ}
           field_simp
 
 
-
-
 @[blueprint
   (title := "I8I2")
   (statement := /--
@@ -2440,8 +2412,6 @@ lemma I8I2 {SmoothingF : ℝ → ℝ}
     rw[← smoothedChebyshevIntegrand_conj]
     · simp only [map_sub, conj_ofReal, map_mul, conj_I, mul_neg, sub_neg_eq_add]
     · exact lt_trans (by norm_num) T_gt
-
-
 
 
 @[blueprint
@@ -2735,10 +2705,6 @@ lemma log_pow_over_xsq_integral_bounded :
       apply add_lt_add_right
       field_simp
       linarith
-
-
-
-
 
 
 set_option maxHeartbeats 400000 in
@@ -3075,10 +3041,6 @@ lemma I7Bound {SmoothingF : ℝ → ℝ}
   specialize bound X X_gt εpos ε_lt_one T_gt
   intro σ₁
   rwa [I7I3 (by linarith), norm_conj]
-
-
-
-
 
 
 @[blueprint
@@ -3504,10 +3466,6 @@ lemma I6Bound {SmoothingF : ℝ → ℝ}
   rwa [I6I4 (by linarith), norm_neg, norm_conj]
 
 
-
-
-
-
 @[blueprint
   (title := "I5Bound")
   (statement := /--
@@ -3675,7 +3633,6 @@ lemma I5Bound {SmoothingF : ℝ → ℝ}
   linear_combination (|π|⁻¹ * 2⁻¹ * Z)
 
 
-
 lemma LogDerivZetaBoundedAndHolo : ∃ A C : ℝ, 0 < C ∧ A ∈ Ioc 0 (1 / 2) ∧ LogDerivZetaHasBound A C
     ∧ ∀ (T : ℝ) (_ : 3 ≤ T),
     HolomorphicOn (fun (s : ℂ) ↦ ζ' s / (ζ s))
@@ -3780,10 +3737,6 @@ lemma x_ε_to_inf (c : ℝ) {B : ℝ} (B_le : B < 1) : Tendsto
   rw [tendsto_congr' (x_εx_eq c B)]
   exact tendsto_exp_atTop.comp (log_sub_log_pow_inf c B_le)
 
-blueprint_comment /--
-\section{MediumPNT}
-
--/
 set_option maxHeartbeats 400000 in
 -- Slow
 /-- *** Prime Number Theorem (Medium Strength) *** The `ChebyshevPsi` function is asymptotic to `x`. -/
@@ -3794,7 +3747,9 @@ set_option maxHeartbeats 400000 in
     $$ \sum_{n \leq x} \Lambda(n) = x + O(x \exp(-c(\log x)^{1/10})).$$
   -/)
   (keyDeclaration := true)
-  (proof := /-- Evaluate the integrals. -/)]
+  (proof := /-- Evaluate the integrals. -/)
+  (above := /-- \section{MediumPNT} -/)
+]
 theorem MediumPNT : ∃ c > 0,
     (ψ - id) =O[atTop]
       fun (x : ℝ) ↦ x * Real.exp (-c * (Real.log x) ^ ((1 : ℝ) / 10)) := by
@@ -4156,7 +4111,6 @@ theorem MediumPNT : ∃ c > 0,
     rw [this]
 
 
-
   have event_4_aux : ∀ᶠ (x : ℝ) in atTop,
       c₅ * rexp (σ₂ * Real.log x + (A ^ ((1 : ℝ) / 10) / 2) * Real.log x ^ ((1 : ℝ) / 10)) ≤
       c₅ * rexp (Real.log x - (A ^ ((1 : ℝ) / 10) / 4) * Real.log x ^ ((1 : ℝ) / 10)) := by
@@ -4365,7 +4319,6 @@ theorem MediumPNT : ∃ c > 0,
       rw [Real.norm_of_nonneg]
       · rw [← mul_assoc]
       · positivity
-
 
 
 #print axioms MediumPNT

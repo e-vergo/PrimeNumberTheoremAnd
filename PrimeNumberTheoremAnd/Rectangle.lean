@@ -10,9 +10,6 @@ open scoped Interval
 
 variable {z w : ℂ} {c : ℝ}
 
-blueprint_comment /--
-This files gathers definitions and basic properties about rectangles.
--/
 
 namespace Rectangle
 
@@ -24,13 +21,16 @@ lemma symm_re : Rectangle (w.re + z.im * I) (z.re + w.im * I) = Rectangle z w :=
 
 end Rectangle
 
-blueprint_comment /--
-The border of a rectangle is the union of its four sides.
--/
 /-- A `RectangleBorder` has corners `z` and `w`. -/
 @[blueprint
   (title := "RectangleBorder")
-  (statement := /-- A Rectangle's border, given corners $z$ and $w$ is the union of the four sides. -/)]
+  (statement := /-- A Rectangle's border, given corners $z$ and $w$ is the union of the four sides. -/)
+  (above := /--
+  This files gathers definitions and basic properties about rectangles.
+
+  The border of a rectangle is the union of its four sides.
+  -/)
+]
 def RectangleBorder (z w : ℂ) : Set ℂ := [[z.re, w.re]] ×ℂ {z.im} ∪ {z.re} ×ℂ [[z.im, w.im]] ∪ [[z.re, w.re]] ×ℂ {w.im} ∪ {w.re} ×ℂ [[z.im, w.im]]
 
 def Square (p : ℂ) (c : ℝ) : Set ℂ := Rectangle (-c - c * I + p) (c + c * I + p)

@@ -34,10 +34,6 @@ lemma div_rpow_eq_rpow_div_neg {x y s : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) :
 local notation (name := riemannzeta) "ζ" => riemannZeta
 local notation (name := derivriemannzeta) "ζ'" => deriv riemannZeta
 
-blueprint_comment /--
-We record here some prelimiaries about the zeta function and general
-holomorphic functions.
--/
 @[blueprint
   (title := "ResidueOfTendsTo")
   (statement := /--
@@ -51,7 +47,12 @@ holomorphic functions.
   $(s-p)f(s) = g(s)$ in a neighborhood of $s=p$, and $g(p)=A$. Now because $g$ is holomorphic,
   near $s=p$, we have $g(s)=A+O(s-p)$. Then when you divide by $(s-p)$, you get
   $f(s) = A/(s-p) + O(1)$.
-  -/)]
+  -/)
+  (above := /--
+  We record here some prelimiaries about the zeta function and general
+  holomorphic functions.
+  -/)
+]
 theorem ResidueOfTendsTo {f : ℂ → ℂ} {p : ℂ} {U : Set ℂ}
     (hU : U ∈ 𝓝 p)
     (hf : HolomorphicOn f (U \ {p}))
@@ -157,8 +158,6 @@ theorem ResidueOfTendsTo {f : ℂ → ℂ} {p : ℂ} {U : Set ℂ}
   exact h_q_bound _ ⟨hV₁, z_ne_p⟩
 
 
-
-
 theorem analyticAt_riemannZeta {s : ℂ} (s_ne_one : s ≠ 1) :
   AnalyticAt ℂ riemannZeta s := by
   apply Complex.analyticAt_iff_eventually_differentiableAt.mpr
@@ -241,7 +240,6 @@ theorem derivative_const_plus_product {g : ℂ → ℂ} (A p x : ℂ) (hg : Diff
     rw [deriv_const_add',
       deriv_fun_mul hg (differentiableAt_fun_id.fun_sub (differentiableAt_const p))]
     simp
-
 
 
 theorem diff_translation (p : ℂ) : deriv (fun x => x - p) = fun _ => 1 := by
@@ -496,7 +494,6 @@ theorem logDerivResidue {f : ℂ → ℂ} {p : ℂ} {U : Set ℂ}
       · exact (f_near_p.mono (image_mono (diff_subset_diff a (subset_refl _))))
 
 
-
 @[blueprint
   (title := "BddAbove-to-IsBigO")
   (statement := /--
@@ -533,10 +530,6 @@ theorem logDerivResidue'' {f : ℂ → ℂ} {p : ℂ} {U : Set ℂ}
   apply IsBigO_to_BddAbove
   exact logDerivResidue non_zero holc U_in_nhds A_ne_zero f_near_p
 
-blueprint_comment /--
-Let's also record that if a function $f$ has a simple pole at $p$ with residue $A$, and $g$ is
-holomorphic near $p$, then the residue of $f \cdot g$ is $A \cdot g(p)$.
--/
 
 @[blueprint
   (title := "ResidueMult")
@@ -561,7 +554,12 @@ holomorphic near $p$, then the residue of $f \cdot g$ is $A \cdot g(p)$.
    and the fact that $g$ is holomorphic near $p$.
   The second term is $A$ times the log derivative of $g$ at $p$, which is bounded by the assumption
   that  $g$ is holomorphic.
-  -/)]
+  -/)
+  (above := /--
+  Let's also record that if a function $f$ has a simple pole at $p$ with residue $A$, and $g$ is
+  holomorphic near $p$, then the residue of $f \cdot g$ is $A \cdot g(p)$.
+  -/)
+]
 theorem ResidueMult {f g : ℂ → ℂ} {p : ℂ} {U : Set ℂ}
     (g_holc : HolomorphicOn g U) (U_in_nhds : U ∈ 𝓝 p) {A : ℂ}
     (f_near_p : (f - (fun s ↦ A * (s - p)⁻¹)) =O[𝓝[≠] p] (1 : ℂ → ℂ)) :
@@ -615,9 +613,6 @@ theorem ResidueMult {f g : ℂ → ℂ} {p : ℂ} {U : Set ℂ}
       simpa
 
 
-blueprint_comment /--
-As a corollary, the log derivative of the Riemann zeta function has a simple pole at $s=1$:
--/
 @[blueprint
   (title := "riemannZetaLogDerivResidue")
   (statement := /--
@@ -626,7 +621,11 @@ As a corollary, the log derivative of the Riemann zeta function has a simple pol
   -/)
   (proof := /--
   This follows from Theorem \ref{logDerivResidue} and Theorem \ref{riemannZetaResidue}.
-  -/)]
+  -/)
+  (above := /--
+  As a corollary, the log derivative of the Riemann zeta function has a simple pole at $s=1$:
+  -/)
+]
 theorem riemannZetaLogDerivResidue :
     ∃ U ∈ 𝓝 1, BddAbove (norm ∘ (-(ζ' / ζ) - (fun s ↦ (s - 1)⁻¹)) '' (U \ {1})) := by
   obtain ⟨U,U_in_nhds, hU⟩ := riemannZetaResidue
@@ -1211,9 +1210,6 @@ lemma ZetaBnd_aux1 (N : ℕ) (Npos : 1 ≤ N) {σ t : ℝ} (hσ : σ ∈ Ioc 0 2
     mul_one]
   linarith [hσ.2]
 
-blueprint_comment /--
-Big-Oh version of Lemma \ref{ZetaBnd_aux1}.
--/
 @[blueprint
   (title := "ZetaBnd-aux1p")
   (statement := /--
@@ -1224,7 +1220,9 @@ Big-Oh version of Lemma \ref{ZetaBnd_aux1}.
   $$
   -/)
   (proof := /-- Apply Lemma \ref{ZetaBnd_aux1b} and estimate $|s|\ll |t|$. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /-- Big-Oh version of Lemma \ref{ZetaBnd_aux1}. -/)
+]
 lemma ZetaBnd_aux1p (N : ℕ) (Npos : 1 ≤ N) {σ : ℝ} (hσ : σ ∈ Ioc 0 2) :
     (fun (t : ℝ) ↦
       ‖(σ + t * I) * ∫ x in Ioi (N : ℝ), (⌊x⌋ + 1 / 2 - x) / (x : ℂ) ^ ((σ + t * I) + 1)‖)
@@ -2990,14 +2988,8 @@ lemma ZetaInvBnd :
     simpa [C] using this
 
 
-
 -- **Another AlphaProof collaboration (thanks to Thomas Hubert!)**
 
-blueprint_comment /--
-Annoyingly, it is not immediate from this that $\zeta$ doesn't vanish there! That's because
-$1/0 = 0$ in Lean. So we give a second proof of the same fact (refactor this later), with a lower
- bound on $\zeta$ instead of upper bound on $1 / \zeta$.
--/
 @[blueprint
   (title := "ZetaLowerBnd")
   (statement := /--
@@ -3008,7 +3000,13 @@ $1/0 = 0$ in Lean. So we give a second proof of the same fact (refactor this lat
     $$
   -/)
   (proof := /-- Follow same argument. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  Annoyingly, it is not immediate from this that $\zeta$ doesn't vanish there! That's because
+  $1/0 = 0$ in Lean. So we give a second proof of the same fact (refactor this later), with a lower
+   bound on $\zeta$ instead of upper bound on $1 / \zeta$.
+  -/)
+]
 lemma ZetaLowerBnd :
     ∃ (A : ℝ) (_ : A ∈ Ioc 0 (1 / 2)) (c : ℝ) (_ : 0 < c),
     ∀ (σ : ℝ)
@@ -3137,9 +3135,6 @@ lemma ZetaLowerBnd :
 
 -- **End collaboration 6/20/25**
 
-blueprint_comment /--
-Now we get a zero free region.
--/
 @[blueprint
   (title := "ZetaZeroFree")
   (statement := /--
@@ -3149,7 +3144,9 @@ Now we get a zero free region.
     $$
   -/)
   (proof := /-- Apply Lemma \ref{ZetaLowerBnd}. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /-- Now we get a zero free region. -/)
+]
 lemma ZetaZeroFree :
     ∃ (A : ℝ) (_ : A ∈ Ioc 0 (1 / 2)),
     ∀ (σ : ℝ)
@@ -3229,8 +3226,6 @@ lemma LogDerivZetaBnd :
   convert mul_le_mul h h' (by simp) ?_ using 1 <;> (norm_cast; ring_nf); positivity
 
 
-
-
 /-% ** Bad delimiters on purpose **
 Annoying: we have reciprocals of $log |t|$ in the bounds, and we've assumed that $|t|>3$; but we
 want to make things uniform in $t$. Let's change to things like $log (|t|+3)$ instead of $log |t|$.
@@ -3268,10 +3263,6 @@ lemma ZetaCont : ContinuousOn ζ (univ \ {1}) := by
   simp only [mem_diff, mem_univ, mem_singleton_iff, true_and] at hx
   exact hx
 
-blueprint_comment /--
-Then, since $\zeta$ doesn't vanish on the 1-line, there is a $\sigma<1$ (depending on $T$), so that
-the box $[\sigma,1] \times_{ℂ} [-T,T]$ is free of zeros of $\zeta$.
--/
 
 @[blueprint
   (title := "ZetaNoZerosInBox")
@@ -3291,7 +3282,12 @@ the box $[\sigma,1] \times_{ℂ} [-T,T]$ is free of zeros of $\zeta$.
   this is a contradiction.
   If $t_0=0$, $\zeta$ blows up near $1$, so can't be zero nearby.
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  Then, since $\zeta$ doesn't vanish on the 1-line, there is a $\sigma<1$ (depending on $T$), so that
+  the box $[\sigma,1] \times_{ℂ} [-T,T]$ is free of zeros of $\zeta$.
+  -/)
+]
 lemma ZetaNoZerosInBox (T : ℝ) :
     ∃ (σ : ℝ) (_ : σ < 1), ∀ (t : ℝ) (_ : |t| ≤ T)
     (σ' : ℝ) (_ : σ' ≥ σ), ζ (σ' + t * I) ≠ 0 := by
@@ -3411,10 +3407,6 @@ lemma LogDerivZetaHoloOn {S : Set ℂ} (s_ne_one : 1 ∉ S)
   · apply differentiableAt_riemannZeta
     exact ne_of_mem_of_not_mem hs s_ne_one
 
-blueprint_comment /--
-We now prove that there's an absolute constant $\sigma_0$ so that $\zeta'/\zeta$ is holomorphic on
-a rectangle $[\sigma_2,2] \times_{ℂ} [-3,3] \setminus \{1\}$.
--/
 @[blueprint
   (title := "LogDerivZetaHolcSmallT")
   (statement := /--
@@ -3428,7 +3420,12 @@ a rectangle $[\sigma_2,2] \times_{ℂ} [-3,3] \setminus \{1\}$.
   The derivative of $\zeta$ is holomorphic away from $s=1$; the denominator $\zeta(s)$ is nonzero
   in this range by Lemma \ref{ZetaNoZerosInBox}.
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  We now prove that there's an absolute constant $\sigma_0$ so that $\zeta'/\zeta$ is holomorphic on
+  a rectangle $[\sigma_2,2] \times_{ℂ} [-3,3] \setminus \{1\}$.
+  -/)
+]
 theorem LogDerivZetaHolcSmallT :
     ∃ (σ₂ : ℝ) (_ : σ₂ < 1), HolomorphicOn (fun (s : ℂ) ↦ ζ' s / (ζ s))
       (( [[ σ₂, 2 ]] ×ℂ [[ -3, 3 ]]) \ {1}) := by

@@ -48,9 +48,6 @@ lemma smooth_urysohn_support_Ioo {a b c d : ℝ} (h1 : a < b) (h3 : c < d) :
   · ext x
     simp only [Function.mem_support, ne_eq, mem_Ioo, ← hΨ0, not_or, not_le]
 
-blueprint_comment /--
-Let $\nu$ be a bumpfunction.
--/
 
 @[blueprint
   (title := "SmoothExistence")
@@ -61,7 +58,9 @@ Let $\nu$ be a bumpfunction.
     \int_0^\infty \nu(x)\frac{dx}{x} = 1.
     $$
   -/)
-  (proof := /-- Same idea as Urysohn-type argument. -/)]
+  (proof := /-- Same idea as Urysohn-type argument. -/)
+  (above := /-- Let $\nu$ be a bumpfunction. -/)
+]
 lemma SmoothExistence : ∃ (ν : ℝ → ℝ), (ContDiff ℝ ∞ ν) ∧ (∀ x, 0 ≤ ν x) ∧
     ν.support ⊆ Icc (1 / 2) 2 ∧ ∫ x in Ici 0, ν x / x = 1 := by
   suffices h : ∃ (ν : ℝ → ℝ), (ContDiff ℝ ∞ ν) ∧ (∀ x, 0 ≤ ν x) ∧

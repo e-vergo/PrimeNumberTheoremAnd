@@ -3,29 +3,10 @@ import PrimeNumberTheoremAnd.FioriKadiriSwidinsky
 import PrimeNumberTheoremAnd.BKLNW
 import PrimeNumberTheoremAnd.RosserSchoenfeldPrime
 
-blueprint_comment /--
-\section{The implications of FKS2}
-
-In this file we record the implications in the paper \cite{FKS2}.  Roughly speaking, this paper has two components: a "$\psi$ to $\theta$ pipeline" that converts estimates on the error $E_\psi(x) = |\psi(x)-x|/x$ in the prime number theorem for the first Chebyshev function $\psi$ to estimates on the error $E_\theta(x) = |\theta(x)-x|/x$ in the prime number theorem for the second Chebyshev function $\theta$; and a "$\theta$ to $\pi$ pipeline" that converts estimates $E_\theta$ to estimates on the error $E_\pi(x) = |\pi(x) - \Li(x)|/(x/\log x)$ in the prime number theorem for the prime counting function $\pi$.  Each pipeline converts "admissible classical bounds" (Definitions \ref{classical-bound-psi} \ref{classical-bound-theta}, \ref{classical-bound-pi}) of one error to admissible classical bounds of the next error in the pipeline.
-
-There are two types of bounds considered here.  The first are asymptotic bounds of the form
-$$ E_\psi(x), E_\theta(x), E_\pi(x) \leq A \left(\frac{\log x}{R}\right)^B \exp\left(-C \left(\frac{\log x}{R}\right)^{1/2}\right) $$
-for various $A,B,C,R$ and all $x \geq x_0$.  The second are numerical bounds of the form
-$$ E_\psi(x), E_\theta(x), E_\pi(x) \leq \varepsilon_{num}(x_0) $$
-for all $x \geq x_0$ and certain specific numerical choices of $x_0$ and $\varepsilon_{num}(x_0)$.  One needs to merge these bounds together to obtain the best final results.
-
--/
 
 open Real MeasureTheory Chebyshev
 
 namespace FKS2
-
-blueprint_comment /--
-\subsection{Basic estimates on the error bound g}
-
-Our asymptotic bounds can be described using a certain function $g$.  Here we define $g$ and record its basic properties.
-
--/
 
 
 @[blueprint
@@ -34,7 +15,23 @@ Our asymptotic bounds can be described using a certain function $g$.  Here we de
   (statement := /--
   For any $a,b,c,x \in \mathbb{R}$ we define
     $g(a,b,c,x) := x^{-a} (\log x)^b \exp( c (\log x)^{1/2} )$.
-  -/)]
+  -/)
+  (above := /--
+  \section{The implications of FKS2}
+
+  In this file we record the implications in the paper \cite{FKS2}.  Roughly speaking, this paper has two components: a "$\psi$ to $\theta$ pipeline" that converts estimates on the error $E_\psi(x) = |\psi(x)-x|/x$ in the prime number theorem for the first Chebyshev function $\psi$ to estimates on the error $E_\theta(x) = |\theta(x)-x|/x$ in the prime number theorem for the second Chebyshev function $\theta$; and a "$\theta$ to $\pi$ pipeline" that converts estimates $E_\theta$ to estimates on the error $E_\pi(x) = |\pi(x) - \Li(x)|/(x/\log x)$ in the prime number theorem for the prime counting function $\pi$.  Each pipeline converts "admissible classical bounds" (Definitions \ref{classical-bound-psi} \ref{classical-bound-theta}, \ref{classical-bound-pi}) of one error to admissible classical bounds of the next error in the pipeline.
+
+  There are two types of bounds considered here.  The first are asymptotic bounds of the form
+  $$ E_\psi(x), E_\theta(x), E_\pi(x) \leq A \left(\frac{\log x}{R}\right)^B \exp\left(-C \left(\frac{\log x}{R}\right)^{1/2}\right) $$
+  for various $A,B,C,R$ and all $x \geq x_0$.  The second are numerical bounds of the form
+  $$ E_\psi(x), E_\theta(x), E_\pi(x) \leq \varepsilon_{num}(x_0) $$
+  for all $x \geq x_0$ and certain specific numerical choices of $x_0$ and $\varepsilon_{num}(x_0)$.  One needs to merge these bounds together to obtain the best final results.
+
+  \subsection{Basic estimates on the error bound g}
+
+  Our asymptotic bounds can be described using a certain function $g$.  Here we define $g$ and record its basic properties.
+  -/)
+]
 noncomputable def g_bound (a b c x : ℝ) : ℝ := x^(-a) * (log x)^b * exp (c * sqrt (log x))
 
 @[blueprint
@@ -190,9 +187,6 @@ theorem corollary_11 {B C R : ℝ} (hR : R > 0) (hB : B > 1 + C ^ 2 / (16 * R)) 
   rw [div_pow, sq_sqrt hR.le, mul_one]
   linarith [show C ^ 2 / R / 16 = C ^ 2 / (16 * R) by ring]
 
-blueprint_comment /--
-When integrating expressions involving $g$, the Dawson function naturally appears; and we need to record some basic properties about it.
--/
 
 @[blueprint
   "fks2-eq-19"
@@ -200,7 +194,11 @@ When integrating expressions involving $g$, the Dawson function naturally appear
   (statement := /--
   The Dawson function $D_+ : \mathbb{R} \to \mathbb{R}$ is defined by the formula
     $D_+(x) := e^{-x^2} \int_0^x e^{t^2}\ dt$.
-  -/)]
+  -/)
+  (above := /--
+  When integrating expressions involving $g$, the Dawson function naturally appears; and we need to record some basic properties about it.
+  -/)
+]
 noncomputable def dawson (x : ℝ) : ℝ := exp (-x ^ 2) * ∫ t in 0..x, exp (t ^ 2)
 
 
@@ -218,12 +216,6 @@ theorem remark_after_corollary_11 :
     ∃ x₀ : ℝ, x₀ ∈ Set.Icc 0.924 0.925 ∧ (∀ x, dawson x ≤ dawson x₀) ∧
       StrictAntiOn dawson (Set.Ioi x₀) := sorry
 
-
-blueprint_comment /--
-\subsection{From asymptotic estimates on psi to asymptotic estimates on theta}
-
-To get from asymptotic estimates on $E_\psi$ to asymptotic estimates on $E_\theta$, the paper cites results and arguments from the previous paper \cite{BKLNW}, which is treated elsewhere in this blueprint.
--/
 
 noncomputable def ν_asymp (Aψ B C R x₀ : ℝ) : ℝ :=
   (1 / Aψ) * (R / log x₀) ^ B * exp (C * sqrt (log x₀ / R)) *
@@ -246,7 +238,13 @@ noncomputable def ν_asymp (Aψ B C R x₀ : ℝ) : ℝ :=
   $$ 1 + \frac{a_1 \exp(C \sqrt{\frac{\log x}{R}})}{A_\psi \sqrt{x} (\log x/R)^{B}} + \frac{a_2 \exp(C \sqrt{\frac{\log x}{R}})}{A_\psi x^{2/3} (\log x/R)^{B}} = 1 + \frac{a_1}{A_\psi} g(1/2, -B, C/\sqrt{R}, x) + \frac{a_2}{A_\psi} g(2/3, -B, C/\sqrt{R}, x)$$
   is decreasing. By Lemma \ref{fks2-lemma-10a}, since $B > C^2/8R$, the function is actually decreasing for all $x$. -/)
   (latexEnv := "proposition")
-  (discussion := 671)]
+  (discussion := 671)
+  (above := /--
+  \subsection{From asymptotic estimates on psi to asymptotic estimates on theta}
+
+  To get from asymptotic estimates on $E_\psi$ to asymptotic estimates on $E_\theta$, the paper cites results and arguments from the previous paper \cite{BKLNW}, which is treated elsewhere in this blueprint.
+  -/)
+]
 theorem proposition_13
   (Aψ B C R x₀ : ℝ)
   (h_bound : Eψ.classicalBound Aψ B C R x₀)
@@ -279,12 +277,6 @@ theorem remark_15 (x₀ : ℝ) (h : log x₀ ≥ 1000) :
     Eθ.classicalBound (FKS.A x₀) (3/2) 2 5.5666305 x₀ := by sorry
 
 
-blueprint_comment /--
-\subsection{From asymptotic estimates on theta to asymptotic estimates on pi}
-
-To get from asymptotic estimates on $E_\theta$ to asymptotic estimates on $E_\pi$, one first needs a way to express the latter as an integral of the former.
--/
-
 @[blueprint
   "fks2-eq-17"
   (title := "FKS2 equation (17)")
@@ -295,7 +287,13 @@ To get from asymptotic estimates on $E_\theta$ to asymptotic estimates on $E_\pi
   -/)
   (proof := /-- This follows from Sublemma \ref{rs-417}. -/)
   (latexEnv := "sublemma")
-  (discussion := 609)]
+  (discussion := 609)
+  (above := /--
+  \subsection{From asymptotic estimates on theta to asymptotic estimates on pi}
+
+  To get from asymptotic estimates on $E_\theta$ to asymptotic estimates on $E_\pi$, one first needs a way to express the latter as an integral of the former.
+  -/)
+]
 theorem eq_17 {x₀ x : ℝ} (hx₀ : 2 ≤ x₀) (hx : x₀ < x) :
     (pi x - Li x) - (pi x₀ - Li x₀) =
     (θ x - x) / log x - (θ x₀ - x₀) / log x₀ +
@@ -341,9 +339,6 @@ theorem eq_17 {x₀ x : ℝ} (hx₀ : 2 ≤ x₀) (hx : x₀ < x) :
     · simpa [sub_div] using IntervalIntegrable.sub (l1 px) (l2 px)
     · simpa [sub_div] using IntervalIntegrable.sub (l1 hx₀) (l2 hx₀)
 
-blueprint_comment /--
-The following definition is only implicitly in FKS2, but will be convenient:
--/
 
 @[blueprint
   "fks2-error-def"
@@ -351,13 +346,14 @@ The following definition is only implicitly in FKS2, but will be convenient:
   (statement := /--
   For any $x_0>0$, we define
     $$\delta(x_0) := |\frac{\pi(x_0) - \Li(x_0)}{x_0/\log x_0} - \frac{\theta(x_0) - x_0}{x_0}|.$$
-  -/)]
+  -/)
+  (above := /--
+  The following definition is only implicitly in FKS2, but will be convenient:
+  -/)
+]
 noncomputable def δ (x₀ : ℝ) : ℝ :=
   |(pi x₀ - Li x₀) / (x₀ / log x₀) - (θ x₀ - x₀) / x₀|
 
-blueprint_comment /--
-We can now obtain an upper bound on $E_\pi$ in terms of $E_\theta$:
--/
 
 @[blueprint
   "fks2-eq30"
@@ -368,14 +364,15 @@ We can now obtain an upper bound on $E_\pi$ in terms of $E_\theta$:
   -/)
   (proof := /-- This follows from applying the triangle inequality to Sublemma \ref{fks2-eq-17}. -/)
   (latexEnv := "sublemma")
-  (discussion := 741)]
+  (discussion := 741)
+  (above := /--
+  We can now obtain an upper bound on $E_\pi$ in terms of $E_\theta$:
+  -/)
+]
 theorem eq_30 {x x₀ : ℝ} (hx : x ≥ x₀) :
   Eπ x ≤ Eψ x + δ x₀ + (log x / x) * ∫ t in x₀..x, Eθ t / log t ^ 2 :=
   by sorry
 
-blueprint_comment /--
-Next, we bound the integral appearing in Sublemma \ref{fks2-eq-17}.
--/
 
 @[blueprint
   "fks2-lemma-12"
@@ -407,7 +404,11 @@ Now we have
 \end{align*}
 Combining the above completes the proof. -/)
   (latexEnv := "lemma")
-  (discussion := 617)]
+  (discussion := 617)
+  (above := /--
+  Next, we bound the integral appearing in Sublemma \ref{fks2-eq-17}.
+  -/)
+]
 theorem lemma_12 {A B C R x₀ x : ℝ} (hEθ : Eθ.classicalBound A B C R x₀) (hx : x ≥ x₀) :
   ∫ t in x₀..x, |Eθ t| / log t ^ 2 ≤
     (2 * A) / (R ^ B) * x * max ((log x₀) ^ ((2 * B - 3) / 2)) ((log x) ^ ((2 * B - 3) / 2)) *
@@ -427,9 +428,6 @@ noncomputable def μ_asymp (A B C R x₀ x₁ : ℝ) : ℝ :=
   (x₀ * log x₁) / ((admissible_bound A B C R x₁) * x₁ * log x₀) * δ x₀ +
     2 * (dawson (sqrt (log x₁) - C / (2 * sqrt R))) / (sqrt (log x₁))
 
-blueprint_comment /--
-We obtain our final bound for converting bounds on $E_\theta$ to bounds on $E_\pi$.
--/
 
 @[blueprint
   "fks2-theorem-3"
@@ -458,7 +456,11 @@ We obtain our final bound for converting bounds on $E_\theta$ to bounds on $E_\p
   $$ \frac{|\pi(x) - \Li(x)|}{\frac{x \varepsilon_{\theta,\mathrm{asymp}}(x)}{\log(x)}} \leq \frac{\log(x_1)}{x_1 \varepsilon_{\theta,\mathrm{asymp}}(x_1)} |\pi(x_0) - \Li(x_0) - \frac{\theta(x_0) - x_0}{\log(x_0)}| + 1 + \frac{2 D_+\left( \sqrt{\log x_1} - \frac{C}{2\sqrt{R}} \right)}{\sqrt{\log(x_1)}}, $$
   from which we deduce the announced bound. -/)
   (latexEnv := "theorem")
-  (discussion := 675)]
+  (discussion := 675)
+  (above := /--
+  We obtain our final bound for converting bounds on $E_\theta$ to bounds on $E_\pi$.
+  -/)
+]
 theorem theorem_3 (A B C R x₀ x₁ : ℝ)
   (hB : B ≥ max (3 / 2) (1 + C ^ 2 / (16 * R)))
   (hx0 : x₀ > 0)
@@ -467,12 +469,6 @@ theorem theorem_3 (A B C R x₀ x₁ : ℝ)
   Eπ.classicalBound (A * (1 + μ_asymp A B C R x₀ x₁)) B C R x₁ :=
   sorry
 
-
-blueprint_comment /--
-\subsection{From numerical estimates on psi to numerical estimates on theta}
-
-Here we record a way to convert a numerical bound on $E_\psi$ to a numerical bound on $E_\theta$.
--/
 
 noncomputable def εθ_from_εψ (εψ : ℝ → ℝ) (x₀ : ℝ) : ℝ :=
   εψ x₀ + 1.00000002 * (x₀ ^ (-(1:ℝ)/2) + x₀ ^ (-(2:ℝ)/3) + x₀ ^ (-(4:ℝ)/5)) +
@@ -504,17 +500,18 @@ noncomputable def εθ_from_εψ (εψ : ℝ → ℝ) (x₀ : ℝ) : ℝ :=
   $$\psi(x^{1/2}) + \psi(x^{1/3}) + \psi(x^{1/5}) \leq 1.00000002(x^{1/2} + x^{1/3} + x^{1/5}).$$
   The result follows by combining the worst coefficients from all cases and dividing by $x$. -/)
   (latexEnv := "proposition")
-  (discussion := 711)]
+  (discussion := 711)
+  (above := /--
+  \subsection{From numerical estimates on psi to numerical estimates on theta}
+
+  Here we record a way to convert a numerical bound on $E_\psi$ to a numerical bound on $E_\theta$.
+  -/)
+]
 theorem proposition_17 {x x₀ : ℝ} (hx : x > x₀) (hx₀ : x₀ > 2) (εψ : ℝ → ℝ)
     (hEψ : Eψ x ≤ εψ x₀) :
     -εθ_from_εψ εψ x₀ ≤ (θ x - x) / x ∧ (θ x - x) / x ≤ εψ x₀ ∧
       εψ x₀ ≤ εθ_from_εψ εψ x₀ := by sorry
 
-blueprint_comment /--
-\subsection{From numerical estimates on theta to numerical estimates on pi}
-
-Here we record a way to convert a numerical bound on $E_\theta$ to a numerical bound on $E_\pi$.  We first need some preliminary lemmas.
--/
 
 @[blueprint
   "fks2-lemma-19"
@@ -538,7 +535,13 @@ Here we record a way to convert a numerical bound on $E_\theta$ to a numerical b
   $$ \int_a^b \frac{dt}{(\log t)^2}
     = \Li(b) - \frac{b}{\log b} - (\Li(a) - \frac{a}{\log a}). $$ -/)
   (latexEnv := "lemma")
-  (discussion := 712)]
+  (discussion := 712)
+  (above := /--
+  \subsection{From numerical estimates on theta to numerical estimates on pi}
+
+  Here we record a way to convert a numerical bound on $E_\theta$ to a numerical bound on $E_\pi$.  We first need some preliminary lemmas.
+  -/)
+]
 theorem lemma_19 {x₀ x₁ : ℝ} (hx₁ : x₁ > x₀) (hx₀ : x₀ ≥ 2)
   {N : ℕ} (b : Fin (N + 1) → ℝ) (hmono : Monotone b)
   (h_b_start : b 0 = log x₀)
@@ -581,11 +584,6 @@ theorem lemma_20_b {x : ℝ} (hx : x > 6.58) :
     Li x - x / log x > (x - 6.58) / (log x) ^ 2 ∧ (x - 6.58) / (log x) ^ 2 > 0 :=
   sorry
 
-blueprint_comment /--
-Now we can start estimating $E_\pi$.  We make the following running hypotheses. Let $x_0 > 0$ be chosen such that $\pi(x_0)$ and $\theta(x_0)$ are computable, and let   $x_1 \geq \max(x_0, 14)$. Let $\{b_i\}_{i=1}^N$ be a finite partition of   $[\log x_0, \log x_1]$, with $b_1 = \log x_0$ and $b_N = \log x_1$, and suppose that   $\varepsilon_{\theta,\mathrm{num}}$ gives numerical bounds for $x = \exp(b_i)$, for each $i=1,\dots,N$.
--/
-
-
 
 @[blueprint
   "fks2-theorem-6-1"
@@ -599,7 +597,11 @@ Now we can start estimating $E_\pi$.  We make the following running hypotheses. 
   (proof := /-- This is obtained by combining Sublemma \ref{fks2-eq-30} with the admissibility of $\varepsilon_{\theta,num}$ and Lemma \ref{fks2-lemma-19}.
   -/)
   (latexEnv := "sublemma")
-  (discussion := 715)]
+  (discussion := 715)
+  (above := /--
+  Now we can start estimating $E_\pi$.  We make the following running hypotheses. Let $x_0 > 0$ be chosen such that $\pi(x_0)$ and $\theta(x_0)$ are computable, and let   $x_1 \geq \max(x_0, 14)$. Let $\{b_i\}_{i=1}^N$ be a finite partition of   $[\log x_0, \log x_1]$, with $b_1 = \log x_0$ and $b_N = \log x_1$, and suppose that   $\varepsilon_{\theta,\mathrm{num}}$ gives numerical bounds for $x = \exp(b_i)$, for each $i=1,\dots,N$.
+  -/)
+]
 theorem theorem_6_1 {x₀ x₁ : ℝ} (h : x₁ ≥ max x₀ 14)
   {N : ℕ} (b : Fin (N + 1) → ℝ) (hmono : Monotone b)
   (h_b_start : b 0 = log x₀)
@@ -656,8 +658,6 @@ theorem theorem_6_3 {x₁ : ℝ} (h : x₁ ≥ 14) (x₂ : ℝ) (hx₂ : x₂ �
     (log x₂ / x₂) * (Li x₂ - x₂ / log x₂ - Li x₁ + x₁ / log x₁) :=
   sorry
 
-blueprint_comment /--
-We can merge these sublemmas together after making some definitions. -/
 
 @[blueprint
   "fks2-eq-11"
@@ -670,7 +670,11 @@ We can merge these sublemmas together after making some definitions. -/
       \sum_{i=0}^{N-1} \epsilon_{\theta,num}(e^{b_i})
       \left( \Li(e^{b_{i+1}}) - \Li(e^{b_i}) + \frac{e^{b_i}}{b_i} - \frac{e^{b_{i+1}}}{b_{i+1}} \right) +
       \frac{\log(x_2)}{x_2} \left( \Li(x_2) - \frac{x_2}{\log x_2} - \Li(x_1) + \frac{x_1}{\log x_1} \right).$$
-  -/)]
+  -/)
+  (above := /--
+  We can merge these sublemmas together after making some definitions.
+  -/)
+]
 noncomputable def μ_num_1 {N : ℕ} (b : Fin (N + 1) → ℝ) (εθ_num : ℝ → ℝ) (x₀ x₁ x₂ : ℝ) : ℝ :=
   (x₀ * log x₁) / (εθ_num x₁ * x₁ * log x₀) * δ x₀ +
   (log x₁) / (εθ_num x₁ * x₁) *
@@ -744,14 +748,16 @@ theorem remark_7 {x₀ x₁ : ℝ} (x₂ : ℝ) (h : x₁ ≥ max x₀ 14)
   (hderiv : deriv (fun x ↦ (log x) / x * (Li x - x / log x - Li x₁ + x₁ / log x₁)) x₂ ≥ 0) :
     μ_num_1 b εθ_num x₀ x₁ x₂ < μ_num_2 b εθ_num x₀ x₁ := by sorry
 
-blueprint_comment /--
-This gives us the final result to obtain numerical bounds for $E_\pi$ from numerical bounds on $E_\theta$. -/
 
 @[blueprint
   "fks2-theorem-6"
   (title := "FKS2 Theorem 6")
   (latexEnv := "theorem")
-  (discussion := 718)]
+  (discussion := 718)
+  (above := /--
+  This gives us the final result to obtain numerical bounds for $E_\pi$ from numerical bounds on $E_\theta$.
+  -/)
+]
 theorem theorem_6 {x₀ x₁ : ℝ} (x₂ : EReal) (h : x₁ ≥ max x₀ 14)
   {N : ℕ} (b : Fin (N + 1) → ℝ) (hmono : Monotone b)
   (h_b_start : b 0 = log x₀)
@@ -827,12 +833,6 @@ theorem corollary_8 {x₁ : ℝ} (hx₁ : x₁ ≥ 14)
         (if (i+1) = Fin.last M then ⊤ else exp (b' (i+1)).toReal)) :=
   sorry
 
-blueprint_comment /--
-\subsection{Putting everything together}
-
-By merging together the above tools with various parameter choices, we can obtain some clean corollaries.
--/
-
 
 @[blueprint
   "fks2-corollary-21"
@@ -856,7 +856,13 @@ By merging together the above tools with various parameter choices, we can obtai
   -/)
   (proof := /-- This follows by applying Theorem \ref{fks2-theorem-3} with Proposition \ref{fks2-proposition-13}.  The hypothesis $B > C^2/8R$ is not present in original source.-/)
   (latexEnv := "corollary")
-  (discussion := 720)]
+  (discussion := 720)
+  (above := /--
+  \subsection{Putting everything together}
+
+  By merging together the above tools with various parameter choices, we can obtain some clean corollaries.
+  -/)
+]
 theorem corollary_21
   (Aψ B C R x₀ x₁ : ℝ)
   (hB : B ≥ max (3 / 2) (1 + C ^ 2 / (16 * R)))

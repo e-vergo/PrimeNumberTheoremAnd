@@ -1,13 +1,6 @@
 import Dress
 import PrimeNumberTheoremAnd.PrimaryDefinitions
 
-blueprint_comment /--
-\section{The estimates of Fiori, Kadiri, and Swidinsky}
--/
-
-blueprint_comment /--
-In this section we establish the primary results of Fiori, Kadiri, and Swidinsky \cite{FKS}.
--/
 
 open Real MeasureTheory
 
@@ -105,7 +98,13 @@ def table_8 : List (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × ℝ)
       and
       $$ N(\sigma,T) \leq \frac{CC_1}{2\pi d} (\log kT)^{2\sigma} (\log T)^{5-4*\sigma}
         T^{8/3(1-\sigma)} + CC_2 * \log^2 T / 2 \pi d$$.
-  -/)]
+  -/)
+  (above := /--
+  \section{The estimates of Fiori, Kadiri, and Swidinsky}
+
+  In this section we establish the primary results of Fiori, Kadiri, and Swidinsky \cite{FKS}.
+  -/)
+]
 theorem theorem_2_7 (I : Inputs) {k δ α d η₀ η μ σ H T : ℝ}
     (hk : k ∈ Set.Icc ((10 ^ 9) / I.H₀) 1)
     (hα : α > 0)

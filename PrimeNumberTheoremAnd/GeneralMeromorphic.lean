@@ -18,7 +18,41 @@ open scoped Interval
       a (finite) set of poles, none of which are on the boundary of the rectangle.
       [Note: Might be overkill, can just work explicitly with the functions that arise. Of course
       would be nice to have the general theory as well...]
-  -/)]
+  -/)
+  (below := /--
+  A meromorphic function has a pole of finite order.
+  \begin{definition}\label{PoleOrder}
+  If $f$ has a pole at $z_0$, then there is an integer $n$ such that
+  $$
+  \lim_{z\to z_0} (z-z_0)^n f(z) = c \neq 0.
+  $$
+  \end{definition}
+
+  [Note: There is a recent PR by David Loeffler dealing with orders of poles.]
+
+  If a meromorphic function $f$ has a pole at $z_0$, then the residue of $f$ at $z_0$ is the
+  coefficient of $1/(z-z_0)$ in the Laurent series of $f$ around $z_0$.
+  \begin{definition}\label{Residue}
+  If $f$ has a pole of order $n$ at $z_0$, then
+  $$
+  Res_{z_0} f = \lim_{z\to z_0}\frac1{(n-1)!}(\partial/\partial z)^{n-1}[(z-z_0)^{n-1}f(z)].
+  $$
+  \end{definition}
+
+  We can evaluate a small integral around a pole by taking the residue.
+
+  [Note: Of course the standard thing is to do this with circles, where the integral comes out
+  directly from the parametrization. But discs don't tile discs! Thus the standard approach is with
+  annoying keyhole contours, etc; this is a total mess to formalize! Instead, we observe that
+  rectangles do tile rectangles, so we can just do the whole theory with rectangles. The cost is
+  the extra difficulty of this little calculation.]
+
+  [Note: We only ever need simple poles for PNT, so would be enough to develop those...]
+
+  If a function $f$ is meromorphic at $z_0$ with a pole of order $n$, then
+  the residue at $z_0$ of the logarithmic derivative is $-n$ exactly.
+  -/)
+]
 class MeromorphicOnRectangle (f : ℂ → ℂ) (poles : Finset ℂ) (z w : ℂ) : Prop where
   holomorphicOn : HolomorphicOn f ((Rectangle z w) ∩ polesᶜ)
   hasPoleAt : ∀ p ∈ poles, MeromorphicAt f p
@@ -36,33 +70,7 @@ class MeromorphicOnRectangle (f : ℂ → ℂ) (poles : Finset ℂ) (z w : ℂ) 
   -- /-- Rectangles tile rectangles, zoom in. -/
   -- sorry_using [MeromorphicOnRectangle, RectangleIntegral]
 
-blueprint_comment /--
-A meromorphic function has a pole of finite order.
-\begin{definition}\label{PoleOrder}
-If $f$ has a pole at $z_0$, then there is an integer $n$ such that
-$$
-\lim_{z\to z_0} (z-z_0)^n f(z) = c \neq 0.
-$$
-\end{definition}
 
-[Note: There is a recent PR by David Loeffler dealing with orders of poles.]
--/
-
-
-blueprint_comment /--
-If a meromorphic function $f$ has a pole at $z_0$, then the residue of $f$ at $z_0$ is the
-coefficient of $1/(z-z_0)$ in the Laurent series of $f$ around $z_0$.
-\begin{definition}\label{Residue}
-If $f$ has a pole of order $n$ at $z_0$, then
-$$
-Res_{z_0} f = \lim_{z\to z_0}\frac1{(n-1)!}(\partial/\partial z)^{n-1}[(z-z_0)^{n-1}f(z)].
-$$
-\end{definition}
--/
-
-blueprint_comment /--
-We can evaluate a small integral around a pole by taking the residue.
--/
 -- @[blueprint
 --   (statement := /-- If $f$ has a pole at $z_0$, then every small enough rectangle integral around $z_0$ is equal to $2\pi i Res_{z_0} f$. -/)]
 -- theorem ResidueTheoremOnRectangle (f : ℂ → ℂ) (z₀ : ℂ) (h : MeromorphicAt f z₀) :
@@ -113,20 +121,7 @@ We can evaluate a small integral around a pole by taking the residue.
 --   -/
 --   sorry_using [PoleOrder, Residue, RectangleIntegral, RectangleIntegralEqSumOfRectangles]
 
-blueprint_comment /--
-[Note: Of course the standard thing is to do this with circles, where the integral comes out
-directly from the parametrization. But discs don't tile discs! Thus the standard approach is with
-annoying keyhole contours, etc; this is a total mess to formalize! Instead, we observe that
-rectangles do tile rectangles, so we can just do the whole theory with rectangles. The cost is
-the extra difficulty of this little calculation.]
 
-[Note: We only ever need simple poles for PNT, so would be enough to develop those...]
--/
-
-blueprint_comment /--
-If a function $f$ is meromorphic at $z_0$ with a pole of order $n$, then
-the residue at $z_0$ of the logarithmic derivative is $-n$ exactly.
--/
 -- @[blueprint
 --   (statement := /--
 --   If $f$ has a pole of order $n$ at $z_0$, then

@@ -1,12 +1,5 @@
 import PrimeNumberTheoremAnd.SecondaryDefinitions
 
-blueprint_comment /--
-\section{The estimates of Buthe}
-
-In this section we collect some results from Buthe's paper \cite{Buthe}, which provides explicit estimates on $\psi(x)$, $\theta(x)$, and $\pi(x)$.
-
--/
-
 
 namespace Buthe
 
@@ -17,7 +10,13 @@ open MeasureTheory Real
 @[blueprint
   "buthe-eq-1-4"
   (title := "Buthe Equation (1.4)")
-  (statement := /-- $\pi^*(x) = \sum_{k \geq 1} \pi(x^{1/k}) / k$. -/)]
+  (statement := /-- $\pi^*(x) = \sum_{k \geq 1} \pi(x^{1/k}) / k$. -/)
+  (above := /--
+  \section{The estimates of Buthe}
+
+  In this section we collect some results from Buthe's paper \cite{Buthe}, which provides explicit estimates on $\psi(x)$, $\theta(x)$, and $\pi(x)$.
+  -/)
+]
 noncomputable def pi_star (x : ℝ) : ℝ :=
   ∑' (k : ℕ), pi (x ^ (1 / (k:ℝ))) / (k:ℝ)
 

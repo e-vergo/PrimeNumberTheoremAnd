@@ -5,24 +5,6 @@ import PrimeNumberTheoremAnd.SecondaryDefinitions
 import PrimeNumberTheoremAnd.FKS2
 import PrimeNumberTheoremAnd.Dusart
 
-blueprint_comment /--
-\section{Summary of results}
--/
-
-blueprint_comment /--
-Here we list some papers that we plan to incorporate into this section in the future, and list
-some results that have not yet been moved into dedicated paper sections.
-
-References to add:
-
-Dusart \cite{Dusart2018}
-
-PT: D. J. Platt and T. S. Trudgian, The error term in the prime number theorem,
-Math. Comp. 90 (2021), no. 328, 871–881.
-
-JY: D. R. Johnston, A. Yang, Some explicit estimates for the error term in the prime number
-theorem, arXiv:2204.01980.
--/
 
 open Finset Nat Real
 
@@ -36,7 +18,24 @@ open Finset Nat Real
     \]
     for all $x \geq \exp(2000)$.
   -/)
-  (latexEnv := "theorem")]
+  (latexEnv := "theorem")
+  (above := /--
+  \section{Summary of results}
+
+  Here we list some papers that we plan to incorporate into this section in the future, and list
+  some results that have not yet been moved into dedicated paper sections.
+
+  References to add:
+
+  Dusart \cite{Dusart2018}
+
+  PT: D. J. Platt and T. S. Trudgian, The error term in the prime number theorem,
+  Math. Comp. 90 (2021), no. 328, 871–881.
+
+  JY: D. R. Johnston, A. Yang, Some explicit estimates for the error term in the prime number
+  theorem, arXiv:2204.01980.
+  -/)
+]
 theorem PT.corollary_2 : Eπ.classicalBound 235 1.52 0.8 1 (exp 2000) := by
   have := FKS2.corollary_22
   intro x hx
@@ -118,9 +117,6 @@ theorem JY.corollary_1_3 : Eπ.classicalBound 9.59 1.515 0.8274 1 2 := by
   (latexEnv := "theorem")]
 theorem JY.theorem_1_4 : Eπ.vinogradovBound 0.028 0.801 0.1853 23 := sorry
 
-blueprint_comment /-- TODO: input other results from JY -/
-
-blueprint_comment /-- The results below are taken from https://tme-emt-wiki-gitlab-io-9d3436.gitlab.io/Art09.html -/
 
 @[blueprint
   "thm:schoenfeld1976"
@@ -131,7 +127,13 @@ blueprint_comment /-- The results below are taken from https://tme-emt-wiki-gitl
   \left( x\left(1 - \frac{1}{15697}\right), x \right].
   \]
   -/)
-  (latexEnv := "theorem")]
+  (latexEnv := "theorem")
+  (above := /--
+  TODO: input other results from JY
+
+  The results below are taken from https://tme-emt-wiki-gitlab-io-9d3436.gitlab.io/Art09.html
+  -/)
+]
 theorem Schoenfeld1976.has_prime_in_interval (x : ℝ) (hx : x > 2010760) :
     HasPrimeInInterval (x*(1-1/15697)) (x/15697) := by sorry
 

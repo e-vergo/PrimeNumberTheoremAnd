@@ -11,13 +11,6 @@ import Mathlib.NumberTheory.ArithmeticFunction.Moebius
 import Mathlib.NumberTheory.LSeries.RiemannZeta
 import Mathlib.Tactic.NormNum.RealSqrt
 
-blueprint_comment /--
-\section{A Lemma involving the M\"obius Function}
--/
-
-blueprint_comment /--
-In this section we establish a lemma involving sums of the M\"obius function.
--/
 
 namespace MobiusLemma
 
@@ -26,7 +19,13 @@ open ArithmeticFunction Real Finset MeasureTheory Measurable Complex
 @[blueprint
   "Q-def"
   (title := "Q")
-  (statement := /-- $Q(x)$ is the number of squarefree integers $\leq x$. -/)]
+  (statement := /-- $Q(x)$ is the number of squarefree integers $\leq x$. -/)
+  (above := /--
+  \section{A Lemma involving the M\"obius Function}
+
+  In this section we establish a lemma involving sums of the M\"obius function.
+  -/)
+]
 noncomputable def Q (x : ℝ) : ℕ := ∑ n ∈ Finset.Ioc 0 ⌊x⌋₊, if Squarefree n then 1 else 0
 
 @[blueprint
@@ -392,9 +391,6 @@ theorem mobius_lemma_1 (x : ℝ) (hx : x > 0) :
   · rw [integral_M_sqrt_div x hx, div_eq_mul_inv, mul_eq_mul_left_iff]
     exact Or.inl <| by simpa using sum_moebius_div_sq.symm
 
-blueprint_comment /--
-Since our sums start from $1$, the sum $\sum_{k\leq K}$ is empty for $K=0$.
--/
 
 @[blueprint
   "mobius-lemma-2-sub-1"
@@ -409,7 +405,11 @@ Since our sums start from $1$, the sum $\sum_{k\leq K}$ is empty for $K=0$.
   -/)
   (proof := /-- This is just splitting the sum at $K$. -/)
   (latexEnv := "sublemma")
-  (discussion := 528)]
+  (discussion := 528)
+  (above := /--
+  Since our sums start from $1$, the sum $\sum_{k\leq K}$ is empty for $K=0$.
+  -/)
+]
 theorem mobius_lemma_2_sub_1 (x : ℝ) (hx : x > 0) (K : ℕ) (hK : (K : ℝ) ≤ x) :
     ∑ k ∈ Ioc 0 ⌊x⌋₊, M (sqrt (x / k)) = ∑ k ∈ range (K + 1), M (sqrt (x / k)) +
       ∑ k ∈ Ico (K + 1) (⌊x⌋₊ + 2), ∫ _ in (k - 0.5)..(k + 0.5), (M (sqrt (x / k)) : ℝ) := by

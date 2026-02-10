@@ -3,13 +3,6 @@ import PrimeNumberTheoremAnd.SecondaryDefinitions
 
 open Chebyshev Finset Nat Real Filter
 
-blueprint_comment /--
-\section{An inequality of Costa-Pereira}
-
-We record here an inequality relating the Chebyshev functions $\psi(x)$ and $\theta(x)$ due to
-Costa Pereira \cite{costa-pereira}, namely
-$$ \psi(x^{1/2}) + \psi(x^{1/3}) + \psi(x^{1/7}) \leq \psi(x) - \theta(x) \leq \psi(x^{1/2}) + \psi(x^{1/3}) + \psi(x^{1/5}) . $$
--/
 
 namespace CostaPereira
 
@@ -19,7 +12,15 @@ namespace CostaPereira
   (statement := /-- For every $x > 0$ we have $\psi(x) = \sum_{k \geqslant 1} \theta(x^{1/k})$. -/)
   (proof := /-- This follows directly from the definitions of $\psi$ and $\theta$. -/)
   (latexEnv := "sublemma")
-  (discussion := 676)]
+  (discussion := 676)
+  (above := /--
+  \section{An inequality of Costa-Pereira}
+
+  We record here an inequality relating the Chebyshev functions $\psi(x)$ and $\theta(x)$ due to
+  Costa Pereira \cite{costa-pereira}, namely
+  $$ \psi(x^{1/2}) + \psi(x^{1/3}) + \psi(x^{1/7}) \leq \psi(x) - \theta(x) \leq \psi(x^{1/2}) + \psi(x^{1/3}) + \psi(x^{1/5}) . $$
+  -/)
+]
 theorem sublemma_1_1 {x : ℝ} (hx : 0 < x) : ψ x = ∑' (k : ℕ), θ (x ^ (1 / ((k.succ : ℕ) : ℝ))) := by
   have theta_zero_large_k : ∀ k : ℕ, ⌊log x / Real.log 2⌋₊ ≤ k →
       θ (x ^ (1 / ((k.succ : ℕ) : ℝ))) = 0 := by

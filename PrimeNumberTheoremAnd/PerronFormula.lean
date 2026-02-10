@@ -11,22 +11,21 @@ open Asymptotics Complex ComplexConjugate Topology Filter Real MeasureTheory Set
 
 open scoped Interval
 
-blueprint_comment /--
-In this section, we prove the Perron formula, which plays a key role in our proof of Mellin
-inversion.
--/
-
-blueprint_comment /--
-The following is preparatory material used in the proof of the Perron formula, see Lemma
-\ref{formulaLtOne}.
--/
 
 /- TODO: move to general section. -/
 @[blueprint
   (title := "zeroTendstoDiff")
   (statement := /-- If the limit of $0$ is $L_1 - L_2$, then $L_1 = L_2$. -/)
   (proof := /-- Obvious. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  In this section, we prove the Perron formula, which plays a key role in our proof of Mellin
+  inversion.
+
+  The following is preparatory material used in the proof of the Perron formula, see Lemma
+  \ref{formulaLtOne}.
+  -/)
+]
 lemma zeroTendstoDiff (L₁ L₂ : ℂ) (f : ℝ → ℂ) (h : ∀ᶠ T in atTop, f T = 0)
     (h' : Tendsto f atTop (𝓝 (L₂ - L₁))) : L₁ = L₂ := by
   rw [← zero_add L₁, ← @eq_sub_iff_add_eq]
@@ -179,9 +178,6 @@ lemma RectangleIntegral_tendsTo_LowerU {σ σ' T : ℝ} {f : ℂ → ℂ}
   exact final ▸ this
 --%\end{proof}
 
-blueprint_comment /--
-TODO : Move to general section
--/
 @[blueprint
   (title := "limitOfConstant")
   (statement := /--
@@ -189,7 +185,9 @@ TODO : Move to general section
     $\sigma, \sigma'>0$, we have $a(\sigma')=a(\sigma)$, and that
     $\lim_{\sigma\to\infty}a(\sigma)=0$. Then $a(\sigma)=0$.
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /-- TODO : Move to general section -/)
+]
 lemma limitOfConstant {a : ℝ → ℂ} {σ : ℝ} (σpos : 0 < σ)
     (ha : ∀ (σ' : ℝ) (σ'' : ℝ) (_ : 0 < σ') (_ : 0 < σ''), a σ' = a σ'')
     (ha' : Tendsto a atTop (𝓝 0)) : a σ = 0 := by
@@ -201,7 +199,6 @@ lemma limitOfConstant {a : ℝ → ℂ} {σ : ℝ} (σpos : 0 < σ)
   -/
   have := eventuallyEq_of_mem (mem_atTop σ) fun σ' h ↦ ha σ' σ (σpos.trans_le h) σpos
   exact tendsto_const_nhds_iff.mp (ha'.congr' this)
-
 
 
 @[blueprint
@@ -225,7 +222,6 @@ lemma limitOfConstantLeft {a : ℝ → ℂ} {σ : ℝ} (σlt : σ ≤ -3 / 2)
   exact tendsto_const_nhds_iff.mp (ha'.congr' this)
 
 
-
 @[blueprint
   (title := "tendsto-rpow-atTop-nhds-zero-of-norm-lt-one")
   (statement := /--
@@ -241,7 +237,6 @@ lemma tendsto_rpow_atTop_nhds_zero_of_norm_lt_one {x : ℝ} (xpos : 0 < x) (x_lt
   simpa only [rpow_eq_pow, zero_mul] using this
 
 
-
 @[blueprint
   (title := "tendsto-rpow-atTop-nhds-zero-of-norm-gt-one")
   (statement := /-- Let $x>1$. Then $$\lim_{\sigma\to-\infty}x^\sigma=0.$$ -/)
@@ -254,7 +249,6 @@ lemma tendsto_rpow_atTop_nhds_zero_of_norm_gt_one {x : ℝ} (x_gt_one : 1 < x) (
     (inv_lt_one_of_one_lt₀ x_gt_one) C
   convert (h.comp tendsto_neg_atBot_atTop) using 1
   ext; simp only [this.le, inv_rpow, Function.comp_apply, rpow_neg, inv_inv]
-
 
 
 -- -- TODO: move near `Complex.cpow_neg`?
@@ -312,8 +306,6 @@ lemma isHolomorphicOn (xpos : 0 < x) : HolomorphicOn (f x) {0, -1}ᶜ := by
   · intro x hx
     obtain ⟨h0, h1⟩ := not_or.mp hx
     exact mul_ne_zero h0 <| add_ne_add_left 1 |>.mpr h1 |>.trans_eq (neg_add_cancel 1)
-
-
 
 
 lemma integral_one_div_const_add_sq_pos (c : ℝ) (hc : 0 < c) : 0 < ∫ (t : ℝ), 1 / (c + t ^ 2) := by
@@ -417,8 +409,6 @@ lemma vertIntBound (xpos : 0 < x) (σ_gt_one : 1 < σ) :
     · rw [add_right_comm, ← ofReal_one, ← ofReal_add, normSq_add_mul_I, add_le_add_iff_right]
       nlinarith
   rfl
-
-
 
 
 @[blueprint
@@ -609,9 +599,6 @@ lemma contourPull {σ' σ'' : ℝ} (xpos : 0 < x) (hσ0 : 0 ∉ [[σ', σ'']]) (
       (fun h ↦ hσ1 (h ▸ right_mem_uIcc)))
   rintro ⟨x, y⟩ ⟨hx, hy⟩ ⟨hc | hc⟩ <;> simp_all [Complex.ext_iff]
 
-blueprint_comment /--
-We are ready for the first case of the Perron formula, namely when $x<1$:
--/
 @[blueprint
   "formulaLtOne"
   (title := "formulaLtOne")
@@ -622,7 +609,11 @@ We are ready for the first case of the Perron formula, namely when $x<1$:
     \int_{(\sigma)}\frac{x^s}{s(s+1)}ds =0.
     $$
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  We are ready for the first case of the Perron formula, namely when $x<1$:
+  -/)
+]
 lemma formulaLtOne (xpos : 0 < x) (x_lt_one : x < 1) (σ_pos : 0 < σ)
     : VerticalIntegral (f x) σ = 0 := by
   /--
@@ -654,11 +645,6 @@ lemma formulaLtOne (xpos : 0 < x) (x_lt_one : x < 1) (σ_pos : 0 < σ)
   /-- So pulling contours gives $\int_{(\sigma)}=0$. -/
   exact limitOfConstant σ_pos h_contourPull VertIntTendsto
 
-blueprint_comment /--
-The second case is when $x>1$.
-Here are some auxiliary lemmata for the second case.
-TODO: Move to more general section
--/
 
 theorem HolomorphicOn.upperUIntegral_eq_zero {f : ℂ → ℂ} {σ σ' T : ℝ} (hσ : σ ≤ σ')
     (hf : HolomorphicOn f {z : ℂ | σ ≤ z.re ∧ z.re ≤ σ' ∧ T ≤ z.im})
@@ -701,7 +687,13 @@ lemma sPlusOneNeZero {s : ℂ} (s_ne_neg_one : s ≠ -1) : s + 1 ≠ 0 :=
     $$
   -/)
   (proof := /-- By ring. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  The second case is when $x>1$.
+  Here are some auxiliary lemmata for the second case.
+  TODO: Move to more general section
+  -/)
+]
 lemma keyIdentity (x : ℝ) {s : ℂ} (s_ne_zero : s ≠ 0) (s_ne_neg_one : s ≠ -1) :
     (x : ℂ) ^ s / (s * (s + 1))
       = (x : ℂ) ^ s / s - (x : ℂ) ^ s / (s + 1) := by
@@ -843,7 +835,6 @@ lemma residueAtZero (xpos : 0 < x) : ∀ᶠ (c : ℝ) in 𝓝[>] 0,
   convert g_eq_fDiff using 3 <;> simp [Square]
 
 
-
 @[blueprint
   "residueAtNegOne"
   (title := "residueAtNegOne")
@@ -957,7 +948,6 @@ lemma residuePull2 (x_gt_one : 1 < x) :
   exact hε.1
 
 
-
 @[blueprint
   "contourPull3"
   (title := "contourPull3")
@@ -991,7 +981,20 @@ lemma contourPull3 (x_gt_one : 1 < x) (σ'le : σ' ≤ -3 / 2) (σ''le : σ'' �
     \int_{(\sigma)}\frac{x^s}{s(s+1)}ds =1-1/x.
     $$
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (below := /--
+  The two together give the Perron formula. (Which doesn't need to be a separate lemma.)
+
+  For $x>0$ and $\sigma>0$, we have
+  $$
+  \frac1{2\pi i}
+  \int_{(\sigma)}\frac{x^s}{s(s+1)}ds = \begin{cases}
+  1-\frac1x & \text{ if }x>1\\
+  0 & \text{ if } x<1
+  \end{cases}.
+  $$
+  -/)
+]
 lemma formulaGtOne (x_gt_one : 1 < x) (σ_pos : 0 < σ) :
     VerticalIntegral' (fun s ↦ x^s / (s * (s + 1))) σ = 1 - 1 / x := by
   /-- Let $f(s) = x^s/(s(s+1))$. Then $f$ is holomorphic on $\C \setminus {0,-1}$. -/
@@ -1022,18 +1025,5 @@ lemma formulaGtOne (x_gt_one : 1 < x) (σ_pos : 0 < σ) :
   · ring
   · exact tendsto_zero_iff_norm_tendsto_zero.mpr AbsVertIntTendsto
 
-
-blueprint_comment /--
-The two together give the Perron formula. (Which doesn't need to be a separate lemma.)
-
-For $x>0$ and $\sigma>0$, we have
-$$
-\frac1{2\pi i}
-\int_{(\sigma)}\frac{x^s}{s(s+1)}ds = \begin{cases}
-1-\frac1x & \text{ if }x>1\\
-0 & \text{ if } x<1
-\end{cases}.
-$$
--/
 
 end Perron

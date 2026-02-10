@@ -2,10 +2,6 @@ import PrimeNumberTheoremAnd.ZetaSummary
 import PrimeNumberTheoremAnd.PrimaryDefinitions
 import PrimeNumberTheoremAnd.FioriKadiriSwidinsky
 
-blueprint_comment /--
-\section{Appendix A of BKLNW}
-In this file we record the results from Appendix A of \cite{BKLNW}.  In this appendix, the authors derive explicit estimates on the error term in the prime number theorem for the Chebyshev function $\psi$ assuming various inputs on the zeros of the Riemann zeta function, including a zero-density estimate, a classical zero-free region, and numerical verification of RH up to some height.
--/
 
 namespace BKLNW_app
 
@@ -35,7 +31,12 @@ noncomputable def Inputs.default : Inputs := {
     $$ \frac{\psi(x) - x}{x} = \sum_{|\gamma| < T} \frac{x^{\rho - 1}}{\rho} + \mathcal{O}^*\left(\frac{2(\log x)^2}{T}\right) $$ where $A = \mathcal{O}^*(B)$ means $|A| \leq B$.
   -/)
   (proof := /-- See \cite[Theorem 1.3]{Dudek}. -/)
-  (latexEnv := "sublemma")]
+  (latexEnv := "sublemma")
+  (above := /--
+  \section{Appendix A of BKLNW}
+  In this file we record the results from Appendix A of \cite{BKLNW}.  In this appendix, the authors derive explicit estimates on the error term in the prime number theorem for the Chebyshev function $\psi$ assuming various inputs on the zeros of the Riemann zeta function, including a zero-density estimate, a classical zero-free region, and numerical verification of RH up to some height.
+  -/)
+]
 theorem bklnw_eq_A_7 (x T : ℝ) (hx : x ≥ exp 1000) (hT1 : 50 < T) (hT2 : T ≤ x) : ∃ E, ((ψ x - x) / x = riemannZeta.zeroes_sum (Set.Icc 0 1) (Set.Ioo (-T) T) (fun ρ ↦ x^(ρ-1) / ρ) + E ∧ ‖E‖ ≤ 2 * (log x)^2 / T) := by sorry
 
 @[blueprint
@@ -411,13 +412,6 @@ theorem theorem_2 : ∀ b ≥ 0, ∀ x ≥ exp b,
   (latexEnv := "corollary")]
 theorem bklnw_cor_15_1' (b : ℝ) (hb1 : log 11 < b) (hb2 : b ≤ 19 * log 10) :
   ∀ x ≥ exp b, Eψ x ≤ max (0.94 / exp (b / 2)) 1.93378e-8 := by sorry
-
-
-
-
-
-
-
 
 
 end BKLNW_app

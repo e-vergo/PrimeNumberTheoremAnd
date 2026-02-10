@@ -19,11 +19,6 @@ local notation "ψ" => ChebyshevPsi
 
 --open scoped ArithmeticFunction
 
-blueprint_comment /--
-    This upstreamed from https://github.com/math-inc/strongpnt/tree/main
--/
-
-
 
 @[blueprint "cauchy_formula_deriv"
   (title := "cauchy-formula-deriv")
@@ -34,7 +29,11 @@ blueprint_comment /--
     \int_0^{2\pi}\frac{r'e^{it}\,f(r'e^{it})}{(r'e^{it}-z)^2}\,dt.$$
   -/)
   (proof := /-- This is just Cauchy's integral formula for derivatives. -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  This upstreamed from https://github.com/math-inc/strongpnt/tree/main
+  -/)
+]
 lemma cauchy_formula_deriv {f : ℂ → ℂ} {R r r' : ℝ}
     (hf_domain : ∃ U, IsOpen U ∧ Metric.closedBall 0 R ⊆ U ∧ DifferentiableOn ℂ f U)
     (r_lt_r' : r < r') (r'_lt_R : r' < R) {z : ℂ} (hz : z ∈ Metric.closedBall 0 r) :
@@ -46,7 +45,6 @@ lemma cauchy_formula_deriv {f : ℂ → ℂ} {R r r' : ℝ}
     hf_diff.mono <| Metric.ball_subset_closedBall.trans h_subset
   simp [← Complex.two_pi_I_inv_smul_circleIntegral_sub_sq_inv_smul_of_differentiable
       Metric.isOpen_ball (Metric.closedBall_subset_ball r'_lt_R) hf_on_ball hz_in_ball]
-
 
 
 @[blueprint "DerivativeBound"
@@ -137,7 +135,6 @@ lemma DerivativeBound {R M r r' : ℝ} {z : ℂ} {f : ℂ → ℂ}
             field_simp
 
 
-
 @[blueprint "BorelCaratheodoryDeriv"
   (title := "BorelCaratheodoryDeriv")
   (statement := /--
@@ -178,7 +175,6 @@ theorem BorelCaratheodoryDeriv {M R r : ℝ} {z : ℂ} {f : ℂ → ℂ}
             bound
 
 
-
 blueprint_comment /--
 \begin{theorem}[LogOfAnalyticFunction]\label{LogOfAnalyticFunction}
     Let $0 < r < R<1$. Let $B:\overline{\mathbb{D}_R}\to\mathbb{C}$ be analytic on
@@ -208,14 +204,12 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{definition}[SetOfZeros]\label{SetOfZeros}
     Let $R>0$ and $f:\overline{\mathbb{D}_R}\to\mathbb{C}$. Define the set of zeros
     $\mathcal{K}_f(R)=\{\rho\in\mathbb{C}:|\rho|\leq R,\,f(\rho)=0\}$.
 \end{definition}
 -/
-
 
 
 blueprint_comment /--
@@ -225,7 +219,6 @@ blueprint_comment /--
     as the order of the zero $\rho$ w.r.t $f$.
 \end{definition}
 -/
-
 
 
 blueprint_comment /--
@@ -252,7 +245,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{definition}[CFunction]\label{CFunction}
     Let $0 < r < R<1$, and $f:\overline{\mathbb{D}_1}\to\mathbb{C}$ be analytic on
@@ -271,7 +263,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{definition}[BlaschkeB]\label{BlaschkeB}
     Let $0 < r < R<1$, and $f:\overline{\mathbb{D}_1}\to\mathbb{C}$ be analytic on
@@ -281,7 +272,6 @@ blueprint_comment /--
       \left(R-\frac{z\overline{\rho}}{R}\right)^{m_f(\rho)}$$
 \end{definition}
 -/
-
 
 
 blueprint_comment /--
@@ -303,7 +293,6 @@ blueprint_comment /--
       =|f(0)|\prod_{\rho\in\mathcal{K}_f(r)}\left(\frac{R}{|\rho|}\right)^{m_f(\rho)}.$$
 \end{proof}
 -/
-
 
 
 blueprint_comment /--
@@ -333,7 +322,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{theorem}[ZerosBound]\label{ZerosBound}
     Let $B>1$ and $0< r < R<1$. If $f:\mathbb{C}\to\mathbb{C}$ is a function analytic on
@@ -359,7 +347,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{definition}[JBlaschke]\label{JBlaschke}
     Let $B>1$ and $0 < R<1$. If $f:\mathbb{C}\to\mathbb{C}$ is a function analytic on
@@ -368,7 +355,6 @@ blueprint_comment /--
     is from Definition \ref{BlaschkeB}.
 \end{definition}
 -/
-
 
 
 blueprint_comment /--
@@ -429,7 +415,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{theorem}[JBlaschkeDerivBound]\label{JBlaschkeDerivBound}
     Let $B>1$ and $0 < r' < r < R<1$. If $f:\mathbb{C}\to\mathbb{C}$ is a function analytic
@@ -452,7 +437,6 @@ blueprint_comment /--
     for all $|z|\leq r'$.
 \end{proof}
 -/
-
 
 
 blueprint_comment /--
@@ -498,7 +482,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{theorem}[ZetaFixedLowerBound]\label{ZetaFixedLowerBound}
     For all $t\in\mathbb{R}$ one has
@@ -518,7 +501,6 @@ blueprint_comment /--
     for all $t\in\mathbb{R}$ as desired.
 \end{proof}
 -/
-
 
 
 blueprint_comment /--
@@ -553,7 +535,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{lemma}[ZetaAltFormulaAnalytic]\label{ZetaAltFormulaAnalytic}
     We have that $\zeta_0(s)$ is analytic for all $s\in S$ where
@@ -574,7 +555,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{lemma}[ZetaExtend]\label{ZetaExtend}
     We have that
@@ -588,7 +568,6 @@ blueprint_comment /--
     This is an immediate consequence of the identity theorem.
 \end{proof}
 -/
-
 
 
 blueprint_comment /--
@@ -615,7 +594,6 @@ blueprint_comment /--
       \leq2+2\,|s|+3+2\,|it|\leq 7+2\,|t|.$$
 \end{proof}
 -/
-
 
 
 blueprint_comment /--
@@ -649,13 +627,11 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{definition}[ZeroWindows]\label{ZeroWindows}
     Let $\mathcal{Z}_t=\{\rho\in\mathbb{C}:\zeta(\rho)=0,\,|\rho-(3/2+it)|\leq 5/6\}$.
 \end{definition}
 -/
-
 
 
 blueprint_comment /--
@@ -690,7 +666,6 @@ blueprint_comment /--
       \ll\log|t|.$$
 \end{proof}
 -/
-
 
 
 blueprint_comment /--
@@ -736,7 +711,6 @@ blueprint_comment /--
     Noting that $\log|2t|=\log(2)+\log|t|\leq2\log|t|$ completes the proof.
 \end{proof}
 -/
-
 
 
 blueprint_comment /--
@@ -793,7 +767,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{lemma}[ShiftZeroBound]\label{ShiftZeroBound}
     For all $\delta\in(0,1)$ we have
@@ -812,7 +785,6 @@ blueprint_comment /--
 -/
 
 
-
 blueprint_comment /--
 \begin{lemma}[ThreeFourOneTrigIdentity]\label{ThreeFourOneTrigIdentity}
     We have that
@@ -828,7 +800,6 @@ blueprint_comment /--
     Noting that $0\leq 1+\cos\theta$ completes the proof.
 \end{proof}
 -/
-
 
 
 @[blueprint
@@ -869,7 +840,6 @@ theorem ZeroInequality : ∃ (E : ℝ) (EinIoo : E ∈ Ioo (0 : ℝ) 1),
     sorry
 
 
-
 noncomputable def E : ℝ := ZeroInequality.choose
 lemma EinIoo : E ∈ Ioo (0 : ℝ) 1 := by
     exact ZeroInequality.choose_spec.1
@@ -884,7 +854,6 @@ theorem ZeroInequalitySpecialized : ∀ (ρ : ℂ) (σ t : ℝ),
   (title := "DeltaT")
   (statement := /-- Let $\delta_t=E/\log|t|$ where $E$ is the constant coming from Theorem \ref{ZeroInequality}. -/)]
 noncomputable def DeltaT (t : ℝ) : ℝ := E / log |t|
-
 
 
 @[blueprint
@@ -907,51 +876,6 @@ lemma DeltaRange : ∀ (t : ℝ),
     |t| ≥ 2 →
         DeltaT t < (1 : ℝ) / 14 := by
     sorry
-
-
-
-blueprint_comment /--
-\begin{lemma}[SumBoundII]\label{SumBoundII}
-    For all $t\in\mathbb{R}$ with $|t|\geq 2$ and $z=\sigma+it$ where $1-\delta_t/3\leq\sigma\leq 3/2$, we have that
-    $$\left|\frac{\zeta'}{\zeta}(z)-\sum_{\rho\in\mathcal{Z}_t}\frac{m_\zeta(\rho)}{z-\rho}\right|\ll\log|t|.$$
-\end{lemma}
--/
-
-blueprint_comment /--
-\begin{proof}
-\uses{DeltaRange, LogDerivZetaFinalBound, ZeroInequality}
-    By Lemma \ref{DeltaRange} we have that
-    $$-11/21<-1/2-\delta_t/3\leq\sigma-3/2\leq0.$$
-    We apply Theorem \ref{LogDerivZetaFinalBound} where $r'=2/3$, $r=3/4$, $R'=5/6$, and $R=8/9$. Thus for all $z\in\overline{\mathbb{D}_{5/6}}\setminus\mathcal{K}_f(5/6)$ we have that
-    $$\left|\frac{\zeta'}{\zeta}(z+3/2+it)-\sum_{\rho\in\mathcal{K}_f(5/6)}\frac{m_f(\rho)}{z-\rho}\right|\ll\log|t|$$
-    where $f(z)=\zeta(z+3/2+it)$ for $t\in\mathbb{R}$ with $|t|\geq 3$. Now if we let $z=\sigma-3/2$, then $z\in(-11/21,0)\subseteq\overline{\mathbb{D}_{5/6}}$. Additionally, $f(z)=\zeta(\sigma+it)$, where $\sigma+it$ lies in the zero free region given by Lemma \ref{ZeroInequality} since $\sigma\geq 1-\delta_t/3\geq 1-\delta_t$. Thus, $z\not\in\mathcal{K}_f(5/6)$. So,
-    $$\left|\frac{\zeta'}{\zeta}(\sigma+it)-\sum_{\rho\in\mathcal{K}_f(5/6)}\frac{m_f(\rho)}{\sigma-3/2-\rho}\right|\ll\log|t|.$$
-    But now note that if $\rho\in\mathcal{K}_f(5/6)$, then $\zeta(\rho+3/2+it)=0$ and $|\rho|\leq 5/6$. Additionally, note that $m_f(\rho)=m_\zeta(\rho+3/2+it)$. So changing variables using these facts gives us that
-    $$\left|\frac{\zeta'}{\zeta}(\sigma+it)-\sum_{\rho\in\mathcal{Z}_t}\frac{m_\zeta(\rho)}{\sigma+it-\rho}\right|\ll\log|t|.$$
-\end{proof}
--/
-
-
-
-blueprint_comment /--
-\begin{lemma}[GapSize]\label{GapSize}
-   Let $t\in\mathbb{R}$ with $|t|\geq 3$ and $z=\sigma+it$ where $1-\delta_t/3\leq\sigma\leq 3/2$. Additionally, let $\rho\in\mathcal{Z}_t$. Then we have that
-   $$|z-\rho|\geq\delta_t/6.$$
-\end{lemma}
--/
-
-blueprint_comment /--
-\begin{proof}
-\uses{ZeroInequality}
-    Let $\rho=\sigma'+it'$ and note that since $\rho\in\mathcal{Z}_t$, we have $t'\in(t-5/6,t+5/6)$. Thus, if $t>1$ we have
-    $$\log|t'|\leq\log|t+5/6|\leq\log|2t|=\log 2+\log|t|\leq 2\log|t|.$$
-    And otherwise if $t<-1$ we have
-    $$\log|t'|\leq\log|t-5/6|\leq\log|2t|=\log 2+\log|t|\leq 2\log|t|.$$
-    So by taking reciprocals and multiplying through by a constant we have that $\delta_t\leq2\delta_{t'}$. Now note that since $\rho\in\mathcal{Z}_t$ we know that $\sigma'\leq 1-\delta_{t'}$ by Theorem \ref{ZeroInequality} (here we use the fact that $|t|\geq 3$ to give us that $|t'|\geq 2$). Thus,
-    $$\delta_t/6\leq\delta_{t'}-\delta_t/3=1-\delta_t/3-(1-\delta_{t'})\leq\sigma-\sigma'\leq|z-\rho|.$$
-\end{proof}
--/
-
 
 
 @[blueprint
@@ -983,7 +907,41 @@ blueprint_comment /--
   where the implied constant is taken to be bigger than $\max(6D/E,C)$. We know that the RHS is bounded above by $\ll\log^2|t|$; so the result follows.
   -/)
   (proofUses := ["ZetaFixedLowerBound", "ZerosBound", "GlobalBound", "SumBoundII", "ZeroInequality", "GapSize"])
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  \begin{lemma}[SumBoundII]\label{SumBoundII}
+      For all $t\in\mathbb{R}$ with $|t|\geq 2$ and $z=\sigma+it$ where $1-\delta_t/3\leq\sigma\leq 3/2$, we have that
+      $$\left|\frac{\zeta'}{\zeta}(z)-\sum_{\rho\in\mathcal{Z}_t}\frac{m_\zeta(\rho)}{z-\rho}\right|\ll\log|t|.$$
+  \end{lemma}
+
+  \begin{proof}
+  \uses{DeltaRange, LogDerivZetaFinalBound, ZeroInequality}
+      By Lemma \ref{DeltaRange} we have that
+      $$-11/21<-1/2-\delta_t/3\leq\sigma-3/2\leq0.$$
+      We apply Theorem \ref{LogDerivZetaFinalBound} where $r'=2/3$, $r=3/4$, $R'=5/6$, and $R=8/9$. Thus for all $z\in\overline{\mathbb{D}_{5/6}}\setminus\mathcal{K}_f(5/6)$ we have that
+      $$\left|\frac{\zeta'}{\zeta}(z+3/2+it)-\sum_{\rho\in\mathcal{K}_f(5/6)}\frac{m_f(\rho)}{z-\rho}\right|\ll\log|t|$$
+      where $f(z)=\zeta(z+3/2+it)$ for $t\in\mathbb{R}$ with $|t|\geq 3$. Now if we let $z=\sigma-3/2$, then $z\in(-11/21,0)\subseteq\overline{\mathbb{D}_{5/6}}$. Additionally, $f(z)=\zeta(\sigma+it)$, where $\sigma+it$ lies in the zero free region given by Lemma \ref{ZeroInequality} since $\sigma\geq 1-\delta_t/3\geq 1-\delta_t$. Thus, $z\not\in\mathcal{K}_f(5/6)$. So,
+      $$\left|\frac{\zeta'}{\zeta}(\sigma+it)-\sum_{\rho\in\mathcal{K}_f(5/6)}\frac{m_f(\rho)}{\sigma-3/2-\rho}\right|\ll\log|t|.$$
+      But now note that if $\rho\in\mathcal{K}_f(5/6)$, then $\zeta(\rho+3/2+it)=0$ and $|\rho|\leq 5/6$. Additionally, note that $m_f(\rho)=m_\zeta(\rho+3/2+it)$. So changing variables using these facts gives us that
+      $$\left|\frac{\zeta'}{\zeta}(\sigma+it)-\sum_{\rho\in\mathcal{Z}_t}\frac{m_\zeta(\rho)}{\sigma+it-\rho}\right|\ll\log|t|.$$
+  \end{proof}
+
+  \begin{lemma}[GapSize]\label{GapSize}
+     Let $t\in\mathbb{R}$ with $|t|\geq 3$ and $z=\sigma+it$ where $1-\delta_t/3\leq\sigma\leq 3/2$. Additionally, let $\rho\in\mathcal{Z}_t$. Then we have that
+     $$|z-\rho|\geq\delta_t/6.$$
+  \end{lemma}
+
+  \begin{proof}
+  \uses{ZeroInequality}
+      Let $\rho=\sigma'+it'$ and note that since $\rho\in\mathcal{Z}_t$, we have $t'\in(t-5/6,t+5/6)$. Thus, if $t>1$ we have
+      $$\log|t'|\leq\log|t+5/6|\leq\log|2t|=\log 2+\log|t|\leq 2\log|t|.$$
+      And otherwise if $t<-1$ we have
+      $$\log|t'|\leq\log|t-5/6|\leq\log|2t|=\log 2+\log|t|\leq 2\log|t|.$$
+      So by taking reciprocals and multiplying through by a constant we have that $\delta_t\leq2\delta_{t'}$. Now note that since $\rho\in\mathcal{Z}_t$ we know that $\sigma'\leq 1-\delta_{t'}$ by Theorem \ref{ZeroInequality} (here we use the fact that $|t|\geq 3$ to give us that $|t'|\geq 2$). Thus,
+      $$\delta_t/6\leq\delta_{t'}-\delta_t/3=1-\delta_t/3-(1-\delta_{t'})\leq\sigma-\sigma'\leq|z-\rho|.$$
+  \end{proof}
+  -/)
+]
 lemma LogDerivZetaUniformLogSquaredBoundStrip : ∃ (F : ℝ) (Fequ : F = E / 3) (C : ℝ) (Cnonneg : 0 ≤ C),
     ∀ (σ t : ℝ),
     3 ≤ |t| →
@@ -994,7 +952,6 @@ lemma LogDerivZetaUniformLogSquaredBoundStrip : ∃ (F : ℝ) (Fequ : F = E / 3)
     constructor
     ·   rfl
     ·   sorry
-
 
 
 noncomputable def F : ℝ := LogDerivZetaUniformLogSquaredBoundStrip.choose
@@ -1012,7 +969,6 @@ lemma FLogTtoDeltaT : ∀ (t : ℝ),
     rw [Fequ]
     ring_nf
     exact fun t ↦ trivial
-
 
 
 @[blueprint
@@ -1039,7 +995,6 @@ theorem LogDerivZetaUniformLogSquaredBound : ∃ (C : ℝ) (Cnonneg : 0 ≤ C),
     sorry
 
 
-
 @[blueprint
   (title := "LogDerivZetaLogSquaredBoundSmallt")
   (statement := /--
@@ -1064,32 +1019,28 @@ theorem LogDerivZetaLogSquaredBoundSmallt : ∃ (C : ℝ) (Cnonneg : C ≥ 0),
     sorry
 
 
-
-blueprint_comment /--
-From here out we closely follow our previous proof of the Medium PNT and we modify it using our new estimate in Theorem \ref{LogDerivZetaUniformLogSquaredBound}. Recall Definition \ref{SmoothedChebyshev}; for fixed $\varepsilon>0$ and a bump function $\nu$ supported on $[1/2,2]$ we have
-$$\psi_\varepsilon(X)=\frac{1}{2\pi i}\int_{(\sigma)}\left(-\frac{\zeta'}{\zeta}(s)\right)\,\mathcal{M}(\tilde{1}_\varepsilon)(s)\,X^s\,ds$$
-where $\sigma=1+1/\log X$. Let $T>3$ be a large constant to be chosen later, and we take $\sigma'=1-\delta_T/3=1-F/\log T$ with $F$ coming from Theorem \ref{LogDerivZetaUniformLogSquaredBound}. We integrate along the $\sigma$ vertical line, and we pull contours  accumulating the pole at $s=1$ when we integrate along the curves
-\begin{itemize}
-    \item $I_1$: $\sigma-i\infty$ to $\sigma-iT$
-    \item $I_2$: $\sigma'-iT$ to $\sigma-iT$
-    \item $I_3$: $\sigma'-iT$ to $\sigma'+iT$
-    \item $I_4$: $\sigma'+iT$ to $\sigma+iT$
-    \item $I_5$: $\sigma+iT$ to $\sigma+i\infty$.
-\end{itemize}
--/
-
-
-
 @[blueprint
   (title := "I1New")
   (statement := /--
   Let
     $$I_1(\nu,\varepsilon,X,T)=\frac{1}{2\pi i}\int_{-\infty}^{-T}\left(-\frac{\zeta'}{\zeta}(\sigma+it)\right)\,\mathcal{M}(\tilde{1}_\varepsilon)(\sigma+it)\,X^{\sigma+it}\,dt.$$
-  -/)]
+  -/)
+  (above := /--
+  From here out we closely follow our previous proof of the Medium PNT and we modify it using our new estimate in Theorem \ref{LogDerivZetaUniformLogSquaredBound}. Recall Definition \ref{SmoothedChebyshev}; for fixed $\varepsilon>0$ and a bump function $\nu$ supported on $[1/2,2]$ we have
+  $$\psi_\varepsilon(X)=\frac{1}{2\pi i}\int_{(\sigma)}\left(-\frac{\zeta'}{\zeta}(s)\right)\,\mathcal{M}(\tilde{1}_\varepsilon)(s)\,X^s\,ds$$
+  where $\sigma=1+1/\log X$. Let $T>3$ be a large constant to be chosen later, and we take $\sigma'=1-\delta_T/3=1-F/\log T$ with $F$ coming from Theorem \ref{LogDerivZetaUniformLogSquaredBound}. We integrate along the $\sigma$ vertical line, and we pull contours  accumulating the pole at $s=1$ when we integrate along the curves
+  \begin{itemize}
+      \item $I_1$: $\sigma-i\infty$ to $\sigma-iT$
+      \item $I_2$: $\sigma'-iT$ to $\sigma-iT$
+      \item $I_3$: $\sigma'-iT$ to $\sigma'+iT$
+      \item $I_4$: $\sigma'+iT$ to $\sigma+iT$
+      \item $I_5$: $\sigma+iT$ to $\sigma+i\infty$.
+  \end{itemize}
+  -/)
+]
 noncomputable def I1New (SmoothingF : ℝ → ℝ) (ε X T : ℝ) : ℂ :=
   (1 / (2 * π * I)) * (I * (∫ t : ℝ in Iic (-T),
       SmoothedChebyshevIntegrand SmoothingF ε X ((1 + (Real.log X)⁻¹) + t * I)))
-
 
 
 @[blueprint
@@ -1101,7 +1052,6 @@ noncomputable def I1New (SmoothingF : ℝ → ℝ) (ε X T : ℝ) : ℂ :=
 noncomputable def I5New (SmoothingF : ℝ → ℝ) (ε X T : ℝ) : ℂ :=
   (1 / (2 * π * I)) * (I * (∫ t : ℝ in Ici T,
       SmoothedChebyshevIntegrand SmoothingF ε X ((1 + (Real.log X)⁻¹) + t * I)))
-
 
 
 @[blueprint
@@ -1125,7 +1075,6 @@ lemma I1NewBound {SmoothingF : ℝ → ℝ}
     ∀ {ε X T : ℝ} (εinIoo : ε ∈ Ioo 0 1) (Xgt3 : 3 < X) (Tgt3 : 3 < T),
     ‖I1New SmoothingF ε X T‖ ≤ C * (X / (ε * Real.sqrt T)) := by
     sorry
-
 
 
 @[blueprint
@@ -1166,7 +1115,6 @@ lemma I5NewBound {SmoothingF : ℝ → ℝ}
     exact hI1NewBound εinIoo Xgt3 Tgt3
 
 
-
 @[blueprint
   (title := "I2New")
   (statement := /--
@@ -1178,7 +1126,6 @@ noncomputable def I2New (SmoothingF : ℝ → ℝ) (ε T X σ' : ℝ) : ℂ :=
     SmoothedChebyshevIntegrand SmoothingF ε X (σ₀ - T * I)))
 
 
-
 @[blueprint
   (title := "I4New")
   (statement := /--
@@ -1188,7 +1135,6 @@ noncomputable def I2New (SmoothingF : ℝ → ℝ) (ε T X σ' : ℝ) : ℂ :=
 noncomputable def I4New (SmoothingF : ℝ → ℝ) (ε T X σ' : ℝ) : ℂ :=
   (1 / (2 * π * I)) * ((∫ σ₀ in σ'..(1 + (Real.log X)⁻¹),
     SmoothedChebyshevIntegrand SmoothingF ε X (σ₀ + T * I)))
-
 
 
 @[blueprint
@@ -1215,7 +1161,6 @@ lemma I2NewBound {SmoothingF : ℝ → ℝ}
     let σ' := 1 - F / Real.log T
     ‖I2New SmoothingF ε X T σ'‖ ≤ C * (X / (ε * Real.sqrt T)) := by
     sorry
-
 
 
 @[blueprint
@@ -1255,7 +1200,6 @@ lemma I4NewBound {SmoothingF : ℝ → ℝ}
     exact hI2NewBound εinIoo Xgt3 Tgt3
 
 
-
 @[blueprint
   (title := "I3New")
   (statement := /--
@@ -1265,7 +1209,6 @@ lemma I4NewBound {SmoothingF : ℝ → ℝ}
 noncomputable def I3New (SmoothingF : ℝ → ℝ) (ε T X σ' : ℝ) : ℂ :=
   (1 / (2 * π * I)) * (I * (∫ t in (-T)..T,
     SmoothedChebyshevIntegrand SmoothingF ε X (σ' + t * I)))
-
 
 
 @[blueprint
@@ -1296,14 +1239,37 @@ lemma I3NewBound {SmoothingF : ℝ → ℝ}
     sorry
 
 
-
 @[blueprint
   (title := "SmoothedChebyshevPull3")
   (statement := /--
   We have that
     $$\psi_\varepsilon(X)=\mathcal{M}(\tilde{1}_\varepsilon)(1)\,X^1+I_1-I_2+I_3+I_4+I_5.$$
   -/)
-  (proof := /-- Pull contours and accumulate the pole of $\zeta'/\zeta$ at $s=1$. -/)]
+  (proof := /-- Pull contours and accumulate the pole of $\zeta'/\zeta$ at $s=1$. -/)
+  (below := /--
+  \begin{theorem}[StrongPNT]\label{StrongPNT}
+      We have
+      $$\sum_{n\leq x}\Lambda(n)=x+O\left(x\exp(-c\sqrt{\log x})\right).$$
+  \end{theorem}
+
+  \begin{proof}
+  \uses{SmoothedChebyshevClose, SmoothedChebyshevPull3, MellinOfSmooth1c, I1NewBound, I2NewBound, I3NewBound, I4NewBound, I5NewBound}
+      By Theorem \ref{SmoothedChebyshevClose} and \ref{SmoothedChebyshevPull3} we have that
+      $$\mathcal{M}(\tilde{1}_\varepsilon)(1)\,x^1+I_1-I_2+I_3+I_4+I_5=\psi(x)+O(\varepsilon x\log x).$$
+      Applying Theorem \ref{MellinOfSmooth1c} and Lemmas \ref{I1NewBound}, \ref{I2NewBound}, \ref{I3NewBound}, \ref{I4NewBound}, and \ref{I5NewBound} we have that
+      $$\psi(x)=x+O(\varepsilon x)+O(\varepsilon x\log x)+O\left(\frac{x}{\varepsilon\sqrt{T}}\right)+O\left(\frac{x^{1-F/\log T}\sqrt{T}}{\varepsilon}\right).$$
+      We absorb the $O(\varepsilon x)$ term into the $O(\varepsilon x\log x)$ term and balance the last two terms in $T$.
+      $$\frac{x}{\varepsilon\sqrt{T}}=\frac{x^{1-F/\log T}\sqrt{T}}{\varepsilon}\implies T=\exp(\sqrt{F\log x}).$$
+      Thus,
+      $$\psi(x)=x+O(\varepsilon x\log x)+O\left(\frac{x}{\displaystyle\varepsilon\exp((1/2)\cdot\sqrt{F\log x})}\right).$$
+      Now we balance the last two terms in $\varepsilon$.
+      $$\varepsilon x\log x=\frac{x}{\displaystyle\varepsilon\exp((1/2)\cdot\sqrt{F\log x})}\implies\varepsilon\log x=\frac{\displaystyle\sqrt{\log x}}{\displaystyle\exp((1/4)\cdot\sqrt{F\log x})}.$$
+      Thus,
+      $$\psi(x)=x+O\left(x\exp(-(\sqrt{F}/4)\cdot\sqrt{\log x})\sqrt{\log x}\right).$$
+      Absorbing the $\displaystyle\sqrt{\log x}$ into the $\displaystyle\exp(-(\sqrt{F}/4)\cdot\sqrt{\log x})$ completes the proof.
+  \end{proof}
+  -/)
+]
 theorem SmoothedChebyshevPull3 {SmoothingF : ℝ → ℝ} {ε : ℝ} (ε_pos : 0 < ε)
     (ε_lt_one : ε < 1)
     (X : ℝ) (X_gt : 3 < X)
@@ -1470,33 +1436,6 @@ theorem SmoothedChebyshevPull3 {SmoothingF : ℝ → ℝ} {ε : ℝ} (ε_pos : 0
             simp [f, g]
             ring
 
-
-
-blueprint_comment /--
-\begin{theorem}[StrongPNT]\label{StrongPNT}
-    We have
-    $$\sum_{n\leq x}\Lambda(n)=x+O\left(x\exp(-c\sqrt{\log x})\right).$$
-\end{theorem}
--/
-
-blueprint_comment /--
-\begin{proof}
-\uses{SmoothedChebyshevClose, SmoothedChebyshevPull3, MellinOfSmooth1c, I1NewBound, I2NewBound, I3NewBound, I4NewBound, I5NewBound}
-    By Theorem \ref{SmoothedChebyshevClose} and \ref{SmoothedChebyshevPull3} we have that
-    $$\mathcal{M}(\tilde{1}_\varepsilon)(1)\,x^1+I_1-I_2+I_3+I_4+I_5=\psi(x)+O(\varepsilon x\log x).$$
-    Applying Theorem \ref{MellinOfSmooth1c} and Lemmas \ref{I1NewBound}, \ref{I2NewBound}, \ref{I3NewBound}, \ref{I4NewBound}, and \ref{I5NewBound} we have that
-    $$\psi(x)=x+O(\varepsilon x)+O(\varepsilon x\log x)+O\left(\frac{x}{\varepsilon\sqrt{T}}\right)+O\left(\frac{x^{1-F/\log T}\sqrt{T}}{\varepsilon}\right).$$
-    We absorb the $O(\varepsilon x)$ term into the $O(\varepsilon x\log x)$ term and balance the last two terms in $T$.
-    $$\frac{x}{\varepsilon\sqrt{T}}=\frac{x^{1-F/\log T}\sqrt{T}}{\varepsilon}\implies T=\exp(\sqrt{F\log x}).$$
-    Thus,
-    $$\psi(x)=x+O(\varepsilon x\log x)+O\left(\frac{x}{\displaystyle\varepsilon\exp((1/2)\cdot\sqrt{F\log x})}\right).$$
-    Now we balance the last two terms in $\varepsilon$.
-    $$\varepsilon x\log x=\frac{x}{\displaystyle\varepsilon\exp((1/2)\cdot\sqrt{F\log x})}\implies\varepsilon\log x=\frac{\displaystyle\sqrt{\log x}}{\displaystyle\exp((1/4)\cdot\sqrt{F\log x})}.$$
-    Thus,
-    $$\psi(x)=x+O\left(x\exp(-(\sqrt{F}/4)\cdot\sqrt{\log x})\sqrt{\log x}\right).$$
-    Absorbing the $\displaystyle\sqrt{\log x}$ into the $\displaystyle\exp(-(\sqrt{F}/4)\cdot\sqrt{\log x})$ completes the proof.
-\end{proof}
--/
 
 -- *** Prime Number Theorem *** The `ChebyshevPsi` function is asymptotic to `x`.
 -- theorem PrimeNumberTheorem : ∃ (c : ℝ) (hc : c > 0),

@@ -5,14 +5,6 @@ import Mathlib.NumberTheory.PrimeCounting
 import PrimeNumberTheoremAnd.PrimaryDefinitions
 
 
-blueprint_comment /--
-\section{Definitions}
--/
-
-blueprint_comment /--
-In this section we define the basic types of secondary estimates we will work with in the project.
--/
-
 open Real Finset
 
 /- Standard arithmetic functions. TODO: align this with notation used elsewhere in PNT+ -/
@@ -20,7 +12,13 @@ open Real Finset
 @[blueprint
   "pi-def"
   (title := "pi")
-  (statement := /-- $\pi(x)$ is the number of primes less than or equal to $x$. -/)]
+  (statement := /-- $\pi(x)$ is the number of primes less than or equal to $x$. -/)
+  (above := /--
+  \section{Definitions}
+
+  In this section we define the basic types of secondary estimates we will work with in the project.
+  -/)
+]
 noncomputable def pi (x : ℝ) : ℝ :=  Nat.primeCounting ⌊x⌋₊
 
 open Topology

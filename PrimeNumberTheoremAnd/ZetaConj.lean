@@ -4,9 +4,6 @@ import Mathlib.NumberTheory.Harmonic.ZetaAsymp
 
 open scoped Complex ComplexConjugate
 
-blueprint_comment /--
-Already on Mathlib (with a shortened proof):
--/
 @[blueprint
   (title := "hasDerivAt-conj-conj")
   (statement := /--
@@ -14,7 +11,9 @@ Already on Mathlib (with a shortened proof):
       with derivative $a$. Then the function $g(z) = \overline{f(\overline{z})}$ is complex
       differentiable at $\overline{p}$ with derivative $\overline{a}$.
   -/)
-  (proof := /-- We expand the definition of the derivative and compute. -/)]
+  (proof := /-- We expand the definition of the derivative and compute. -/)
+  (above := /-- Already on Mathlib (with a shortened proof): -/)
+]
 theorem hasDerivAt_conj_conj {f : ℂ → ℂ} {p a : ℂ} (hf : HasDerivAt f a p) :
     HasDerivAt (fun z ↦ conj (f (conj z))) (conj a) (conj p) := by
   rw [hasDerivAt_iff_tendsto] at hf ⊢
@@ -30,9 +29,6 @@ theorem hasDerivAt_conj_conj {f : ℂ → ℂ} {p a : ℂ} (hf : HasDerivAt f a 
   · rw [← Complex.norm_conj]
     simp
 
-blueprint_comment /--
-Submitted to Mathlib:
--/
 @[blueprint
   (title := "deriv-conj-conj")
   (statement := /--
@@ -44,7 +40,9 @@ Submitted to Mathlib:
     We proceed by case analysis on whether $f$ is differentiable at $p$. If $f$ is differentiable
     at $p$, then we can apply the previous theorem. If $f$ is not differentiable at $p$, then
     neither is $g$, and both derivatives have the default value of zero.
-  -/)]
+  -/)
+  (above := /-- Submitted to Mathlib: -/)
+]
 theorem deriv_conj_conj (f : ℂ → ℂ) (p : ℂ) :
     deriv (fun z ↦ conj (f (conj z))) (conj p) = conj (deriv f p) := by
   -- Case analysis on whether f is differentiable at p
@@ -88,9 +86,6 @@ lemma conj_riemannZeta_conj_aux1 (s : ℂ) (hs : 1 < s.re) :
   rw [Complex.conj_ofReal]
 
 
-blueprint_comment /--
-% TODO: Submit this and the following corollaries to Mathlib.
--/
 @[blueprint
   (title := "conj-riemannZeta-conj")
   (statement := /--
@@ -101,7 +96,11 @@ blueprint_comment /--
     By the previous lemma, the two sides are equal on the half-plane
     $\{s \in \mathbb{C} : \Re(s) > 1\}$. Then, by analytic continuation, they are equal on the
     whole complex plane.
-  -/)]
+  -/)
+  (above := /--
+  % TODO: Submit this and the following corollaries to Mathlib.
+  -/)
+]
 theorem conj_riemannZeta_conj (s : ℂ) : conj (riemannZeta (conj s)) = riemannZeta s := by
   by_cases hs1 : s = 1
   · subst hs1
@@ -145,7 +144,6 @@ theorem conj_riemannZeta_conj (s : ℂ) : conj (riemannZeta (conj s)) = riemannZ
       simp
 
 
-
 @[blueprint
   (title := "riemannZeta-conj")
   (statement := /--
@@ -157,8 +155,6 @@ theorem conj_riemannZeta_conj (s : ℂ) : conj (riemannZeta (conj s)) = riemannZ
   -/)]
 theorem riemannZeta_conj (s : ℂ) : riemannZeta (conj s) = conj (riemannZeta s) := by
   rw [← conj_riemannZeta_conj, Complex.conj_conj]
-
-
 
 
 @[blueprint
@@ -176,7 +172,6 @@ theorem deriv_riemannZeta_conj (s : ℂ) :
   simp [← deriv_conj_conj, conj_riemannZeta_conj]
 
 
-
 theorem logDerivZeta_conj (s : ℂ) :
     (deriv riemannZeta / riemannZeta) (conj s) = conj ((deriv riemannZeta / riemannZeta) s) := by
   simp [deriv_riemannZeta_conj, riemannZeta_conj]
@@ -185,9 +180,6 @@ theorem logDerivZeta_conj' (s : ℂ) :
     (logDeriv riemannZeta) (conj s) = conj (logDeriv riemannZeta s) := logDerivZeta_conj s
 
 
-blueprint_comment /--
-% TODO: Submit this to Mathlib.
--/
 @[blueprint
   (title := "intervalIntegral-conj")
   (statement := /--
@@ -198,7 +190,9 @@ blueprint_comment /--
   (proof := /--
     We unfold the interval integral into an integral over a uIoc and use the conjugation property
     of integrals.
-  -/)]
+  -/)
+  (above := /-- % TODO: Submit this to Mathlib. -/)
+]
 theorem intervalIntegral_conj {f : ℝ → ℂ} {a b : ℝ} :
     ∫ (x : ℝ) in a..b, conj (f x) = conj (∫ (x : ℝ) in a..b, f x) := by
   rw [intervalIntegral.intervalIntegral_eq_integral_uIoc, integral_conj]

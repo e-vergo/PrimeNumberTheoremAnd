@@ -3,12 +3,6 @@ import PrimeNumberTheoremAnd.SecondaryDefinitions
 import PrimeNumberTheoremAnd.CostaPereira
 import PrimeNumberTheoremAnd.BKLNW_app
 
-blueprint_comment /--
-\section{Tools from BKLNW}
-In this file we record the results from \cite{BKLNW}, excluding Appendix A which is treated elsewhere.
-
-NOTE: the current ordering of results in this section needs to be refactored.  This section should be considered as a work in progress.
--/
 
 open Real Chebyshev
 
@@ -32,7 +26,14 @@ lemma Inputs.epsilon_nonneg (I : Inputs) {b : ℝ} (hb : 0 ≤ b) : 0 ≤ I.ε b
   "bklnw-cor-2-1"
   (title := "BKLNW Corollary 2.1")
   (statement := /-- $\theta(x) \leq (1 + 1.93378 \times 10^{-8}) x$. -/)
-  (latexEnv := "corollary")]
+  (latexEnv := "corollary")
+  (above := /--
+  \section{Tools from BKLNW}
+  In this file we record the results from \cite{BKLNW}, excluding Appendix A which is treated elsewhere.
+
+  NOTE: the current ordering of results in this section needs to be refactored.  This section should be considered as a work in progress.
+  -/)
+]
 theorem cor_2_1 : ∀ x > 0, θ x ≤ (1 + 1.93378e-8) * x := by sorry
 
 @[blueprint

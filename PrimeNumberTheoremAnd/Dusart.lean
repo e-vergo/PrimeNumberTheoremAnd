@@ -1,11 +1,6 @@
 import Dress
 import PrimeNumberTheoremAnd.RosserSchoenfeldPrime
 
-blueprint_comment /--
-\section{Dusart's explicit estimates for primes}
-
-In this section we record the estimates of Dusart \cite{Dusart2018} on explicit estimates for sums over primes.
--/
 
 namespace Dusart
 
@@ -61,7 +56,13 @@ def Table1 : List (ℝ × ℝ × ℕ × ℝ × ℝ × ℝ) := [
 @[blueprint "Dusart_prop_3_2"
   (title := "Dusart Proposition 3.2")
   (statement := /-- For $x \geq e^{b}$ we have $\psi(x) - x| \leq \varepsilon$, where $b, \varepsilon$ are given by \cite[Table 1]{Dusart2018}. -/)
-  (latexEnv := "proposition")]
+  (latexEnv := "proposition")
+  (above := /--
+  \section{Dusart's explicit estimates for primes}
+
+  In this section we record the estimates of Dusart \cite{Dusart2018} on explicit estimates for sums over primes.
+  -/)
+]
 theorem proposition_3_2 {b σ₀ : ℝ} {m : ℕ} {δ T₁ ε : ℝ} (h : (b, σ₀, m, δ, T₁, ε) ∈ Table1)
 {x : ℝ} (hx : x ≥ exp b) : Eψ x ≤ ε := by sorry
 

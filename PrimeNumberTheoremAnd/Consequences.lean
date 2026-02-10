@@ -911,10 +911,6 @@ theorem pi_alt' :
   all_goals ring
 
 
-blueprint_comment /--
-Let $p_n$ denote the $n^{th}$ prime.
--/
-
 noncomputable abbrev nth_prime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
 lemma pi_nth_prime (n : ℕ) :
@@ -975,7 +971,9 @@ lemma nth_prime_asymp : (fun n ↦ ((nth_prime n) : ℝ)) ~[atTop] (fun n ↦ n 
     Taking logs gives $\log n \sim \log p_n - \log\log p_n \sim \log p_n$.
     Multiplying these gives $p_n\sim n\log n$ from which the result follows.
   -/)
-  (latexEnv := "proposition")]
+  (latexEnv := "proposition")
+  (above := /-- Let $p_n$ denote the $n^{th}$ prime. -/)
+]
 theorem pn_asymptotic : ∃ c : ℕ → ℝ, c =o[atTop] (fun _ ↦ (1 : ℝ)) ∧
     ∀ n : ℕ, n > 1 → Nat.nth Nat.Prime n = (1 + c n) * n * log n := by
   let c : ℕ → ℝ := fun n ↦ (Nat.nth Nat.Prime n) / (n * log n) - 1
@@ -1174,7 +1172,6 @@ theorem pn_pn_plus_one : ∃ c : ℕ → ℝ, c =o[atTop] (fun _ ↦ (1 : ℝ)) 
     have nth_nonzero: Nat.nth Nat.Prime n ≠ 0 := by
       exact Nat.Prime.ne_zero (prime_nth_prime n)
     simp [nth_nonzero]
-
 
 
 lemma prime_in_gap' (a b : ℕ) (h : a.primeCounting < b.primeCounting)
@@ -1649,7 +1646,6 @@ theorem sum_mobius_div_self_le (N : ℕ) : |∑ n ∈ range N, μ n / (n : ℚ)|
   constructor
   <;> simp only [le_div_iff₀, div_le_iff₀, cast_pos.mpr hN]
   <;> linarith [h_bound.left]
-
 
 
 lemma sum_mobius_mul_floor (x : ℝ) (hx : 1 ≤ x) :
@@ -2374,7 +2370,6 @@ lemma sum_mobius_div_approx (x : ℝ) (K : ℕ) (hK : 0 < K) (hx : 1 ≤ x) :
     cases abs_cases (x * ∑ n ∈ Finset.Icc 1 ⌊x / (K : ℝ) ⌋₊, (μ n : ℝ) / n - 1) <;> cases abs_cases (∑ n ∈ Finset.Ioc ⌊x / (K : ℝ) ⌋₊ ⌊x⌋₊, (μ n : ℝ) * ⌊x / (n : ℝ) ⌋) <;> linarith [abs_le.mp h_bound, Nat.floor_le (show 0 ≤ x / (K : ℝ) by positivity), Nat.lt_floor_add_one (x / (K : ℝ))]
 
 
-
 @[blueprint
   "mu-pnt-alt"
   (title := "Alternate M\\\"obius form of prime number theorem")
@@ -2436,10 +2431,6 @@ theorem mu_pnt_alt : (fun x : ℝ ↦ ∑ n ∈ range ⌊x⌋₊, (μ n : ℝ) /
   simpa [Finset.sum_range_succ] using h_sum_zero.sub (show Filter.Tendsto (fun x : ℝ => (μ ⌊x⌋₊ : ℝ) / ⌊x⌋₊) Filter.atTop (nhds 0) from tendsto_zero_iff_norm_tendsto_zero.mpr <| squeeze_zero (fun _ => by positivity) (fun x => by simpa using div_le_div_of_nonneg_right (show |(μ ⌊x⌋₊ : ℝ)| ≤ 1 from mod_cast by { unfold ArithmeticFunction.moebius; aesop }) <| Nat.cast_nonneg _) <| tendsto_inv_atTop_zero.comp <| tendsto_natCast_atTop_atTop.comp <| tendsto_nat_floor_atTop)
 
 
-blueprint_comment /--
-\section{Consequences of the PNT in arithmetic progressions}
--/
-
 @[blueprint
   (title := "Prime number theorem in AP")
   (statement := /--
@@ -2450,7 +2441,11 @@ blueprint_comment /--
   This is a routine modification of the proof of Theorem \ref{chebyshev_asymptotic}.
   -/)
   (proofUses := ["chebyshev_asymptotic"])
-  (latexEnv := "theorem")]
+  (latexEnv := "theorem")
+  (above := /--
+  \section{Consequences of the PNT in arithmetic progressions}
+  -/)
+]
 theorem chebyshev_asymptotic_pnt
     {q : ℕ} {a : ℕ} (hq : q ≥ 1) (ha : a.Coprime q) (ha' : a < q) :
     (fun x ↦ ∑ p ∈ filter Nat.Prime (Iic ⌊x⌋₊), if p % q = a then log p else 0) ~[atTop]
@@ -2525,7 +2520,19 @@ theorem chebyshev_asymptotic_pnt
   would be bounded in $x$, contradicting Theorem \ref{chebyshev_asymptotic_pnt}.
   -/)
   (proofUses := ["chebyshev_asymptotic_pnt"])
-  (latexEnv := "corollary")]
+  (latexEnv := "corollary")
+  (below := /--
+  \section{Consequences of the Chebotarev density theorem}
+
+  \begin{lemma}[Cyclotomic Chebotarev]\label{Chebotarev-cyclic}  For any $a$ coprime to $m$,
+  $$ \sum_{N \mathfrak{p} \leq x; N \mathfrak{p} = a\ (m)} \log N \mathfrak{p}  =
+  \frac{1}{|G|} \sum_{N \mathfrak{p} \leq x} \log N \mathfrak{p}.$$
+  \end{lemma}
+
+  \begin{proof}\uses{Dedekind-PNT, WeakPNT-AP} This should follow from Lemma \ref{Dedekind-PNT} by a Fourier expansion.
+  \end{proof}
+  -/)
+]
 theorem dirichlet_thm {q : ℕ} {a : ℕ} (hq : q ≥ 1) (ha : Nat.Coprime a q) (ha' : a < q) :
     Infinite { p // p.Prime ∧ p % q = a } := by
   have : {p | p.Prime ∧ p % q = a}.Infinite := by
@@ -2539,19 +2546,4 @@ theorem dirichlet_thm {q : ℕ} {a : ℕ} (hq : q ≥ 1) (ha : Nat.Coprime a q) 
     exact this.mono fun p hp ↦ ⟨hp.1, by simpa [ModEq, mod_eq_of_lt ha'] using hp.2⟩
   exact Set.infinite_coe_iff.mpr this
 
-blueprint_comment /--
-\section{Consequences of the Chebotarev density theorem}
 
--/
-
-blueprint_comment /--
-\begin{lemma}[Cyclotomic Chebotarev]\label{Chebotarev-cyclic}  For any $a$ coprime to $m$,
-$$ \sum_{N \mathfrak{p} \leq x; N \mathfrak{p} = a\ (m)} \log N \mathfrak{p}  =
-\frac{1}{|G|} \sum_{N \mathfrak{p} \leq x} \log N \mathfrak{p}.$$
-\end{lemma}
--/
-
-blueprint_comment /--
-\begin{proof}\uses{Dedekind-PNT, WeakPNT-AP} This should follow from Lemma \ref{Dedekind-PNT} by a Fourier expansion.
-\end{proof}
--/

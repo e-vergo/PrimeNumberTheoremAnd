@@ -2,13 +2,6 @@ import Dress
 import Mathlib.MeasureTheory.Measure.Stieltjes
 import PrimeNumberTheoremAnd.SecondaryDefinitions
 
-blueprint_comment /--
-\section{The prime number bounds of Rosser and Schoenfeld}
--/
-
-blueprint_comment /--
-In this section we formalize the prime number bounds of Rosser and Schoenfeld \cite{rs-prime}.
--/
 
 namespace RS_prime
 
@@ -26,7 +19,13 @@ lemma Chebyshev.theta_pos {y : ℝ} (hy : 2 ≤ y) : 0 < θ y := by
   (statement := /-- $\vartheta(x) = x + O( x / \log^2 x)$. -/)
   (proof := /-- This in principle follows by establishing an analogue of Theorem \ref{chebyshev-asymptotic}, using mediumPNT in place of weakPNT. -/)
   (latexEnv := "theorem")
-  (discussion := 597)]
+  (discussion := 597)
+  (above := /--
+  \section{The prime number bounds of Rosser and Schoenfeld}
+
+  In this section we formalize the prime number bounds of Rosser and Schoenfeld \cite{rs-prime}.
+  -/)
+]
 theorem pnt : ∃ C ≥ 0, ∀ x ≥ 2, |θ x - x| ≤ C * x / log x ^ 2 := by sorry
 
 @[blueprint

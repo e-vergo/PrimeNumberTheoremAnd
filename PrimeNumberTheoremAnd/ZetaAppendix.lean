@@ -9,44 +9,6 @@ import Mathlib.Data.Int.Star
 import Mathlib.Data.Real.StarOrdered
 import PrimeNumberTheoremAnd.ZetaBounds
 
-blueprint_comment /--
-\section{Approximating the Riemann zeta function}
--/
-
-blueprint_comment /--
-We want a good explicit estimate on
-$$\sum_{n\leq a} \frac{1}{n^s} - \int_0^{a} \frac{du}{u^s},$$
-for $a$ a half-integer. As it turns out, this is the same problem as that of approximating
-$\zeta(s)$ by a sum $\sum_{n\leq a} n^{-s}$. This is one of the two\footnote{The other one is
-the approximate functional equation.} main, standard ways of approximating $\zeta(s)$.
-
-The non-explicit version of the result was first proved in
-\cite[Lemmas 1 and 2]{zbMATH02601353}. The proof there uses first-order Euler-Maclaurin
-combined with a decomposition of $\lfloor x\rfloor - x +1/2$ that turns out to be equivalent
-to Poisson summation.
-The exposition in \cite[\S 4.7--4.11]{MR882550} uses first-order Euler-Maclaurin and
-van de Corput's Process B; the main idea of the latter is Poisson summation.
-
-There are already several explicit versions of the result in the literature.
-In \cite{MR1687658}, \cite{MR3105334} and \cite{MR4114203}, what we have is successively
-sharper explicit versions of Hardy and Littlewood's original proof.
-The proof in \cite[Lemma 2.10]{zbMATH07557592} proceeds simply by a careful estimation of
-the terms in high-order Euler-Maclaurin; it does not use Poisson summation. Finally,
-\cite{delaReyna} is an explicit version of \cite[\S 4.7--4.11]{MR882550}; it
-gives a weaker bound than \cite{MR4114203} or \cite{zbMATH07557592}. The strongest of these
-results is \cite{MR4114203}.
-
-We will give another version here, in part because we wish to relax conditions -- we will
-work with $\left|\Im s\right| < 2\pi a$ rather than $\left|\Im s\right| \leq a$ -- and in
-part to show that one can prove an asymptotically optimal result easily and concisely.
-We will use first-order Euler-Maclaurin and Poisson summation. We assume that $a$ is a
-half-integer; if one inserts the same assumption into \cite[Lemma 2.10]{zbMATH07557592},
-one can improve the result there, yielding an error term closer to the one here.
-
-For additional context, see the Zulip discussion at
-\url{https://leanprover.zulipchat.com/\#narrow/channel/423402-PrimeNumberTheorem.2B/
-topic/Let.20us.20formalize.20an.20appendix}
--/
 
 namespace ZetaAppendix
 
@@ -57,17 +19,46 @@ open Real Complex MeasureTheory Finset Filter Topology Set Summable
 @[blueprint
   "e-def"
   (title := "e")
-  (statement := /-- We recall that $e(\alpha) = e^{2\pi i \alpha}$. -/)]
+  (statement := /-- We recall that $e(\alpha) = e^{2\pi i \alpha}$. -/)
+  (above := /--
+  \section{Approximating the Riemann zeta function}
+
+  We want a good explicit estimate on
+  $$\sum_{n\leq a} \frac{1}{n^s} - \int_0^{a} \frac{du}{u^s},$$
+  for $a$ a half-integer. As it turns out, this is the same problem as that of approximating
+  $\zeta(s)$ by a sum $\sum_{n\leq a} n^{-s}$. This is one of the two\footnote{The other one is
+  the approximate functional equation.} main, standard ways of approximating $\zeta(s)$.
+
+  The non-explicit version of the result was first proved in
+  \cite[Lemmas 1 and 2]{zbMATH02601353}. The proof there uses first-order Euler-Maclaurin
+  combined with a decomposition of $\lfloor x\rfloor - x +1/2$ that turns out to be equivalent
+  to Poisson summation.
+  The exposition in \cite[\S 4.7--4.11]{MR882550} uses first-order Euler-Maclaurin and
+  van de Corput's Process B; the main idea of the latter is Poisson summation.
+
+  There are already several explicit versions of the result in the literature.
+  In \cite{MR1687658}, \cite{MR3105334} and \cite{MR4114203}, what we have is successively
+  sharper explicit versions of Hardy and Littlewood's original proof.
+  The proof in \cite[Lemma 2.10]{zbMATH07557592} proceeds simply by a careful estimation of
+  the terms in high-order Euler-Maclaurin; it does not use Poisson summation. Finally,
+  \cite{delaReyna} is an explicit version of \cite[\S 4.7--4.11]{MR882550}; it
+  gives a weaker bound than \cite{MR4114203} or \cite{zbMATH07557592}. The strongest of these
+  results is \cite{MR4114203}.
+
+  We will give another version here, in part because we wish to relax conditions -- we will
+  work with $\left|\Im s\right| < 2\pi a$ rather than $\left|\Im s\right| \leq a$ -- and in
+  part to show that one can prove an asymptotically optimal result easily and concisely.
+  We will use first-order Euler-Maclaurin and Poisson summation. We assume that $a$ is a
+  half-integer; if one inserts the same assumption into \cite[Lemma 2.10]{zbMATH07557592},
+  one can improve the result there, yielding an error term closer to the one here.
+
+  For additional context, see the Zulip discussion at
+  \url{https://leanprover.zulipchat.com/\#narrow/channel/423402-PrimeNumberTheorem.2B/
+  topic/Let.20us.20formalize.20an.20appendix}
+  -/)
+]
 noncomputable def e (α : ℝ) : ℂ := exp (2 * π * I * α)
 
-blueprint_comment /--
-\subsection{The decay of a Fourier transform}
-Our first objective will be to estimate the Fourier transform of
-$t^{-s} \mathbb{1}_{[a,b]}$. In particular, we will show that, if $a$ and $b$ are
-half-integers, the Fourier cosine transform has quadratic decay {\em when evaluated at
-integers}. In general, for real arguments, the Fourier transform of a discontinuous
-function such as $t^{-s} \mathbb{1}_{[a,b]}$ does not have quadratic decay.
--/
 
 @[blueprint
   "lem:aachIBP"
@@ -97,7 +88,16 @@ while
   - \frac{t^{-\sigma} \varphi_\nu''(t)}{2\pi i (\varphi_\nu'(t))^2}\right) dt.\]
 -/)
   (latexEnv := "lemma")
-  (discussion := 546)]
+  (discussion := 546)
+  (above := /--
+  \subsection{The decay of a Fourier transform}
+  Our first objective will be to estimate the Fourier transform of
+  $t^{-s} \mathbb{1}_{[a,b]}$. In particular, we will show that, if $a$ and $b$ are
+  half-integers, the Fourier cosine transform has quadratic decay {\em when evaluated at
+  integers}. In general, for real arguments, the Fourier transform of a discontinuous
+  function such as $t^{-s} \mathbb{1}_{[a,b]}$ does not have quadratic decay.
+  -/)
+]
 theorem lemma_aachIBP (s : ℂ) (hsigma : 0 ≤ s.re) (ν : ℝ) (hν : ν ≠ 0) (a b : ℝ)
     (ha : a > |s.im| / (2 * π * |ν|)) (hb : b > a) :
     let φ : ℝ → ℝ := fun t ↦ ν * t - (s.im / (2 * π)) * Real.log t
@@ -1013,10 +1013,6 @@ theorem lemma_aachcanc (s : ℂ) {n : ℤ} (hn : 0 < n) {a b : ℝ}
   · ring
   rw [h_apply b (lt_trans ha hb) hb' hb_pos, h_apply a ha ha' (lt_of_le_of_lt (by positivity) ha)]
 
-blueprint_comment /--
-It is this easy step that gives us quadratic decay on $n$. It is just as
-in the proof of van der Corput's Process B in, say, \cite[I.6.3, Thm.~4]{zbMATH06471876}.
--/
 
 @[blueprint
   "prop:applem"
@@ -1041,7 +1037,12 @@ We then apply Lemma~\ref{lem:aachcanc} to combine the boundary contributions
 $\left. \right|_a^b$ for $\nu=\pm n$.
 -/)
   (latexEnv := "proposition")
-  (discussion := 552)]
+  (discussion := 552)
+  (above := /--
+  It is this easy step that gives us quadratic decay on $n$. It is just as
+  in the proof of van der Corput's Process B in, say, \cite[I.6.3, Thm.~4]{zbMATH06471876}.
+  -/)
+]
 theorem proposition_applem (s : ℂ) (hsigma : 0 ≤ s.re) {a b : ℝ} (ha : a > |s.im| / (2 * π))
     (hb : b > a) (ha' : a.IsHalfInteger) (hb' : b.IsHalfInteger) {n : ℕ} (hn : 1 ≤ n) :
     let ϑ : ℝ := s.im / (2 * π * a)
@@ -1091,11 +1092,6 @@ theorem proposition_applem (s : ℂ) (hsigma : 0 ≤ s.re) {a b : ℝ} (ha : a >
       _ = _ := by simp only [sq_abs, this]; ring
 
 
-blueprint_comment /--
-\subsection{Approximating zeta(s)}
-We start with an application of Euler-Maclaurin.
--/
-
 @[blueprint
   "lem:abadeulmac'"
   (title := "Identity for a partial sum of zeta(s) for integer b")
@@ -1122,7 +1118,12 @@ Since the integral converges absolutely for $\Re s > 0$, both sides extend holom
 to $\{s\in \mathbb{C}: \Re s>0, s\ne 1\}$; thus, the equation holds throughout that region.
 -/)
   (latexEnv := "lemma")
-  (discussion := 566)]
+  (discussion := 566)
+  (above := /--
+  \subsection{Approximating zeta(s)}
+  We start with an application of Euler-Maclaurin.
+  -/)
+]
 theorem lemma_abadeulmac' {b : ℕ} (hb : 0 < b) {s : ℂ}
     (hs1 : s ≠ 1) (hsigma : 0 < s.re) :
     ∑ n ∈ Icc 1 b, (n : ℂ) ^ (-s) =
@@ -1440,9 +1441,6 @@ theorem tsum_even_add_odd' {M : Type*} [AddCommMonoid M] [TopologicalSpace M]
   · simpa [← Equiv.summable_iff (Equiv.pnatEquivNat.symm)] using ho
   · simpa [← Equiv.summable_iff (Equiv.pnatEquivNat.symm)] using he
 
-blueprint_comment /--
-We could prove these equations starting from Euler's product for $\sin \pi z$.
--/
 
 @[blueprint
   "lem:abadeuleulmit1"
@@ -1472,7 +1470,11 @@ with $u=\pi z/2$, and letting $s = z/2$, $s = (z+1)/2$, we see that
 after reindexing the second sum. Regrouping terms again, we obtain our equation.
 -/)
   (latexEnv := "lemma")
-  (discussion := 569)]
+  (discussion := 569)
+  (above := /--
+  We could prove these equations starting from Euler's product for $\sin \pi z$.
+  -/)
+]
 theorem lemma_abadeuleulmit1 {z : ℂ} (hz : z ∈ integerComplement) :
     (π / sin (π * z)) =
     (1 / z) + ∑' (n : ℕ+), (-1) ^ (n : ℕ) * ((1 / (z - n) : ℂ) + (1 / (z + n) : ℂ)) := calc
@@ -1806,7 +1808,19 @@ Finally, the case $\sigma=0$ follows since all terms in \eqref{eq:abadlondie} ex
 continuously to $\sigma=0$.
 -/)
   (latexEnv := "proposition")
-  (discussion := 573)]
+  (discussion := 573)
+  (below := /--
+  \begin{remark}
+  The term $c_\vartheta a^{-s}$ in \eqref{eq:abadlondie} does not seem to have been worked
+  out before in the literature; the factor of $i$ in $c_\vartheta$ was a surprise.
+  For the sake of comparison, let us note that, if $a\geq x$, then $|\vartheta|\leq 1/2\pi$,
+  and so $|c_\vartheta|\leq |c_{\pm 1/2\pi}| = 0.04291\dotsc$ and
+  $|C_{\sigma,\vartheta}|\leq |C_{\sigma,\pm 1/2\pi}|\leq 0.176\sigma +0.246$.
+  While $c_\vartheta$ is optimal, $C_{\sigma,\vartheta}$ need not be --
+  but then that is irrelevant for most applications.
+  \end{remark}
+  -/)
+]
 theorem proposition_dadaro {s : ℂ} (hs1 : s ≠ 1) (hsigma : 0 ≤ s.re) {a : ℝ} (ha : 0 < a)
     (ha' : a.IsHalfInteger) (haτ : a > |s.im| / (2 * π)) :
     let ϑ : ℝ := s.im / (2 * π * a)
@@ -1827,16 +1841,5 @@ theorem proposition_dadaro {s : ℂ} (hs1 : s ≠ 1) (hsigma : 0 ≤ s.re) {a : 
       ‖E‖ ≤ C / (a ^ (s.re + 1 : ℝ)) := by
   sorry
 
-blueprint_comment /--
-\begin{remark}
-The term $c_\vartheta a^{-s}$ in \eqref{eq:abadlondie} does not seem to have been worked
-out before in the literature; the factor of $i$ in $c_\vartheta$ was a surprise.
-For the sake of comparison, let us note that, if $a\geq x$, then $|\vartheta|\leq 1/2\pi$,
-and so $|c_\vartheta|\leq |c_{\pm 1/2\pi}| = 0.04291\dotsc$ and
-$|C_{\sigma,\vartheta}|\leq |C_{\sigma,\pm 1/2\pi}|\leq 0.176\sigma +0.246$.
-While $c_\vartheta$ is optimal, $C_{\sigma,\vartheta}$ need not be --
-but then that is irrelevant for most applications.
-\end{remark}
--/
 
 end ZetaAppendix

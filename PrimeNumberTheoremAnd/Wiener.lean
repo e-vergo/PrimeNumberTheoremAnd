@@ -27,15 +27,6 @@ open scoped ComplexConjugate
 variable {n : ℕ} {A a b c d u x y t σ' : ℝ} {ψ Ψ : ℝ → ℂ} {F G : ℂ → ℂ} {f : ℕ → ℂ} {𝕜 : Type}
   [RCLike 𝕜]
 
-blueprint_comment /--
-The Fourier transform of an absolutely integrable function $\psi: \R \to \C$ is defined by the
-formula $$ \hat \psi(u) := \int_\R e(-tu) \psi(t)\ dt$$ where $e(\theta) := e^{2\pi i \theta}$.
-
-Let $f: \N \to \C$ be an arithmetic function such that $\sum_{n=1}^\infty \frac{|f(n)|}{n^\sigma} <
-\infty$ for all $\sigma>1$.  Then the Dirichlet series
-$$ F(s) := \sum_{n=1}^\infty \frac{f(n)}{n^s}$$
-is absolutely convergent for $\sigma>1$.
--/
 
 noncomputable
 def nterm (f : ℕ → ℂ) (σ' : ℝ) (n : ℕ) : ℝ := if n = 0 then 0 else ‖f n‖ / n ^ σ'
@@ -124,7 +115,17 @@ lemma first_fourier_aux2 (hx : 0 < x) (n : ℕ) :
   \frac{f(n)}{n^{\sigma+it}} \psi(t) x^{it}$$
   the claim then follows from Fubini's theorem.
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  The Fourier transform of an absolutely integrable function $\psi: \R \to \C$ is defined by the
+  formula $$ \hat \psi(u) := \int_\R e(-tu) \psi(t)\ dt$$ where $e(\theta) := e^{2\pi i \theta}$.
+
+  Let $f: \N \to \C$ be an arithmetic function such that $\sum_{n=1}^\infty \frac{|f(n)|}{n^\sigma} <
+  \infty$ for all $\sigma>1$.  Then the Dirichlet series
+  $$ F(s) := \sum_{n=1}^\infty \frac{f(n)}{n^s}$$
+  is absolutely convergent for $\sigma>1$.
+  -/)
+]
 lemma first_fourier (hf : ∀ (σ' : ℝ), 1 < σ' → Summable (nterm f σ'))
     (hsupp : Integrable ψ) (hx : 0 < x) (hσ : 1 < σ') :
     ∑' n : ℕ, term f σ' n * (𝓕 (ψ : ℝ → ℂ) (1 / (2 * π) * log (n / x))) =
@@ -160,7 +161,6 @@ lemma first_fourier (hf : ∀ (σ' : ℝ), 1 < σ' → Summable (nterm f σ'))
         convert hf σ' hσ with n
         rw [norm_term_eq_nterm_re]
         simp
-
 
 
 @[continuity]
@@ -282,16 +282,6 @@ lemma second_fourier (hcont : Continuous ψ) (hsupp : Integrable ψ)
     integral_Ioi_of_hasDerivAt_of_tendsto' hderiv (second_fourier_integrable_aux2 hσ) hf]
   simpa [f, f'] using second_fourier_aux hx
 
-blueprint_comment /--
-Now let $A \in \C$, and suppose that there is a continuous function $G(s)$ defined on
-$\mathrm{Re} s \geq 1$ such that $G(s) = F(s) - \frac{A}{s-1}$ whenever $\mathrm{Re} s > 1$.
-We also make the Chebyshev-type hypothesis
-\begin{equation}\label{cheby}
-\sum_{n \leq x} |f(n)| \ll x
-\end{equation}
-for all $x \geq 1$ (this hypothesis is not strictly necessary, but simplifies the arguments and
-can be obtained fairly easily in applications).
--/
 
 lemma one_add_sq_pos (u : ℝ) : 0 < 1 + u ^ 2 := zero_lt_one.trans_le (by simpa using sq_nonneg u)
 
@@ -303,7 +293,18 @@ lemma one_add_sq_pos (u : ℝ) : 0 < 1 + u ^ 2 := zero_lt_one.trans_le (by simpa
   -/)
   (proof := /-- Immediate from the triangle inequality. -/)
   (latexEnv := "lemma")
-  (discussion := 561)]
+  (discussion := 561)
+  (above := /--
+  Now let $A \in \C$, and suppose that there is a continuous function $G(s)$ defined on
+  $\mathrm{Re} s \geq 1$ such that $G(s) = F(s) - \frac{A}{s-1}$ whenever $\mathrm{Re} s > 1$.
+  We also make the Chebyshev-type hypothesis
+  \begin{equation}\label{cheby}
+  \sum_{n \leq x} |f(n)| \ll x
+  \end{equation}
+  for all $x \geq 1$ (this hypothesis is not strictly necessary, but simplifies the arguments and
+  can be obtained fairly easily in applications).
+  -/)
+]
 theorem prelim_decay (ψ : ℝ → ℂ) (u : ℝ) : ‖𝓕 (ψ : ℝ → ℂ) u‖ ≤ ∫ t, ‖ψ t‖ :=
   VectorFourier.norm_fourierIntegral_le_integral_norm ..
 
@@ -467,9 +468,6 @@ lemma W21.integrable_fourier (ψ : W21) (hc : c ≠ 0) :
   obtain ⟨C, h⟩ := decay_bounds_cor ψ
   apply @Integrable.mono' ℝ ℂ _ volume _ _ (fun u => C / (1 + (u / c) ^ 2)) (l1 C) l2 ?_
   apply Eventually.of_forall (fun x => h _)
-
-
-
 
 
 lemma continuous_LSeries_aux (hf : Summable (nterm f σ')) :
@@ -1139,9 +1137,6 @@ lemma limiting_fourier (hcheby : cheby f)
   simpa [eventuallyEq_nhdsWithin_iff] using Eventually.of_forall (limiting_fourier_aux hG' hf ψ hx)
 
 
-
-
-
 lemma limiting_cor_aux {f : ℝ → ℂ} : Tendsto (fun x : ℝ ↦ ∫ t, f t * x ^ (t * I)) atTop (𝓝 0) := by
 
   have l1 : ∀ᶠ x : ℝ in atTop, ∀ t : ℝ, x ^ (t * I) = exp (log x * t * I) := by
@@ -1188,9 +1183,6 @@ lemma limiting_cor (ψ : CS 2 ℂ) (hf : ∀ (σ' : ℝ), 1 < σ' → Summable (
     limiting_fourier hcheby hG hG' hf ψ hx |>.symm
 
 
-
-
-
 @[blueprint
   "smooth-ury"
   (title := "Smooth Urysohn lemma")
@@ -1210,7 +1202,6 @@ lemma smooth_urysohn (a b c d : ℝ) (h1 : a < b) (h3 : c < d) : ∃ Ψ : ℝ �
 
   obtain ⟨ψ, l1, l2, l3, l4, -⟩ := smooth_urysohn_support_Ioo h1 h3
   refine ⟨ψ, l1, l2, l3, l4⟩
-
 
 
 noncomputable def exists_trunc : trunc := by
@@ -1714,7 +1705,6 @@ lemma bound_main {C : ℝ} (A : ℂ) (x : ℝ) (hx : 1 ≤ x) (ψ : W21)
   convert _root_.add_le_add l1 l2 using 1 ; ring
 
 
-
 lemma limiting_cor_W21 (ψ : W21) (hf : ∀ (σ' : ℝ), 1 < σ' → Summable (nterm f σ'))
     (hcheby : cheby f) (hG : ContinuousOn G {s | 1 ≤ s.re})
     (hG' : Set.EqOn G (fun s ↦ LSeries f s - A / (s - 1)) {s | 1 < s.re}) :
@@ -1815,9 +1805,6 @@ lemma limiting_cor_schwartz (ψ : 𝓢(ℝ, ℂ)) (hf : ∀ (σ' : ℝ), 1 < σ'
   limiting_cor_W21 ψ hf hcheby hG hG'
 
 
-
-
-
 -- just the surjectivity is stated here, as this is all that is needed for the current
 -- application, but perhaps one should state and prove bijectivity instead
 
@@ -1840,8 +1827,6 @@ lemma limiting_cor_schwartz (ψ : 𝓢(ℝ, ℂ)) (hf : ∀ (σ' : ℝ), 1 < σ'
 lemma fourier_surjection_on_schwartz (f : 𝓢(ℝ, ℂ)) : ∃ g : 𝓢(ℝ, ℂ), 𝓕 g = f := by
   refine ⟨𝓕⁻ f, ?_⟩
   exact FourierTransform.fourier_fourierInv_eq f
-
-
 
 
 noncomputable def toSchwartz (f : ℝ → ℂ) (h1 : ContDiff ℝ ∞ f)
@@ -1939,7 +1924,6 @@ theorem wiener_ikehara_smooth_sub (h1 : Integrable Ψ)
   simp [ht]
 
 
-
 @[blueprint
   "WienerIkeharaSmooth"
   (title := "Smoothed Wiener-Ikehara")
@@ -2011,7 +1995,6 @@ lemma wiener_ikehara_smooth (hf : ∀ (σ' : ℝ), 1 < σ' → Summable (nterm f
     exact wiener_ikehara_smooth_sub (hsmooth.continuous.integrable_of_hasCompactSupport hsupp) hplus
 
   simpa [tsum_div_const] using (key.congr' <| EventuallyEq.sub l2 l3) |>.add l4
-
 
 
 lemma wiener_ikehara_smooth' (hf : ∀ (σ' : ℝ), 1 < σ' → Summable (nterm f σ')) (hcheby : cheby f)
@@ -2216,10 +2199,6 @@ theorem residue_nonneg {f : ℕ → ℝ} (hpos : 0 ≤ f)
     simpa [setIntegral_pos_iff_support_of_nonneg_ae r1 r2] using zero_lt_one.trans_le r5
   have := div_nonneg l3 l4.le ; field_simp at this ; exact this
 
-blueprint_comment /--
-Now we add the hypothesis that $f(n) \geq 0$ for all $n$.
-
--/
 
 @[blueprint
   (title := "Wiener-Ikehara in an interval")
@@ -2228,7 +2207,9 @@ Now we add the hypothesis that $f(n) \geq 0$ for all $n$.
     $$ \sum_{n=1}^\infty f(n) 1_I( \frac{n}{x} ) = A x |I|  + o(x).$$
   -/)
   (proof := /-- Use Lemma \ref{smooth-ury} to bound $1_I$ above and below by smooth compactly supported functions whose integral is close to the measure of $|I|$, and use the non-negativity of $f$. -/)
-  (latexEnv := "proposition")]
+  (latexEnv := "proposition")
+  (above := /-- Now we add the hypothesis that $f(n) \geq 0$ for all $n$. -/)
+]
 lemma WienerIkeharaInterval {f : ℕ → ℝ} (hpos : 0 ≤ f) (hf : ∀ (σ' : ℝ), 1 < σ' → Summable (nterm f σ'))
     (hcheby : cheby f) (hG : ContinuousOn G {s | 1 ≤ s.re})
     (hG' : Set.EqOn G (fun s ↦ LSeries f s - A / (s - 1)) {s | 1 < s.re}) (ha : 0 < a) (hb : a ≤ b) :
@@ -2297,7 +2278,6 @@ lemma WienerIkeharaInterval {f : ℕ → ℝ} (hpos : 0 ≤ f) (hf : ∀ (σ' : 
   refine tendsto_of_liminf_eq_limsup ?_ ?_ Iab2 Iab3 <;> linarith
 
 
-
 lemma le_floor_mul_iff (hb : 0 ≤ b) (hx : 0 < x) : n ≤ ⌊b * x⌋₊ ↔ n / x ≤ b := by
   rw [div_le_iff₀ hx, Nat.le_floor_iff] ; positivity
 
@@ -2334,7 +2314,6 @@ lemma WienerIkeharaInterval_discrete' {f : ℕ → ℝ} (hpos : 0 ≤ f) (hf : �
   WienerIkeharaInterval_discrete hpos hf hcheby hG hG' ha hb |>.comp tendsto_natCast_atTop_atTop
 
 -- TODO with `Ico`
-
 
 
 /-- A version of the *Wiener-Ikehara Tauberian Theorem*: If `f` is a nonnegative arithmetic
@@ -2421,10 +2400,6 @@ theorem vonMangoldt_cheby : cheby Λ := by
   gcongr
   linarith
 
-blueprint_comment /--
-\section{Weak PNT}
-
--/
 
 -- Proof extracted from the `EulerProducts` project so we can adapt it to the
 -- version of the Wiener-Ikehara theorem proved above (with the `cheby`
@@ -2437,7 +2412,9 @@ blueprint_comment /--
     $$ \sum_{n \leq x} \Lambda(n) = x + o(x).$$
   -/)
   (keyDeclaration := true)
-  (proof := /-- Already done by Stoll, assuming Wiener-Ikehara. -/)]
+  (proof := /-- Already done by Stoll, assuming Wiener-Ikehara. -/)
+  (above := /-- \section{Weak PNT} -/)
+]
 theorem WeakPNT : Tendsto (fun N ↦ cumsum Λ N / N) atTop (𝓝 1) := by
   let F := vonMangoldt.LFunctionResidueClassAux (q := 1) 1
   have hnv := riemannZeta_ne_zero_of_one_le_re
@@ -2982,15 +2959,6 @@ theorem limiting_fourier_variant_lim1
   simpa [hsource, htarget, y] using hToReal
 
 
-
-
-blueprint_comment /--
-\section{Removing the Chebyshev hypothesis}
-
-In this section we do *not* assume the bound \eqref{cheby}, but instead derive it from the other hypotheses.
-
--/
-
 @[blueprint "limiting-fourier-variant"
   (title := "limiting-fourier-variant")
   (statement := /--
@@ -2999,7 +2967,13 @@ In this section we do *not* assume the bound \eqref{cheby}, but instead derive i
   -/)
   (proof := /-- Repeat the proof of Lemma \ref{limiting-fourier-variant}, but use monotone convergence instead of dominated convergence.  (The proof should be simpler, as one no longer needs to establish domination for the sum.) -/)
   (proofUses := ["decay", "second-fourier", "first-fourier"])
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  \section{Removing the Chebyshev hypothesis}
+
+  In this section we do *not* assume the bound \eqref{cheby}, but instead derive it from the other hypotheses.
+  -/)
+]
 lemma limiting_fourier_variant
     (hpos : 0 ≤ f)
     (hG : ContinuousOn G {s | 1 ≤ s.re})
@@ -3378,7 +3352,6 @@ lemma norm_error_integral_le
         ≤ ∫ t : ℝ, ‖(G (1 + t * Complex.I)) * (ψ t) * ((x : ℂ) ^ (t * Complex.I))‖ := h1
     _   ≤ ∫ t : ℝ, K * ‖ψ t‖ := h2
     _   = K * (∫ t : ℝ, ‖ψ t‖) := h3
-
 
 
 @[blueprint "crude-upper-bound"
@@ -3899,9 +3872,6 @@ theorem WienerIkeharaTheorem'' (hpos : 0 ≤ f) (hf : ∀ (σ' : ℝ), 1 < σ' �
 
 end auto_cheby
 
-blueprint_comment /--
-\section{The prime number theorem in arithmetic progressions}
--/
 
 @[blueprint "WeakPNT-character"
   (title := "WeakPNT-character")
@@ -3919,7 +3889,11 @@ blueprint_comment /--
   \sum_{n} \frac{\Lambda(n) \chi(n)}{n^s} = - \frac{L'(s,\chi)}{L(s,\chi)}.$$
   Combining these two facts, we obtain the claim.
   -/)
-  (latexEnv := "lemma")]
+  (latexEnv := "lemma")
+  (above := /--
+  \section{The prime number theorem in arithmetic progressions}
+  -/)
+]
 theorem WeakPNT_character
     {q a : ℕ} (hq : q ≥ 1) (ha : Nat.Coprime a q) (ha' : a < q) {s : ℂ} (hs : 1 < s.re) :
     LSeries (fun n ↦ if n % q = a then Λ n else 0) s =

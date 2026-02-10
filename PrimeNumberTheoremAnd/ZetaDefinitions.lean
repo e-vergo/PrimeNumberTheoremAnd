@@ -4,9 +4,6 @@ import Mathlib.Analysis.Meromorphic.Order
 
 open Real
 
-blueprint_comment /--
-\section{Definitions}
--/
 
 @[blueprint
   "zeroes-of-riemann-zeta"
@@ -14,7 +11,9 @@ blueprint_comment /--
   $\rho$ is understood to lie in the set $\{s: \zeta(s)=0\}$, counted with multiplicity. We will
       often restrict the zeroes $\rho$ to a rectangle $\{ \Re \rho \in I, \Im \rho \in J \}$, for
       instance through sums of the form $\sum_{\Re \rho \in  I, \Im \rho \in J} f(\rho)$.
-  -/)]
+  -/)
+  (above := /-- \section{Definitions} -/)
+]
 -- Note that the junk value of zeta at s=1 is known to be nonzero
 noncomputable def riemannZeta.zeroes : Set ℂ := {s : ℂ | riemannZeta s = 0}
 
