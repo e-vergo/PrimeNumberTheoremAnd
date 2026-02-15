@@ -1,6 +1,10 @@
 name = "PrimeNumberTheoremAnd"
-version = "0.1.0"
 defaultTargets = ["PrimeNumberTheoremAnd"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+relaxedAutoImplicit = false
 
 [[lean_lib]]
 name = "PrimeNumberTheoremAnd"
