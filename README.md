@@ -231,7 +231,7 @@ This fork is part of the [Side-by-Side Blueprint](https://github.com/e-vergo/SLS
 
 | Project | Location | Scale | Purpose |
 |---------|----------|-------|---------|
-| **SBS-Test** | `toolchain/SBS-Test/` | 33 nodes | Minimal test project demonstrating all 6 status colors, XSS prevention, rainbow bracket depths (1-10), module references, validation testing |
+| **SBS-Test** | `toolchain/SBS-Test/` | 49 nodes | Minimal test project demonstrating all 7 status colors, XSS prevention, rainbow bracket depths (1-10), module references, validation testing |
 | **General Crystallographic Restriction** | `showcase/General_Crystallographic_Restriction/` | 57 nodes | Complete formalization with LaTeX paper generation (ar5iv style) |
 | **PrimeNumberTheoremAnd** (this project) | `showcase/PrimeNumberTheoremAnd/` | 591 nodes | **Large-scale integration** demonstrating >100 node optimizations, where dependency graph validation caught a logical error (Tao incident) |
 
