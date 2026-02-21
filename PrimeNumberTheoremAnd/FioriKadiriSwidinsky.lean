@@ -620,7 +620,6 @@ theorem theorem_1_2b (x₀ : ℝ) (h : log x₀ ≥ 1000) :
   For all x > 2 we have
       $E_ψ(x) \leq 121.096 (\log x/R)^{3/2} \exp(-2 \sqrt{\log x/R})$ with $R = 5.5666305$.
   -/)
-  (uses := ["classical-bound-psi"])
   (latexEnv := "theorem")]
 theorem FKS_corollary_1_3 :
     Eψ.classicalBound 121.096 (3 / 2) 2 5.5666305 2 := sorry
